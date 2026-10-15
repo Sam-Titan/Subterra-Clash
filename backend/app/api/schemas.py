@@ -1,13 +1,12 @@
 """Response envelopes shared by the route modules (docs/API_CONTRACT.md)."""
 
-from pydantic import BaseModel
-
 from app.models import Asset, Clash, Rule, Work
+from app.models.base import ApiModel
 
 CLEARANCE_DISCLAIMER = "Illustrative values for this exercise; not a regulatory standard."
 
 
-class ListResponse[T](BaseModel):
+class ListResponse[T](ApiModel):
     items: list[T]
     total: int
 
@@ -16,18 +15,18 @@ class RulesResponse(ListResponse[Rule]):
     disclaimer: str = CLEARANCE_DISCLAIMER
 
 
-class ClashDetail(BaseModel):
+class ClashDetail(ApiModel):
     clash: Clash
     assets: list[Asset]
     works: list[Work]
     rule: Rule | None  # null for SCHEDULE_OVERLAP clashes (no clearance rule applies)
 
 
-class ResetResponse(BaseModel):
+class ResetResponse(ApiModel):
     status: str = "reset"
 
 
-class ErrorResponse(BaseModel):
+class ErrorResponse(ApiModel):
     detail: str
     code: str
 

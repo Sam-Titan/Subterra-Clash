@@ -1,24 +1,25 @@
-from pydantic import BaseModel, Field
+from pydantic import Field
 
 from app.models.asset import Asset, AssetId
+from app.models.base import ApiModel
 from app.models.enums import Band, Certainty, ClashKind, TruthCategory, TruthOutcome
 from app.models.geography import Junction, Landmark, Street
 from app.models.work import Work, WorkId
 
 
-class Bounds(BaseModel):
+class Bounds(ApiModel):
     min_x: float
     min_y: float
     max_x: float
     max_y: float
 
 
-class Area(BaseModel):
+class Area(ApiModel):
     name: str
     bounds: Bounds
 
 
-class Scene(BaseModel):
+class Scene(ApiModel):
     """Shape of GET /api/scene; also the schema of seed/scene.json."""
 
     area: Area
@@ -29,7 +30,7 @@ class Scene(BaseModel):
     works: list[Work]
 
 
-class TruthExpected(BaseModel):
+class TruthExpected(ApiModel):
     outcome: TruthOutcome
     kind: ClashKind | None = None
     certainty: Certainty | None = None
@@ -37,7 +38,7 @@ class TruthExpected(BaseModel):
     baseline_flagged: bool
 
 
-class TruthCase(BaseModel):
+class TruthCase(ApiModel):
     case_id: str = Field(pattern=r"^T\d+$")
     description: str
     category: TruthCategory

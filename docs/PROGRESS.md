@@ -7,7 +7,7 @@
 **Current phase:** 1 — Core
 **Kickoff (H0):** 16 Oct 2026, 01:00 IST
 **Last gate passed:** Gate 0
-**Pending for frontend:** run pnpm gen:api; mocks regenerated from the real seed (scene/clashes/groups), summary.json restored
+**Pending for frontend:** run pnpm gen:api (fields with defaults are now required)
 
 ---
 

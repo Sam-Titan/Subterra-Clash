@@ -1,21 +1,22 @@
 from datetime import date
 from typing import Annotated
 
-from pydantic import BaseModel, Field
+from pydantic import Field
 
+from app.models.base import ApiModel
 from app.models.enums import Utility, WorkOrigin, WorkType
 from app.models.geography import Point2, Point3
 
 WorkId = Annotated[str, Field(pattern=r"^WRK-\d{3,}$")]
 
 
-class SourcePermit(BaseModel):
+class SourcePermit(ApiModel):
     permit_no: str
     source: str
     submitted_on: date
 
 
-class Work(BaseModel):
+class Work(ApiModel):
     """Proposed work. Depths are positive numbers below the surface (SPEC §7.3)."""
 
     id: WorkId

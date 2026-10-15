@@ -1,9 +1,10 @@
 from datetime import datetime
 from typing import Annotated
 
-from pydantic import BaseModel, Field
+from pydantic import Field
 
 from app.models.asset import AssetId
+from app.models.base import ApiModel
 from app.models.enums import Band, Certainty, ClashKind, ReviewStatus
 from app.models.work import WorkId
 
@@ -12,7 +13,7 @@ GroupId = Annotated[str, Field(pattern=r"^GRP-\d{2,}$")]
 AuditId = Annotated[str, Field(pattern=r"^AUD-\d{4,}$")]
 
 
-class SeverityFactors(BaseModel):
+class SeverityFactors(ApiModel):
     """The four terms of SPEC §8.5, each 0-1, before weighting."""
 
     hazard: float = Field(ge=0, le=1)
@@ -21,24 +22,24 @@ class SeverityFactors(BaseModel):
     confidence: float = Field(ge=0, le=1)
 
 
-class Severity(BaseModel):
+class Severity(ApiModel):
     score: int = Field(ge=0, le=100)
     band: Band
     factors: SeverityFactors
 
 
-class Location(BaseModel):
+class Location(ApiModel):
     x: float
     y: float
     z: float
 
 
-class Schedule(BaseModel):
+class Schedule(ApiModel):
     overlap_days: int = 0
     gap_days: int = 0
 
 
-class Evidence(BaseModel):
+class Evidence(ApiModel):
     """`type` is a free string; used values: ASSET_RECORD, PERMIT, RULE, PRECISION."""
 
     type: str
@@ -46,14 +47,14 @@ class Evidence(BaseModel):
     detail: str
 
 
-class Review(BaseModel):
+class Review(ApiModel):
     status: ReviewStatus = ReviewStatus.OPEN
     reviewer: str | None = None
     note: str | None = None
     updated_at: datetime | None = None
 
 
-class Clash(BaseModel):
+class Clash(ApiModel):
     id: ClashId
     kind: ClashKind
     certainty: Certainty
@@ -74,7 +75,7 @@ class Clash(BaseModel):
     baseline_flagged: bool
 
 
-class ClashGroup(BaseModel):
+class ClashGroup(ApiModel):
     id: GroupId
     clash_ids: list[ClashId]
     work_ids: list[WorkId]
@@ -83,7 +84,7 @@ class ClashGroup(BaseModel):
     title: str
 
 
-class AuditEntry(BaseModel):
+class AuditEntry(ApiModel):
     id: AuditId
     at: datetime
     actor: str

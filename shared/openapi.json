@@ -96,6 +96,7 @@
           "path",
           "diameter_m",
           "horiz_precision_m",
+          "depth_precision_m",
           "depth_known",
           "source_record"
         ],
@@ -276,9 +277,18 @@
           "certainty",
           "severity",
           "work_ids",
+          "asset_ids",
           "location",
+          "measured_gap_m",
+          "required_clearance_m",
+          "uncertainty_m",
+          "rule_id",
+          "schedule",
           "explanation",
+          "evidence",
+          "missing_data",
           "group_id",
+          "review",
           "baseline_flagged"
         ],
         "title": "Clash",
@@ -613,6 +623,9 @@
             "type": "string"
           }
         },
+        "required": [
+          "status"
+        ],
         "title": "ResetResponse",
         "type": "object"
       },
@@ -657,6 +670,12 @@
             "title": "Updated At"
           }
         },
+        "required": [
+          "status",
+          "reviewer",
+          "note",
+          "updated_at"
+        ],
         "title": "Review",
         "type": "object"
       },
@@ -724,6 +743,11 @@
             "type": "array"
           }
         },
+        "required": [
+          "work_types",
+          "utility",
+          "work_utility"
+        ],
         "title": "RuleAppliesTo",
         "type": "object"
       },
@@ -748,7 +772,8 @@
         },
         "required": [
           "items",
-          "total"
+          "total",
+          "disclaimer"
         ],
         "title": "RulesResponse",
         "type": "object"
@@ -819,6 +844,10 @@
             "type": "integer"
           }
         },
+        "required": [
+          "overlap_days",
+          "gap_days"
+        ],
         "title": "Schedule",
         "type": "object"
       },
@@ -1165,13 +1194,19 @@
           "title",
           "agency",
           "work_type",
+          "utility",
           "path",
           "width_m",
           "depth_from_m",
           "depth_to_m",
+          "bore_path",
+          "bore_diameter_m",
           "start_date",
           "end_date",
-          "source_permit"
+          "source_permit",
+          "origin",
+          "field_confidence",
+          "missing_fields"
         ],
         "title": "Work",
         "type": "object"

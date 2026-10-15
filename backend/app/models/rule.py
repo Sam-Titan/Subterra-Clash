@@ -1,9 +1,10 @@
-from pydantic import BaseModel, Field
+from pydantic import Field
 
+from app.models.base import ApiModel
 from app.models.enums import Utility, WorkType
 
 
-class RuleAppliesTo(BaseModel):
+class RuleAppliesTo(ApiModel):
     """An empty list means "any"."""
 
     work_types: list[WorkType] = Field(default_factory=list)
@@ -11,7 +12,7 @@ class RuleAppliesTo(BaseModel):
     work_utility: list[Utility] = Field(default_factory=list)
 
 
-class Rule(BaseModel):
+class Rule(ApiModel):
     id: str = Field(pattern=r"^R-[A-Z-]+$")
     applies_to: RuleAppliesTo
     min_clearance_m: float = Field(gt=0)

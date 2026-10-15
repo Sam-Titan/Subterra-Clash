@@ -4,11 +4,11 @@ from typing import Annotated, Literal
 from fastapi import Depends, FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel
 
 from app.api import routes_clashes, routes_scene
 from app.api.schemas import AppError
 from app.config import Settings, get_settings
+from app.models.base import ApiModel
 
 VERSION = "0.1.0"
 
@@ -41,7 +41,7 @@ def app_error_handler(_: Request, exc: AppError) -> JSONResponse:
     )
 
 
-class HealthResponse(BaseModel):
+class HealthResponse(ApiModel):
     status: Literal["ok"]
     version: str
     llm_mode: Literal["cached", "live"]

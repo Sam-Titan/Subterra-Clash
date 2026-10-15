@@ -22,3 +22,8 @@ def test_openapi_file_is_current() -> None:
 
 def test_openapi_has_all_1d_paths() -> None:
     assert set(json.loads(export_openapi.render())["paths"]) >= REQUIRED_PATHS
+
+
+def test_clash_schema_requires_defaulted_fields() -> None:
+    schemas = json.loads(export_openapi.render())["components"]["schemas"]
+    assert {"review", "evidence", "missing_data"} <= set(schemas["Clash"]["required"])

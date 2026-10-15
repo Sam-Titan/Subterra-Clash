@@ -1,22 +1,23 @@
 from datetime import date
 from typing import Annotated
 
-from pydantic import BaseModel, Field
+from pydantic import Field
 
+from app.models.base import ApiModel
 from app.models.enums import RecordMethod, Utility
 from app.models.geography import Point3
 
 AssetId = Annotated[str, Field(pattern=r"^AST-\d{4,}$")]
 
 
-class SourceRecord(BaseModel):
+class SourceRecord(ApiModel):
     record_id: str
     source: str
     captured_on: date
     method: RecordMethod
 
 
-class Asset(BaseModel):
+class Asset(ApiModel):
     """Existing underground utility. z is negative below ground (SPEC §6)."""
 
     id: AssetId

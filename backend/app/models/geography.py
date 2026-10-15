@@ -1,6 +1,8 @@
 from typing import Annotated
 
-from pydantic import BaseModel, Field
+from pydantic import Field
+
+from app.models.base import ApiModel
 
 Point2 = tuple[float, float]
 Point3 = tuple[float, float, float]
@@ -10,21 +12,21 @@ JunctionId = Annotated[str, Field(pattern=r"^JN-\d{2,}$")]
 LandmarkId = Annotated[str, Field(pattern=r"^LM-\d{2,}$")]
 
 
-class Street(BaseModel):
+class Street(ApiModel):
     id: StreetId
     name: str
     centerline: list[Point2] = Field(min_length=2)
     width_m: float = Field(gt=0)
 
 
-class Junction(BaseModel):
+class Junction(ApiModel):
     id: JunctionId
     name: str
     x: float
     y: float
 
 
-class Landmark(BaseModel):
+class Landmark(ApiModel):
     id: LandmarkId
     name: str
     x: float
