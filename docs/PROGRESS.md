@@ -17,7 +17,7 @@
 - [x] **Gate 0 passed**
 
 ## Phase 1 — Core
-- [ ] 1A — models + rules + gazetteer + seed generator with T1–T9 — Sam
+- [x] 1A — models + rules + gazetteer + seed generator with T1–T9 — Sam — 72 assets, 11 works (WRK-001..011); planted assets dedicated + exact SPEC values, tests assert them; rules `applies_to` = `{work_types, utility[], work_utility[]}` (empty = any), contract updated; Evidence.type values: ASSET_RECORD, PERMIT, RULE, PRECISION; HDD depth_from/to = bore top/bottom, PIPE_LAY depth_to = centre depth + d/2
 - [ ] 1B — geometry + tests — Sam
 - [ ] 1C — detect / certainty / schedule / severity / grouping / baseline + planted-case tests — Sam
 - [ ] 1D — store + routes + OpenAPI exported — Sam

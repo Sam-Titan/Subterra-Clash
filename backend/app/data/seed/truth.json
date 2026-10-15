@@ -1,0 +1,137 @@
+[
+  {
+    "case_id": "T1",
+    "description": "Trench cuts through a gas main (needs 1.0 m, gap -0.6 m)",
+    "category": "SPATIAL",
+    "work_id": "WRK-001",
+    "asset_id": "AST-0009",
+    "other_work_id": null,
+    "expected": {
+      "outcome": "CLASH",
+      "kind": "INTERSECTION",
+      "certainty": "LIKELY",
+      "band": "CRITICAL",
+      "baseline_flagged": true
+    }
+  },
+  {
+    "case_id": "T2",
+    "description": "HDD bore runs 0.18 m beside a power cable, never crossing in plan",
+    "category": "SPATIAL",
+    "work_id": "WRK-003",
+    "asset_id": "AST-0058",
+    "other_work_id": null,
+    "expected": {
+      "outcome": "CLASH",
+      "kind": "CLEARANCE",
+      "certainty": "LIKELY",
+      "band": null,
+      "baseline_flagged": false
+    }
+  },
+  {
+    "case_id": "T3",
+    "description": "New water pipe 1.05 m from a digitised telecom duct (+-2.06 m)",
+    "category": "SPATIAL",
+    "work_id": "WRK-004",
+    "asset_id": "AST-0035",
+    "other_work_id": null,
+    "expected": {
+      "outcome": "CLASH",
+      "kind": "CLEARANCE",
+      "certainty": "POSSIBLE",
+      "band": null,
+      "baseline_flagged": false
+    }
+  },
+  {
+    "case_id": "T4",
+    "description": "Trench crosses a deep trunk sewer 2.4 m below the trench floor",
+    "category": "SPATIAL",
+    "work_id": "WRK-005",
+    "asset_id": "AST-0039",
+    "other_work_id": null,
+    "expected": {
+      "outcome": "NO_CLASH",
+      "kind": null,
+      "certainty": null,
+      "band": null,
+      "baseline_flagged": true
+    }
+  },
+  {
+    "case_id": "T5",
+    "description": "New water pipe laid 0.2 m from a surveyed water main",
+    "category": "SPATIAL",
+    "work_id": "WRK-006",
+    "asset_id": "AST-0043",
+    "other_work_id": null,
+    "expected": {
+      "outcome": "CLASH",
+      "kind": "CLEARANCE",
+      "certainty": "LIKELY",
+      "band": null,
+      "baseline_flagged": false
+    }
+  },
+  {
+    "case_id": "T6",
+    "description": "Pit over a power cable whose depth is not recorded",
+    "category": "SPATIAL",
+    "work_id": "WRK-002",
+    "asset_id": "AST-0027",
+    "other_work_id": null,
+    "expected": {
+      "outcome": "CLASH",
+      "kind": "CLEARANCE",
+      "certainty": "NEEDS_DATA",
+      "band": null,
+      "baseline_flagged": true
+    }
+  },
+  {
+    "case_id": "T7",
+    "description": "Two works within 5 m on Station Road with overlapping dates",
+    "category": "SCHEDULE",
+    "work_id": "WRK-007",
+    "asset_id": null,
+    "other_work_id": "WRK-008",
+    "expected": {
+      "outcome": "CLASH",
+      "kind": "SCHEDULE_OVERLAP",
+      "certainty": null,
+      "band": null,
+      "baseline_flagged": false
+    }
+  },
+  {
+    "case_id": "T8",
+    "description": "Two works within 5 m on Vikas Marg, 45 days apart",
+    "category": "SCHEDULE",
+    "work_id": "WRK-009",
+    "asset_id": null,
+    "other_work_id": "WRK-010",
+    "expected": {
+      "outcome": "CLASH",
+      "kind": "DIG_ONCE",
+      "certainty": "LIKELY",
+      "band": "INFO",
+      "baseline_flagged": false
+    }
+  },
+  {
+    "case_id": "T9",
+    "description": "Trench far from every asset and work",
+    "category": "SPATIAL",
+    "work_id": "WRK-011",
+    "asset_id": null,
+    "other_work_id": null,
+    "expected": {
+      "outcome": "NO_CLASH",
+      "kind": null,
+      "certainty": null,
+      "band": null,
+      "baseline_flagged": false
+    }
+  }
+]

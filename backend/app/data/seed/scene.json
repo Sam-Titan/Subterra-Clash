@@ -1,0 +1,2580 @@
+{
+  "area": {
+    "name": "Navgarh — Sector 7",
+    "bounds": {
+      "min_x": 0.0,
+      "min_y": 0.0,
+      "max_x": 600.0,
+      "max_y": 400.0
+    }
+  },
+  "streets": [
+    {
+      "id": "ST-01",
+      "name": "Station Road",
+      "centerline": [
+        [
+          0.0,
+          200.0
+        ],
+        [
+          600.0,
+          200.0
+        ]
+      ],
+      "width_m": 18.0
+    },
+    {
+      "id": "ST-02",
+      "name": "Vikas Marg",
+      "centerline": [
+        [
+          180.0,
+          0.0
+        ],
+        [
+          180.0,
+          400.0
+        ]
+      ],
+      "width_m": 14.0
+    },
+    {
+      "id": "ST-03",
+      "name": "Gulmohar Lane",
+      "centerline": [
+        [
+          400.0,
+          0.0
+        ],
+        [
+          400.0,
+          400.0
+        ]
+      ],
+      "width_m": 10.0
+    },
+    {
+      "id": "ST-04",
+      "name": "Nehru Path",
+      "centerline": [
+        [
+          0.0,
+          320.0
+        ],
+        [
+          600.0,
+          320.0
+        ]
+      ],
+      "width_m": 12.0
+    },
+    {
+      "id": "ST-05",
+      "name": "Lake View Road",
+      "centerline": [
+        [
+          0.0,
+          80.0
+        ],
+        [
+          600.0,
+          80.0
+        ]
+      ],
+      "width_m": 12.0
+    },
+    {
+      "id": "ST-06",
+      "name": "Sector Main Road",
+      "centerline": [
+        [
+          520.0,
+          0.0
+        ],
+        [
+          520.0,
+          400.0
+        ]
+      ],
+      "width_m": 16.0
+    }
+  ],
+  "junctions": [
+    {
+      "id": "JN-01",
+      "name": "J1 — Vikas Marg × Lake View Road",
+      "x": 180.0,
+      "y": 80.0
+    },
+    {
+      "id": "JN-02",
+      "name": "J2 — Vikas Marg × Nehru Path",
+      "x": 180.0,
+      "y": 320.0
+    },
+    {
+      "id": "JN-03",
+      "name": "J3 — Vikas Marg × Station Road",
+      "x": 180.0,
+      "y": 200.0
+    },
+    {
+      "id": "JN-04",
+      "name": "J4 — Gulmohar Lane × Lake View Road",
+      "x": 400.0,
+      "y": 80.0
+    },
+    {
+      "id": "JN-05",
+      "name": "J5 — Gulmohar Lane × Station Road",
+      "x": 400.0,
+      "y": 200.0
+    },
+    {
+      "id": "JN-06",
+      "name": "J6 — Gulmohar Lane × Nehru Path",
+      "x": 400.0,
+      "y": 320.0
+    },
+    {
+      "id": "JN-07",
+      "name": "J7 — Sector Main Road × Station Road",
+      "x": 520.0,
+      "y": 200.0
+    },
+    {
+      "id": "JN-08",
+      "name": "J8 — Sector Main Road × Nehru Path",
+      "x": 520.0,
+      "y": 320.0
+    }
+  ],
+  "landmarks": [
+    {
+      "id": "LM-01",
+      "name": "Govt. School",
+      "x": 250.0,
+      "y": 150.0
+    },
+    {
+      "id": "LM-02",
+      "name": "Bus Depot",
+      "x": 420.0,
+      "y": 214.0
+    },
+    {
+      "id": "LM-03",
+      "name": "Water Tank",
+      "x": 100.0,
+      "y": 350.0
+    },
+    {
+      "id": "LM-04",
+      "name": "Community Hall",
+      "x": 300.0,
+      "y": 120.0
+    },
+    {
+      "id": "LM-05",
+      "name": "Lake Park Gate",
+      "x": 560.0,
+      "y": 40.0
+    }
+  ],
+  "assets": [
+    {
+      "id": "AST-0001",
+      "utility": "SEWER",
+      "owner": "Navgarh Jal Board",
+      "label": "600 mm RCC sewer",
+      "path": [
+        [
+          0.0,
+          200.0,
+          -3.9
+        ],
+        [
+          200.0,
+          200.0,
+          -3.9
+        ]
+      ],
+      "diameter_m": 0.6,
+      "horiz_precision_m": 0.15,
+      "depth_precision_m": 0.2,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NJB-SW-4657",
+        "source": "Navgarh Jal Board as-built drawings",
+        "captured_on": "2011-02-17",
+        "method": "AS_BUILT"
+      }
+    },
+    {
+      "id": "AST-0002",
+      "utility": "SEWER",
+      "owner": "Navgarh Jal Board",
+      "label": "450 mm RCC sewer",
+      "path": [
+        [
+          200.0,
+          200.0,
+          -4.1
+        ],
+        [
+          400.0,
+          200.0,
+          -4.1
+        ]
+      ],
+      "diameter_m": 0.45,
+      "horiz_precision_m": 0.3,
+      "depth_precision_m": 0.3,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NJB-SW-7912",
+        "source": "Navgarh Jal Board as-built drawings",
+        "captured_on": "2008-09-17",
+        "method": "AS_BUILT"
+      }
+    },
+    {
+      "id": "AST-0003",
+      "utility": "SEWER",
+      "owner": "Navgarh Jal Board",
+      "label": "450 mm RCC sewer",
+      "path": [
+        [
+          400.0,
+          200.0,
+          -3.9
+        ],
+        [
+          600.0,
+          200.0,
+          -3.9
+        ]
+      ],
+      "diameter_m": 0.45,
+      "horiz_precision_m": 0.15,
+      "depth_precision_m": 0.2,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NJB-SW-9279",
+        "source": "Navgarh Jal Board as-built drawings",
+        "captured_on": "2021-07-02",
+        "method": "AS_BUILT"
+      }
+    },
+    {
+      "id": "AST-0004",
+      "utility": "WATER",
+      "owner": "Navgarh Jal Board",
+      "label": "200 mm DI water main",
+      "path": [
+        [
+          0.0,
+          203.5,
+          -1.6
+        ],
+        [
+          200.0,
+          203.5,
+          -1.6
+        ]
+      ],
+      "diameter_m": 0.2,
+      "horiz_precision_m": 0.3,
+      "depth_precision_m": 0.3,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NJB-WT-9928",
+        "source": "Navgarh Jal Board as-built drawings",
+        "captured_on": "2017-05-29",
+        "method": "AS_BUILT"
+      }
+    },
+    {
+      "id": "AST-0005",
+      "utility": "WATER",
+      "owner": "Navgarh Jal Board",
+      "label": "400 mm DI water main",
+      "path": [
+        [
+          200.0,
+          203.5,
+          -1.5
+        ],
+        [
+          400.0,
+          203.5,
+          -1.5
+        ]
+      ],
+      "diameter_m": 0.4,
+      "horiz_precision_m": 0.25,
+      "depth_precision_m": 0.3,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NJB-WT-1106",
+        "source": "Navgarh Jal Board as-built drawings",
+        "captured_on": "2011-07-31",
+        "method": "AS_BUILT"
+      }
+    },
+    {
+      "id": "AST-0006",
+      "utility": "WATER",
+      "owner": "Navgarh Jal Board",
+      "label": "300 mm DI water main",
+      "path": [
+        [
+          400.0,
+          203.5,
+          -1.4
+        ],
+        [
+          600.0,
+          203.5,
+          -1.4
+        ]
+      ],
+      "diameter_m": 0.3,
+      "horiz_precision_m": 0.2,
+      "depth_precision_m": 0.2,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NJB-WT-4527",
+        "source": "Navgarh Jal Board GIS export",
+        "captured_on": "2015-07-20",
+        "method": "SURVEYED"
+      }
+    },
+    {
+      "id": "AST-0007",
+      "utility": "GAS",
+      "owner": "Navgarh Gas Ltd",
+      "label": "160 mm MDPE gas main",
+      "path": [
+        [
+          0.0,
+          194.0,
+          -0.9
+        ],
+        [
+          200.0,
+          194.0,
+          -0.9
+        ]
+      ],
+      "diameter_m": 0.16,
+      "horiz_precision_m": 0.1,
+      "depth_precision_m": 0.1,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NGL-GIS-6881",
+        "source": "Navgarh Gas Ltd GIS export",
+        "captured_on": "2015-09-18",
+        "method": "SURVEYED"
+      }
+    },
+    {
+      "id": "AST-0008",
+      "utility": "GAS",
+      "owner": "Navgarh Gas Ltd",
+      "label": "200 mm MDPE gas main",
+      "path": [
+        [
+          200.0,
+          194.0,
+          -1.0
+        ],
+        [
+          250.0,
+          194.0,
+          -1.0
+        ]
+      ],
+      "diameter_m": 0.2,
+      "horiz_precision_m": 0.15,
+      "depth_precision_m": 0.2,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NGL-GIS-9785",
+        "source": "Navgarh Gas Ltd as-built drawings",
+        "captured_on": "2010-10-19",
+        "method": "AS_BUILT"
+      }
+    },
+    {
+      "id": "AST-0009",
+      "utility": "GAS",
+      "owner": "Navgarh Gas Ltd",
+      "label": "200 mm MDPE gas main",
+      "path": [
+        [
+          250.0,
+          194.0,
+          -1.0
+        ],
+        [
+          350.0,
+          194.0,
+          -1.0
+        ]
+      ],
+      "diameter_m": 0.2,
+      "horiz_precision_m": 0.2,
+      "depth_precision_m": 0.2,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NGL-GIS-1187",
+        "source": "Navgarh Gas Ltd GIS export",
+        "captured_on": "2023-06-14",
+        "method": "SURVEYED"
+      }
+    },
+    {
+      "id": "AST-0010",
+      "utility": "GAS",
+      "owner": "Navgarh Gas Ltd",
+      "label": "200 mm MDPE gas main",
+      "path": [
+        [
+          350.0,
+          194.0,
+          -1.0
+        ],
+        [
+          400.0,
+          194.0,
+          -1.0
+        ]
+      ],
+      "diameter_m": 0.2,
+      "horiz_precision_m": 0.15,
+      "depth_precision_m": 0.2,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NGL-GIS-6925",
+        "source": "Navgarh Gas Ltd as-built drawings",
+        "captured_on": "2020-12-12",
+        "method": "AS_BUILT"
+      }
+    },
+    {
+      "id": "AST-0011",
+      "utility": "GAS",
+      "owner": "Navgarh Gas Ltd",
+      "label": "110 mm MDPE gas main",
+      "path": [
+        [
+          400.0,
+          194.0,
+          -1.1
+        ],
+        [
+          600.0,
+          194.0,
+          -1.1
+        ]
+      ],
+      "diameter_m": 0.11,
+      "horiz_precision_m": 0.1,
+      "depth_precision_m": 0.1,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NGL-GIS-4733",
+        "source": "Navgarh Gas Ltd GIS export",
+        "captured_on": "2014-06-28",
+        "method": "SURVEYED"
+      }
+    },
+    {
+      "id": "AST-0012",
+      "utility": "POWER",
+      "owner": "NVVN Discom",
+      "label": "100 mm power cable",
+      "path": [
+        [
+          0.0,
+          207.0,
+          -0.9
+        ],
+        [
+          200.0,
+          207.0,
+          -0.9
+        ]
+      ],
+      "diameter_m": 0.1,
+      "horiz_precision_m": 0.15,
+      "depth_precision_m": 0.2,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NVVN-AB-5554",
+        "source": "NVVN Discom as-built drawings",
+        "captured_on": "2018-03-03",
+        "method": "AS_BUILT"
+      }
+    },
+    {
+      "id": "AST-0013",
+      "utility": "POWER",
+      "owner": "NVVN Discom",
+      "label": "150 mm power cable",
+      "path": [
+        [
+          200.0,
+          207.0,
+          -0.9
+        ],
+        [
+          400.0,
+          207.0,
+          -0.9
+        ]
+      ],
+      "diameter_m": 0.15,
+      "horiz_precision_m": 0.1,
+      "depth_precision_m": 0.1,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NVVN-AB-4432",
+        "source": "NVVN Discom GIS export",
+        "captured_on": "2023-01-12",
+        "method": "SURVEYED"
+      }
+    },
+    {
+      "id": "AST-0014",
+      "utility": "POWER",
+      "owner": "NVVN Discom",
+      "label": "100 mm power cable",
+      "path": [
+        [
+          400.0,
+          207.0,
+          -1.0
+        ],
+        [
+          600.0,
+          207.0,
+          -1.0
+        ]
+      ],
+      "diameter_m": 0.1,
+      "horiz_precision_m": 0.1,
+      "depth_precision_m": 0.1,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NVVN-AB-5010",
+        "source": "NVVN Discom GIS export",
+        "captured_on": "2011-08-31",
+        "method": "SURVEYED"
+      }
+    },
+    {
+      "id": "AST-0015",
+      "utility": "TELECOM",
+      "owner": "Navgarh FiberNet",
+      "label": "110 mm HDPE telecom duct",
+      "path": [
+        [
+          0.0,
+          192.0,
+          -0.8
+        ],
+        [
+          200.0,
+          192.0,
+          -0.8
+        ]
+      ],
+      "diameter_m": 0.11,
+      "horiz_precision_m": 0.25,
+      "depth_precision_m": 0.3,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NFN-GIS-4598",
+        "source": "Navgarh FiberNet as-built drawings",
+        "captured_on": "2023-05-10",
+        "method": "AS_BUILT"
+      }
+    },
+    {
+      "id": "AST-0016",
+      "utility": "TELECOM",
+      "owner": "Navgarh FiberNet",
+      "label": "110 mm HDPE telecom duct",
+      "path": [
+        [
+          200.0,
+          192.0,
+          -0.6
+        ],
+        [
+          400.0,
+          192.0,
+          -0.6
+        ]
+      ],
+      "diameter_m": 0.11,
+      "horiz_precision_m": 0.15,
+      "depth_precision_m": 0.2,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NFN-GIS-6168",
+        "source": "Navgarh FiberNet as-built drawings",
+        "captured_on": "2016-12-30",
+        "method": "AS_BUILT"
+      }
+    },
+    {
+      "id": "AST-0017",
+      "utility": "TELECOM",
+      "owner": "Navgarh FiberNet",
+      "label": "110 mm HDPE telecom duct",
+      "path": [
+        [
+          400.0,
+          192.0,
+          -0.8
+        ],
+        [
+          600.0,
+          192.0,
+          -0.8
+        ]
+      ],
+      "diameter_m": 0.11,
+      "horiz_precision_m": 0.15,
+      "depth_precision_m": 0.2,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NFN-GIS-6155",
+        "source": "Navgarh FiberNet as-built drawings",
+        "captured_on": "2012-10-07",
+        "method": "AS_BUILT"
+      }
+    },
+    {
+      "id": "AST-0018",
+      "utility": "SEWER",
+      "owner": "Navgarh Jal Board",
+      "label": "600 mm RCC sewer",
+      "path": [
+        [
+          180.0,
+          0.0,
+          -3.7
+        ],
+        [
+          180.0,
+          200.0,
+          -3.7
+        ]
+      ],
+      "diameter_m": 0.6,
+      "horiz_precision_m": 0.25,
+      "depth_precision_m": 0.3,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NJB-SW-5339",
+        "source": "Navgarh Jal Board as-built drawings",
+        "captured_on": "2011-02-17",
+        "method": "AS_BUILT"
+      }
+    },
+    {
+      "id": "AST-0019",
+      "utility": "SEWER",
+      "owner": "Navgarh Jal Board",
+      "label": "600 mm RCC sewer",
+      "path": [
+        [
+          180.0,
+          200.0,
+          -3.9
+        ],
+        [
+          180.0,
+          400.0,
+          -3.9
+        ]
+      ],
+      "diameter_m": 0.6,
+      "horiz_precision_m": 0.3,
+      "depth_precision_m": 0.3,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NJB-SW-8019",
+        "source": "Navgarh Jal Board as-built drawings",
+        "captured_on": "2021-02-01",
+        "method": "AS_BUILT"
+      }
+    },
+    {
+      "id": "AST-0020",
+      "utility": "WATER",
+      "owner": "Navgarh Jal Board",
+      "label": "200 mm DI water main",
+      "path": [
+        [
+          182.5,
+          0.0,
+          -1.3
+        ],
+        [
+          182.5,
+          200.0,
+          -1.3
+        ]
+      ],
+      "diameter_m": 0.2,
+      "horiz_precision_m": 0.2,
+      "depth_precision_m": 0.2,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NJB-WT-9348",
+        "source": "Navgarh Jal Board GIS export",
+        "captured_on": "2019-01-25",
+        "method": "SURVEYED"
+      }
+    },
+    {
+      "id": "AST-0021",
+      "utility": "WATER",
+      "owner": "Navgarh Jal Board",
+      "label": "200 mm DI water main",
+      "path": [
+        [
+          182.5,
+          200.0,
+          -1.3
+        ],
+        [
+          182.5,
+          400.0,
+          -1.3
+        ]
+      ],
+      "diameter_m": 0.2,
+      "horiz_precision_m": 0.15,
+      "depth_precision_m": 0.2,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NJB-WT-3621",
+        "source": "Navgarh Jal Board as-built drawings",
+        "captured_on": "2023-04-06",
+        "method": "AS_BUILT"
+      }
+    },
+    {
+      "id": "AST-0022",
+      "utility": "GAS",
+      "owner": "Navgarh Gas Ltd",
+      "label": "110 mm MDPE gas main",
+      "path": [
+        [
+          184.5,
+          0.0,
+          -1.0
+        ],
+        [
+          184.5,
+          200.0,
+          -1.0
+        ]
+      ],
+      "diameter_m": 0.11,
+      "horiz_precision_m": 0.3,
+      "depth_precision_m": 0.3,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NGL-GIS-7252",
+        "source": "Navgarh Gas Ltd as-built drawings",
+        "captured_on": "2021-05-13",
+        "method": "AS_BUILT"
+      }
+    },
+    {
+      "id": "AST-0023",
+      "utility": "GAS",
+      "owner": "Navgarh Gas Ltd",
+      "label": "160 mm MDPE gas main",
+      "path": [
+        [
+          184.5,
+          200.0,
+          -1.1
+        ],
+        [
+          184.5,
+          400.0,
+          -1.1
+        ]
+      ],
+      "diameter_m": 0.16,
+      "horiz_precision_m": 0.3,
+      "depth_precision_m": 0.3,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NGL-GIS-1188",
+        "source": "Navgarh Gas Ltd as-built drawings",
+        "captured_on": "2023-04-04",
+        "method": "AS_BUILT"
+      }
+    },
+    {
+      "id": "AST-0024",
+      "utility": "TELECOM",
+      "owner": "Navgarh FiberNet",
+      "label": "110 mm HDPE telecom duct",
+      "path": [
+        [
+          186.0,
+          0.0,
+          -0.6
+        ],
+        [
+          186.0,
+          200.0,
+          -0.6
+        ]
+      ],
+      "diameter_m": 0.11,
+      "horiz_precision_m": 2.0,
+      "depth_precision_m": 0.5,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NFN-GIS-5808",
+        "source": "Navgarh FiberNet scanned route map",
+        "captured_on": "2017-10-01",
+        "method": "DIGITISED"
+      }
+    },
+    {
+      "id": "AST-0025",
+      "utility": "TELECOM",
+      "owner": "Navgarh FiberNet",
+      "label": "110 mm HDPE telecom duct",
+      "path": [
+        [
+          186.0,
+          200.0,
+          -0.8
+        ],
+        [
+          186.0,
+          400.0,
+          -0.8
+        ]
+      ],
+      "diameter_m": 0.11,
+      "horiz_precision_m": 2.0,
+      "depth_precision_m": 0.5,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NFN-GIS-5315",
+        "source": "Navgarh FiberNet scanned route map",
+        "captured_on": "2019-03-24",
+        "method": "DIGITISED"
+      }
+    },
+    {
+      "id": "AST-0026",
+      "utility": "POWER",
+      "owner": "NVVN Discom",
+      "label": "100 mm power cable",
+      "path": [
+        [
+          174.0,
+          0.0,
+          -1.1
+        ],
+        [
+          174.0,
+          200.0,
+          -1.1
+        ]
+      ],
+      "diameter_m": 0.1,
+      "horiz_precision_m": 0.3,
+      "depth_precision_m": 0.3,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NVVN-AB-5889",
+        "source": "NVVN Discom as-built drawings",
+        "captured_on": "2022-05-01",
+        "method": "AS_BUILT"
+      }
+    },
+    {
+      "id": "AST-0027",
+      "utility": "POWER",
+      "owner": "NVVN Discom",
+      "label": "LT cable (depth not recorded)",
+      "path": [
+        [
+          174.0,
+          200.0,
+          -1.0
+        ],
+        [
+          174.0,
+          260.0,
+          -1.0
+        ]
+      ],
+      "diameter_m": 0.1,
+      "horiz_precision_m": 0.5,
+      "depth_precision_m": null,
+      "depth_known": false,
+      "source_record": {
+        "record_id": "NVVN-LT-0912",
+        "source": "NVVN feeder sketch",
+        "captured_on": "2008-04-11",
+        "method": "ESTIMATED"
+      }
+    },
+    {
+      "id": "AST-0028",
+      "utility": "POWER",
+      "owner": "NVVN Discom",
+      "label": "150 mm power cable",
+      "path": [
+        [
+          174.0,
+          260.0,
+          -0.9
+        ],
+        [
+          174.0,
+          400.0,
+          -0.9
+        ]
+      ],
+      "diameter_m": 0.15,
+      "horiz_precision_m": 0.15,
+      "depth_precision_m": 0.2,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NVVN-AB-9837",
+        "source": "NVVN Discom as-built drawings",
+        "captured_on": "2019-11-23",
+        "method": "AS_BUILT"
+      }
+    },
+    {
+      "id": "AST-0029",
+      "utility": "SEWER",
+      "owner": "Navgarh Jal Board",
+      "label": "600 mm RCC sewer",
+      "path": [
+        [
+          400.0,
+          0.0,
+          -3.6
+        ],
+        [
+          400.0,
+          200.0,
+          -3.6
+        ]
+      ],
+      "diameter_m": 0.6,
+      "horiz_precision_m": 0.3,
+      "depth_precision_m": 0.3,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NJB-SW-1319",
+        "source": "Navgarh Jal Board as-built drawings",
+        "captured_on": "2010-07-05",
+        "method": "AS_BUILT"
+      }
+    },
+    {
+      "id": "AST-0030",
+      "utility": "SEWER",
+      "owner": "Navgarh Jal Board",
+      "label": "450 mm RCC sewer",
+      "path": [
+        [
+          400.0,
+          200.0,
+          -3.5
+        ],
+        [
+          400.0,
+          400.0,
+          -3.5
+        ]
+      ],
+      "diameter_m": 0.45,
+      "horiz_precision_m": 0.25,
+      "depth_precision_m": 0.3,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NJB-SW-4946",
+        "source": "Navgarh Jal Board as-built drawings",
+        "captured_on": "2020-09-21",
+        "method": "AS_BUILT"
+      }
+    },
+    {
+      "id": "AST-0031",
+      "utility": "POWER",
+      "owner": "NVVN Discom",
+      "label": "150 mm power cable",
+      "path": [
+        [
+          403.5,
+          0.0,
+          -0.8
+        ],
+        [
+          403.5,
+          200.0,
+          -0.8
+        ]
+      ],
+      "diameter_m": 0.15,
+      "horiz_precision_m": 0.15,
+      "depth_precision_m": 0.2,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NVVN-AB-9727",
+        "source": "NVVN Discom as-built drawings",
+        "captured_on": "2010-10-27",
+        "method": "AS_BUILT"
+      }
+    },
+    {
+      "id": "AST-0032",
+      "utility": "POWER",
+      "owner": "NVVN Discom",
+      "label": "150 mm power cable",
+      "path": [
+        [
+          403.5,
+          200.0,
+          -1.0
+        ],
+        [
+          403.5,
+          400.0,
+          -1.0
+        ]
+      ],
+      "diameter_m": 0.15,
+      "horiz_precision_m": 0.3,
+      "depth_precision_m": 0.3,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NVVN-AB-3705",
+        "source": "NVVN Discom as-built drawings",
+        "captured_on": "2013-12-11",
+        "method": "AS_BUILT"
+      }
+    },
+    {
+      "id": "AST-0033",
+      "utility": "TELECOM",
+      "owner": "Navgarh FiberNet",
+      "label": "110 mm HDPE telecom duct",
+      "path": [
+        [
+          396.5,
+          0.0,
+          -0.8
+        ],
+        [
+          396.5,
+          200.0,
+          -0.8
+        ]
+      ],
+      "diameter_m": 0.11,
+      "horiz_precision_m": 0.15,
+      "depth_precision_m": 0.2,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NFN-GIS-6107",
+        "source": "Navgarh FiberNet as-built drawings",
+        "captured_on": "2016-12-12",
+        "method": "AS_BUILT"
+      }
+    },
+    {
+      "id": "AST-0034",
+      "utility": "TELECOM",
+      "owner": "Navgarh FiberNet",
+      "label": "110 mm HDPE telecom duct",
+      "path": [
+        [
+          396.5,
+          200.0,
+          -0.6
+        ],
+        [
+          396.5,
+          220.0,
+          -0.6
+        ]
+      ],
+      "diameter_m": 0.11,
+      "horiz_precision_m": 0.25,
+      "depth_precision_m": 0.3,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NFN-GIS-5061",
+        "source": "Navgarh FiberNet as-built drawings",
+        "captured_on": "2013-01-14",
+        "method": "AS_BUILT"
+      }
+    },
+    {
+      "id": "AST-0035",
+      "utility": "TELECOM",
+      "owner": "Navgarh FiberNet",
+      "label": "110 mm HDPE telecom duct",
+      "path": [
+        [
+          396.5,
+          220.0,
+          -0.7
+        ],
+        [
+          396.5,
+          300.0,
+          -0.7
+        ]
+      ],
+      "diameter_m": 0.11,
+      "horiz_precision_m": 2.0,
+      "depth_precision_m": 0.5,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NFN-PAPER-044",
+        "source": "Scanned 2011 route map",
+        "captured_on": "2011-09-30",
+        "method": "DIGITISED"
+      }
+    },
+    {
+      "id": "AST-0036",
+      "utility": "TELECOM",
+      "owner": "Navgarh FiberNet",
+      "label": "110 mm HDPE telecom duct",
+      "path": [
+        [
+          396.5,
+          300.0,
+          -0.8
+        ],
+        [
+          396.5,
+          400.0,
+          -0.8
+        ]
+      ],
+      "diameter_m": 0.11,
+      "horiz_precision_m": 2.0,
+      "depth_precision_m": 0.5,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NFN-GIS-4770",
+        "source": "Navgarh FiberNet scanned route map",
+        "captured_on": "2021-03-13",
+        "method": "DIGITISED"
+      }
+    },
+    {
+      "id": "AST-0037",
+      "utility": "SEWER",
+      "owner": "Navgarh Jal Board",
+      "label": "450 mm RCC sewer",
+      "path": [
+        [
+          0.0,
+          320.0,
+          -3.9
+        ],
+        [
+          200.0,
+          320.0,
+          -3.9
+        ]
+      ],
+      "diameter_m": 0.45,
+      "horiz_precision_m": 0.15,
+      "depth_precision_m": 0.2,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NJB-SW-1964",
+        "source": "Navgarh Jal Board as-built drawings",
+        "captured_on": "2013-02-18",
+        "method": "AS_BUILT"
+      }
+    },
+    {
+      "id": "AST-0038",
+      "utility": "SEWER",
+      "owner": "Navgarh Jal Board",
+      "label": "600 mm RCC sewer",
+      "path": [
+        [
+          200.0,
+          320.0,
+          -3.7
+        ],
+        [
+          250.0,
+          320.0,
+          -3.7
+        ]
+      ],
+      "diameter_m": 0.6,
+      "horiz_precision_m": 0.15,
+      "depth_precision_m": 0.2,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NJB-SW-9423",
+        "source": "Navgarh Jal Board as-built drawings",
+        "captured_on": "2013-05-03",
+        "method": "AS_BUILT"
+      }
+    },
+    {
+      "id": "AST-0039",
+      "utility": "SEWER",
+      "owner": "Navgarh Jal Board",
+      "label": "600 mm RCC trunk sewer",
+      "path": [
+        [
+          250.0,
+          320.0,
+          -4.2
+        ],
+        [
+          350.0,
+          320.0,
+          -4.2
+        ]
+      ],
+      "diameter_m": 0.6,
+      "horiz_precision_m": 0.25,
+      "depth_precision_m": 0.3,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NJB-SW-0073",
+        "source": "Jal Board sewer register",
+        "captured_on": "2016-11-21",
+        "method": "AS_BUILT"
+      }
+    },
+    {
+      "id": "AST-0040",
+      "utility": "SEWER",
+      "owner": "Navgarh Jal Board",
+      "label": "600 mm RCC sewer",
+      "path": [
+        [
+          350.0,
+          320.0,
+          -3.7
+        ],
+        [
+          400.0,
+          320.0,
+          -3.7
+        ]
+      ],
+      "diameter_m": 0.6,
+      "horiz_precision_m": 0.3,
+      "depth_precision_m": 0.3,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NJB-SW-9834",
+        "source": "Navgarh Jal Board as-built drawings",
+        "captured_on": "2010-12-19",
+        "method": "AS_BUILT"
+      }
+    },
+    {
+      "id": "AST-0041",
+      "utility": "SEWER",
+      "owner": "Navgarh Jal Board",
+      "label": "600 mm RCC sewer",
+      "path": [
+        [
+          400.0,
+          320.0,
+          -3.8
+        ],
+        [
+          600.0,
+          320.0,
+          -3.8
+        ]
+      ],
+      "diameter_m": 0.6,
+      "horiz_precision_m": 0.15,
+      "depth_precision_m": 0.2,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NJB-SW-4119",
+        "source": "Navgarh Jal Board as-built drawings",
+        "captured_on": "2010-02-11",
+        "method": "AS_BUILT"
+      }
+    },
+    {
+      "id": "AST-0042",
+      "utility": "WATER",
+      "owner": "Navgarh Jal Board",
+      "label": "300 mm DI water main",
+      "path": [
+        [
+          0.0,
+          322.5,
+          -1.4
+        ],
+        [
+          20.0,
+          322.5,
+          -1.4
+        ]
+      ],
+      "diameter_m": 0.3,
+      "horiz_precision_m": 0.3,
+      "depth_precision_m": 0.3,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NJB-WT-7939",
+        "source": "Navgarh Jal Board as-built drawings",
+        "captured_on": "2017-03-21",
+        "method": "AS_BUILT"
+      }
+    },
+    {
+      "id": "AST-0043",
+      "utility": "WATER",
+      "owner": "Navgarh Jal Board",
+      "label": "300 mm DI water main",
+      "path": [
+        [
+          20.0,
+          322.5,
+          -1.4
+        ],
+        [
+          180.0,
+          322.5,
+          -1.4
+        ]
+      ],
+      "diameter_m": 0.3,
+      "horiz_precision_m": 0.05,
+      "depth_precision_m": 0.05,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NJB-WT-0212",
+        "source": "Jal Board GIS export",
+        "captured_on": "2024-01-19",
+        "method": "SURVEYED"
+      }
+    },
+    {
+      "id": "AST-0044",
+      "utility": "WATER",
+      "owner": "Navgarh Jal Board",
+      "label": "400 mm DI water main",
+      "path": [
+        [
+          180.0,
+          322.5,
+          -1.5
+        ],
+        [
+          200.0,
+          322.5,
+          -1.5
+        ]
+      ],
+      "diameter_m": 0.4,
+      "horiz_precision_m": 0.1,
+      "depth_precision_m": 0.1,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NJB-WT-2612",
+        "source": "Navgarh Jal Board GIS export",
+        "captured_on": "2009-05-11",
+        "method": "SURVEYED"
+      }
+    },
+    {
+      "id": "AST-0045",
+      "utility": "WATER",
+      "owner": "Navgarh Jal Board",
+      "label": "200 mm DI water main",
+      "path": [
+        [
+          200.0,
+          322.5,
+          -1.3
+        ],
+        [
+          400.0,
+          322.5,
+          -1.3
+        ]
+      ],
+      "diameter_m": 0.2,
+      "horiz_precision_m": 0.2,
+      "depth_precision_m": 0.2,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NJB-WT-4139",
+        "source": "Navgarh Jal Board GIS export",
+        "captured_on": "2012-04-07",
+        "method": "SURVEYED"
+      }
+    },
+    {
+      "id": "AST-0046",
+      "utility": "WATER",
+      "owner": "Navgarh Jal Board",
+      "label": "300 mm DI water main",
+      "path": [
+        [
+          400.0,
+          322.5,
+          -1.3
+        ],
+        [
+          600.0,
+          322.5,
+          -1.3
+        ]
+      ],
+      "diameter_m": 0.3,
+      "horiz_precision_m": 0.1,
+      "depth_precision_m": 0.1,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NJB-WT-5563",
+        "source": "Navgarh Jal Board GIS export",
+        "captured_on": "2018-05-17",
+        "method": "SURVEYED"
+      }
+    },
+    {
+      "id": "AST-0047",
+      "utility": "GAS",
+      "owner": "Navgarh Gas Ltd",
+      "label": "160 mm MDPE gas main",
+      "path": [
+        [
+          0.0,
+          316.0,
+          -1.1
+        ],
+        [
+          200.0,
+          316.0,
+          -1.1
+        ]
+      ],
+      "diameter_m": 0.16,
+      "horiz_precision_m": 0.1,
+      "depth_precision_m": 0.1,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NGL-GIS-2604",
+        "source": "Navgarh Gas Ltd GIS export",
+        "captured_on": "2009-02-18",
+        "method": "SURVEYED"
+      }
+    },
+    {
+      "id": "AST-0048",
+      "utility": "GAS",
+      "owner": "Navgarh Gas Ltd",
+      "label": "110 mm MDPE gas main",
+      "path": [
+        [
+          200.0,
+          316.0,
+          -0.9
+        ],
+        [
+          400.0,
+          316.0,
+          -0.9
+        ]
+      ],
+      "diameter_m": 0.11,
+      "horiz_precision_m": 0.1,
+      "depth_precision_m": 0.1,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NGL-GIS-7658",
+        "source": "Navgarh Gas Ltd GIS export",
+        "captured_on": "2018-11-22",
+        "method": "SURVEYED"
+      }
+    },
+    {
+      "id": "AST-0049",
+      "utility": "GAS",
+      "owner": "Navgarh Gas Ltd",
+      "label": "160 mm MDPE gas main",
+      "path": [
+        [
+          400.0,
+          316.0,
+          -0.9
+        ],
+        [
+          600.0,
+          316.0,
+          -0.9
+        ]
+      ],
+      "diameter_m": 0.16,
+      "horiz_precision_m": 0.15,
+      "depth_precision_m": 0.2,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NGL-GIS-3697",
+        "source": "Navgarh Gas Ltd as-built drawings",
+        "captured_on": "2016-07-01",
+        "method": "AS_BUILT"
+      }
+    },
+    {
+      "id": "AST-0050",
+      "utility": "TELECOM",
+      "owner": "Navgarh FiberNet",
+      "label": "110 mm HDPE telecom duct",
+      "path": [
+        [
+          0.0,
+          324.5,
+          -0.7
+        ],
+        [
+          200.0,
+          324.5,
+          -0.7
+        ]
+      ],
+      "diameter_m": 0.11,
+      "horiz_precision_m": 2.0,
+      "depth_precision_m": 0.5,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NFN-GIS-5673",
+        "source": "Navgarh FiberNet scanned route map",
+        "captured_on": "2017-06-27",
+        "method": "DIGITISED"
+      }
+    },
+    {
+      "id": "AST-0051",
+      "utility": "TELECOM",
+      "owner": "Navgarh FiberNet",
+      "label": "110 mm HDPE telecom duct",
+      "path": [
+        [
+          200.0,
+          324.5,
+          -0.7
+        ],
+        [
+          400.0,
+          324.5,
+          -0.7
+        ]
+      ],
+      "diameter_m": 0.11,
+      "horiz_precision_m": 0.15,
+      "depth_precision_m": 0.2,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NFN-GIS-4566",
+        "source": "Navgarh FiberNet as-built drawings",
+        "captured_on": "2009-04-24",
+        "method": "AS_BUILT"
+      }
+    },
+    {
+      "id": "AST-0052",
+      "utility": "TELECOM",
+      "owner": "Navgarh FiberNet",
+      "label": "110 mm HDPE telecom duct",
+      "path": [
+        [
+          400.0,
+          324.5,
+          -0.6
+        ],
+        [
+          600.0,
+          324.5,
+          -0.6
+        ]
+      ],
+      "diameter_m": 0.11,
+      "horiz_precision_m": 2.0,
+      "depth_precision_m": 0.5,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NFN-GIS-8811",
+        "source": "Navgarh FiberNet scanned route map",
+        "captured_on": "2019-04-12",
+        "method": "DIGITISED"
+      }
+    },
+    {
+      "id": "AST-0053",
+      "utility": "WATER",
+      "owner": "Navgarh Jal Board",
+      "label": "400 mm DI water main",
+      "path": [
+        [
+          0.0,
+          80.0,
+          -1.3
+        ],
+        [
+          200.0,
+          80.0,
+          -1.3
+        ]
+      ],
+      "diameter_m": 0.4,
+      "horiz_precision_m": 0.15,
+      "depth_precision_m": 0.2,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NJB-WT-4044",
+        "source": "Navgarh Jal Board as-built drawings",
+        "captured_on": "2009-07-15",
+        "method": "AS_BUILT"
+      }
+    },
+    {
+      "id": "AST-0054",
+      "utility": "WATER",
+      "owner": "Navgarh Jal Board",
+      "label": "200 mm DI water main",
+      "path": [
+        [
+          200.0,
+          80.0,
+          -1.4
+        ],
+        [
+          400.0,
+          80.0,
+          -1.4
+        ]
+      ],
+      "diameter_m": 0.2,
+      "horiz_precision_m": 0.3,
+      "depth_precision_m": 0.3,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NJB-WT-2964",
+        "source": "Navgarh Jal Board as-built drawings",
+        "captured_on": "2020-10-10",
+        "method": "AS_BUILT"
+      }
+    },
+    {
+      "id": "AST-0055",
+      "utility": "WATER",
+      "owner": "Navgarh Jal Board",
+      "label": "400 mm DI water main",
+      "path": [
+        [
+          400.0,
+          80.0,
+          -1.3
+        ],
+        [
+          600.0,
+          80.0,
+          -1.3
+        ]
+      ],
+      "diameter_m": 0.4,
+      "horiz_precision_m": 0.3,
+      "depth_precision_m": 0.3,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NJB-WT-2343",
+        "source": "Navgarh Jal Board as-built drawings",
+        "captured_on": "2017-05-27",
+        "method": "AS_BUILT"
+      }
+    },
+    {
+      "id": "AST-0056",
+      "utility": "POWER",
+      "owner": "NVVN Discom",
+      "label": "100 mm power cable",
+      "path": [
+        [
+          0.0,
+          84.0,
+          -1.0
+        ],
+        [
+          200.0,
+          84.0,
+          -1.0
+        ]
+      ],
+      "diameter_m": 0.1,
+      "horiz_precision_m": 0.2,
+      "depth_precision_m": 0.2,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NVVN-AB-6147",
+        "source": "NVVN Discom GIS export",
+        "captured_on": "2013-05-09",
+        "method": "SURVEYED"
+      }
+    },
+    {
+      "id": "AST-0057",
+      "utility": "POWER",
+      "owner": "NVVN Discom",
+      "label": "100 mm power cable",
+      "path": [
+        [
+          200.0,
+          84.0,
+          -1.0
+        ],
+        [
+          300.0,
+          84.0,
+          -1.0
+        ]
+      ],
+      "diameter_m": 0.1,
+      "horiz_precision_m": 0.2,
+      "depth_precision_m": 0.2,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NVVN-AB-5915",
+        "source": "NVVN Discom GIS export",
+        "captured_on": "2018-04-03",
+        "method": "SURVEYED"
+      }
+    },
+    {
+      "id": "AST-0058",
+      "utility": "POWER",
+      "owner": "NVVN Discom",
+      "label": "11 kV XLPE cable",
+      "path": [
+        [
+          300.0,
+          84.0,
+          -1.2
+        ],
+        [
+          400.0,
+          84.0,
+          -1.2
+        ]
+      ],
+      "diameter_m": 0.15,
+      "horiz_precision_m": 0.2,
+      "depth_precision_m": 0.2,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NVVN-SV-0457",
+        "source": "NVVN survey export",
+        "captured_on": "2022-03-08",
+        "method": "SURVEYED"
+      }
+    },
+    {
+      "id": "AST-0059",
+      "utility": "POWER",
+      "owner": "NVVN Discom",
+      "label": "100 mm power cable",
+      "path": [
+        [
+          400.0,
+          84.0,
+          -0.9
+        ],
+        [
+          600.0,
+          84.0,
+          -0.9
+        ]
+      ],
+      "diameter_m": 0.1,
+      "horiz_precision_m": 0.1,
+      "depth_precision_m": 0.1,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NVVN-AB-2638",
+        "source": "NVVN Discom GIS export",
+        "captured_on": "2009-08-23",
+        "method": "SURVEYED"
+      }
+    },
+    {
+      "id": "AST-0060",
+      "utility": "TELECOM",
+      "owner": "Navgarh FiberNet",
+      "label": "110 mm HDPE telecom duct",
+      "path": [
+        [
+          0.0,
+          76.0,
+          -0.7
+        ],
+        [
+          200.0,
+          76.0,
+          -0.7
+        ]
+      ],
+      "diameter_m": 0.11,
+      "horiz_precision_m": 2.0,
+      "depth_precision_m": 0.5,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NFN-GIS-2127",
+        "source": "Navgarh FiberNet scanned route map",
+        "captured_on": "2013-06-24",
+        "method": "DIGITISED"
+      }
+    },
+    {
+      "id": "AST-0061",
+      "utility": "TELECOM",
+      "owner": "Navgarh FiberNet",
+      "label": "110 mm HDPE telecom duct",
+      "path": [
+        [
+          200.0,
+          76.0,
+          -0.7
+        ],
+        [
+          400.0,
+          76.0,
+          -0.7
+        ]
+      ],
+      "diameter_m": 0.11,
+      "horiz_precision_m": 0.25,
+      "depth_precision_m": 0.3,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NFN-GIS-9900",
+        "source": "Navgarh FiberNet as-built drawings",
+        "captured_on": "2023-10-12",
+        "method": "AS_BUILT"
+      }
+    },
+    {
+      "id": "AST-0062",
+      "utility": "TELECOM",
+      "owner": "Navgarh FiberNet",
+      "label": "110 mm HDPE telecom duct",
+      "path": [
+        [
+          400.0,
+          76.0,
+          -0.8
+        ],
+        [
+          600.0,
+          76.0,
+          -0.8
+        ]
+      ],
+      "diameter_m": 0.11,
+      "horiz_precision_m": 0.3,
+      "depth_precision_m": 0.3,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NFN-GIS-5905",
+        "source": "Navgarh FiberNet as-built drawings",
+        "captured_on": "2022-11-17",
+        "method": "AS_BUILT"
+      }
+    },
+    {
+      "id": "AST-0063",
+      "utility": "SEWER",
+      "owner": "Navgarh Jal Board",
+      "label": "600 mm RCC sewer",
+      "path": [
+        [
+          520.0,
+          0.0,
+          -3.8
+        ],
+        [
+          520.0,
+          200.0,
+          -3.8
+        ]
+      ],
+      "diameter_m": 0.6,
+      "horiz_precision_m": 0.15,
+      "depth_precision_m": 0.2,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NJB-SW-2753",
+        "source": "Navgarh Jal Board as-built drawings",
+        "captured_on": "2024-08-25",
+        "method": "AS_BUILT"
+      }
+    },
+    {
+      "id": "AST-0064",
+      "utility": "SEWER",
+      "owner": "Navgarh Jal Board",
+      "label": "600 mm RCC sewer",
+      "path": [
+        [
+          520.0,
+          200.0,
+          -4.0
+        ],
+        [
+          520.0,
+          400.0,
+          -4.0
+        ]
+      ],
+      "diameter_m": 0.6,
+      "horiz_precision_m": 0.25,
+      "depth_precision_m": 0.3,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NJB-SW-4450",
+        "source": "Navgarh Jal Board as-built drawings",
+        "captured_on": "2024-02-04",
+        "method": "AS_BUILT"
+      }
+    },
+    {
+      "id": "AST-0065",
+      "utility": "WATER",
+      "owner": "Navgarh Jal Board",
+      "label": "400 mm DI water main",
+      "path": [
+        [
+          516.0,
+          0.0,
+          -1.5
+        ],
+        [
+          516.0,
+          200.0,
+          -1.5
+        ]
+      ],
+      "diameter_m": 0.4,
+      "horiz_precision_m": 0.1,
+      "depth_precision_m": 0.1,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NJB-WT-5325",
+        "source": "Navgarh Jal Board GIS export",
+        "captured_on": "2019-05-03",
+        "method": "SURVEYED"
+      }
+    },
+    {
+      "id": "AST-0066",
+      "utility": "WATER",
+      "owner": "Navgarh Jal Board",
+      "label": "200 mm DI water main",
+      "path": [
+        [
+          516.0,
+          200.0,
+          -1.3
+        ],
+        [
+          516.0,
+          400.0,
+          -1.3
+        ]
+      ],
+      "diameter_m": 0.2,
+      "horiz_precision_m": 0.2,
+      "depth_precision_m": 0.2,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NJB-WT-5533",
+        "source": "Navgarh Jal Board GIS export",
+        "captured_on": "2008-12-27",
+        "method": "SURVEYED"
+      }
+    },
+    {
+      "id": "AST-0067",
+      "utility": "GAS",
+      "owner": "Navgarh Gas Ltd",
+      "label": "110 mm MDPE gas main",
+      "path": [
+        [
+          525.5,
+          0.0,
+          -1.1
+        ],
+        [
+          525.5,
+          200.0,
+          -1.1
+        ]
+      ],
+      "diameter_m": 0.11,
+      "horiz_precision_m": 0.2,
+      "depth_precision_m": 0.2,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NGL-GIS-5291",
+        "source": "Navgarh Gas Ltd GIS export",
+        "captured_on": "2011-08-16",
+        "method": "SURVEYED"
+      }
+    },
+    {
+      "id": "AST-0068",
+      "utility": "GAS",
+      "owner": "Navgarh Gas Ltd",
+      "label": "200 mm MDPE gas main",
+      "path": [
+        [
+          525.5,
+          200.0,
+          -1.0
+        ],
+        [
+          525.5,
+          400.0,
+          -1.0
+        ]
+      ],
+      "diameter_m": 0.2,
+      "horiz_precision_m": 0.3,
+      "depth_precision_m": 0.3,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NGL-GIS-1158",
+        "source": "Navgarh Gas Ltd as-built drawings",
+        "captured_on": "2010-07-05",
+        "method": "AS_BUILT"
+      }
+    },
+    {
+      "id": "AST-0069",
+      "utility": "POWER",
+      "owner": "NVVN Discom",
+      "label": "100 mm power cable",
+      "path": [
+        [
+          513.5,
+          0.0,
+          -1.0
+        ],
+        [
+          513.5,
+          200.0,
+          -1.0
+        ]
+      ],
+      "diameter_m": 0.1,
+      "horiz_precision_m": 0.3,
+      "depth_precision_m": 0.3,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NVVN-AB-1590",
+        "source": "NVVN Discom as-built drawings",
+        "captured_on": "2016-04-12",
+        "method": "AS_BUILT"
+      }
+    },
+    {
+      "id": "AST-0070",
+      "utility": "POWER",
+      "owner": "NVVN Discom",
+      "label": "100 mm power cable",
+      "path": [
+        [
+          513.5,
+          200.0,
+          -0.8
+        ],
+        [
+          513.5,
+          400.0,
+          -0.8
+        ]
+      ],
+      "diameter_m": 0.1,
+      "horiz_precision_m": 0.25,
+      "depth_precision_m": 0.3,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NVVN-AB-6050",
+        "source": "NVVN Discom as-built drawings",
+        "captured_on": "2016-03-06",
+        "method": "AS_BUILT"
+      }
+    },
+    {
+      "id": "AST-0071",
+      "utility": "TELECOM",
+      "owner": "Navgarh FiberNet",
+      "label": "110 mm HDPE telecom duct",
+      "path": [
+        [
+          527.0,
+          0.0,
+          -0.8
+        ],
+        [
+          527.0,
+          200.0,
+          -0.8
+        ]
+      ],
+      "diameter_m": 0.11,
+      "horiz_precision_m": 2.0,
+      "depth_precision_m": 0.5,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NFN-GIS-5088",
+        "source": "Navgarh FiberNet scanned route map",
+        "captured_on": "2022-12-16",
+        "method": "DIGITISED"
+      }
+    },
+    {
+      "id": "AST-0072",
+      "utility": "TELECOM",
+      "owner": "Navgarh FiberNet",
+      "label": "110 mm HDPE telecom duct",
+      "path": [
+        [
+          527.0,
+          200.0,
+          -0.8
+        ],
+        [
+          527.0,
+          400.0,
+          -0.8
+        ]
+      ],
+      "diameter_m": 0.11,
+      "horiz_precision_m": 2.0,
+      "depth_precision_m": 0.5,
+      "depth_known": true,
+      "source_record": {
+        "record_id": "NFN-GIS-3532",
+        "source": "Navgarh FiberNet scanned route map",
+        "captured_on": "2013-04-23",
+        "method": "DIGITISED"
+      }
+    }
+  ],
+  "works": [
+    {
+      "id": "WRK-001",
+      "title": "Fibre ducting crossing, Station Road",
+      "agency": "Navgarh FiberNet",
+      "work_type": "TRENCH",
+      "utility": "TELECOM",
+      "path": [
+        [
+          300.0,
+          188.0
+        ],
+        [
+          300.0,
+          212.0
+        ]
+      ],
+      "width_m": 0.8,
+      "depth_from_m": 0.0,
+      "depth_to_m": 1.5,
+      "bore_path": null,
+      "bore_diameter_m": null,
+      "start_date": "2026-11-03",
+      "end_date": "2026-11-12",
+      "source_permit": {
+        "permit_no": "NFN/2026/0412",
+        "source": "Municipal permit portal",
+        "submitted_on": "2026-10-02"
+      },
+      "origin": "SEED",
+      "field_confidence": {},
+      "missing_fields": []
+    },
+    {
+      "id": "WRK-002",
+      "title": "LT cable jointing pit, Vikas Marg",
+      "agency": "NVVN Discom",
+      "work_type": "PIT",
+      "utility": "POWER",
+      "path": [
+        [
+          172.0,
+          230.0
+        ],
+        [
+          176.0,
+          230.0
+        ],
+        [
+          176.0,
+          234.0
+        ],
+        [
+          172.0,
+          234.0
+        ],
+        [
+          172.0,
+          230.0
+        ]
+      ],
+      "width_m": 4.0,
+      "depth_from_m": 0.0,
+      "depth_to_m": 2.0,
+      "bore_path": null,
+      "bore_diameter_m": null,
+      "start_date": "2026-11-05",
+      "end_date": "2026-11-09",
+      "source_permit": {
+        "permit_no": "NVVN/2026/0188",
+        "source": "NVVN work order",
+        "submitted_on": "2026-10-06"
+      },
+      "origin": "SEED",
+      "field_confidence": {},
+      "missing_fields": []
+    },
+    {
+      "id": "WRK-003",
+      "title": "Fibre HDD bore, Lake View Road",
+      "agency": "Navgarh FiberNet",
+      "work_type": "HDD",
+      "utility": "TELECOM",
+      "path": [
+        [
+          320.0,
+          84.355
+        ],
+        [
+          380.0,
+          84.355
+        ]
+      ],
+      "width_m": 0.2,
+      "depth_from_m": 1.1,
+      "depth_to_m": 1.3,
+      "bore_path": [
+        [
+          320.0,
+          84.355,
+          -1.2
+        ],
+        [
+          380.0,
+          84.355,
+          -1.2
+        ]
+      ],
+      "bore_diameter_m": 0.2,
+      "start_date": "2026-11-16",
+      "end_date": "2026-11-20",
+      "source_permit": {
+        "permit_no": "NFN/2026/0431",
+        "source": "Municipal permit portal",
+        "submitted_on": "2026-10-09"
+      },
+      "origin": "SEED",
+      "field_confidence": {},
+      "missing_fields": []
+    },
+    {
+      "id": "WRK-004",
+      "title": "Water service pipe, Gulmohar Lane",
+      "agency": "Navgarh Jal Board",
+      "work_type": "PIPE_LAY",
+      "utility": "WATER",
+      "path": [
+        [
+          397.7,
+          230.0
+        ],
+        [
+          397.7,
+          290.0
+        ]
+      ],
+      "width_m": 0.8,
+      "depth_from_m": 0.0,
+      "depth_to_m": 0.8,
+      "bore_path": null,
+      "bore_diameter_m": 0.2,
+      "start_date": "2026-11-23",
+      "end_date": "2026-12-04",
+      "source_permit": {
+        "permit_no": "NJB/2026/052",
+        "source": "Jal Board work order",
+        "submitted_on": "2026-10-12"
+      },
+      "origin": "SEED",
+      "field_confidence": {},
+      "missing_fields": []
+    },
+    {
+      "id": "WRK-005",
+      "title": "Drain connection trench, Nehru Path",
+      "agency": "Navgarh Municipal Corporation",
+      "work_type": "TRENCH",
+      "utility": null,
+      "path": [
+        [
+          300.0,
+          308.0
+        ],
+        [
+          300.0,
+          332.0
+        ]
+      ],
+      "width_m": 0.8,
+      "depth_from_m": 0.0,
+      "depth_to_m": 1.5,
+      "bore_path": null,
+      "bore_diameter_m": null,
+      "start_date": "2026-12-01",
+      "end_date": "2026-12-05",
+      "source_permit": {
+        "permit_no": "NMC/2026/219",
+        "source": "Municipal permit portal",
+        "submitted_on": "2026-10-14"
+      },
+      "origin": "SEED",
+      "field_confidence": {},
+      "missing_fields": []
+    },
+    {
+      "id": "WRK-006",
+      "title": "Water main extension, Nehru Path",
+      "agency": "Navgarh Jal Board",
+      "work_type": "PIPE_LAY",
+      "utility": "WATER",
+      "path": [
+        [
+          60.0,
+          322.05
+        ],
+        [
+          140.0,
+          322.05
+        ]
+      ],
+      "width_m": 0.8,
+      "depth_from_m": 0.0,
+      "depth_to_m": 1.5,
+      "bore_path": null,
+      "bore_diameter_m": 0.2,
+      "start_date": "2026-12-08",
+      "end_date": "2026-12-15",
+      "source_permit": {
+        "permit_no": "NJB/2026/057",
+        "source": "Jal Board work order",
+        "submitted_on": "2026-10-15"
+      },
+      "origin": "SEED",
+      "field_confidence": {},
+      "missing_fields": []
+    },
+    {
+      "id": "WRK-007",
+      "title": "11 kV cable trench, Station Road (north verge)",
+      "agency": "NVVN Discom",
+      "work_type": "TRENCH",
+      "utility": "POWER",
+      "path": [
+        [
+          440.0,
+          212.0
+        ],
+        [
+          490.0,
+          212.0
+        ]
+      ],
+      "width_m": 0.6,
+      "depth_from_m": 0.0,
+      "depth_to_m": 1.2,
+      "bore_path": null,
+      "bore_diameter_m": null,
+      "start_date": "2026-11-09",
+      "end_date": "2026-11-20",
+      "source_permit": {
+        "permit_no": "NVVN/2026/0201",
+        "source": "NVVN work order",
+        "submitted_on": "2026-10-08"
+      },
+      "origin": "SEED",
+      "field_confidence": {},
+      "missing_fields": []
+    },
+    {
+      "id": "WRK-008",
+      "title": "Fibre ducting, Station Road (north verge)",
+      "agency": "Navgarh FiberNet",
+      "work_type": "TRENCH",
+      "utility": "TELECOM",
+      "path": [
+        [
+          450.0,
+          215.5
+        ],
+        [
+          500.0,
+          215.5
+        ]
+      ],
+      "width_m": 0.6,
+      "depth_from_m": 0.0,
+      "depth_to_m": 1.0,
+      "bore_path": null,
+      "bore_diameter_m": null,
+      "start_date": "2026-11-16",
+      "end_date": "2026-11-27",
+      "source_permit": {
+        "permit_no": "NFN/2026/0440",
+        "source": "Municipal permit portal",
+        "submitted_on": "2026-10-10"
+      },
+      "origin": "SEED",
+      "field_confidence": {},
+      "missing_fields": []
+    },
+    {
+      "id": "WRK-009",
+      "title": "Gas service line trench, Vikas Marg (east verge)",
+      "agency": "Navgarh Gas Ltd",
+      "work_type": "TRENCH",
+      "utility": "GAS",
+      "path": [
+        [
+          192.0,
+          120.0
+        ],
+        [
+          192.0,
+          170.0
+        ]
+      ],
+      "width_m": 0.6,
+      "depth_from_m": 0.0,
+      "depth_to_m": 1.0,
+      "bore_path": null,
+      "bore_diameter_m": null,
+      "start_date": "2026-11-02",
+      "end_date": "2026-11-13",
+      "source_permit": {
+        "permit_no": "NGL/2026/071",
+        "source": "Navgarh Gas Ltd work order",
+        "submitted_on": "2026-09-28"
+      },
+      "origin": "SEED",
+      "field_confidence": {},
+      "missing_fields": []
+    },
+    {
+      "id": "WRK-010",
+      "title": "Fibre ducting, Vikas Marg (east verge)",
+      "agency": "Navgarh FiberNet",
+      "work_type": "TRENCH",
+      "utility": "TELECOM",
+      "path": [
+        [
+          195.0,
+          130.0
+        ],
+        [
+          195.0,
+          180.0
+        ]
+      ],
+      "width_m": 0.6,
+      "depth_from_m": 0.0,
+      "depth_to_m": 1.0,
+      "bore_path": null,
+      "bore_diameter_m": null,
+      "start_date": "2026-12-28",
+      "end_date": "2027-01-08",
+      "source_permit": {
+        "permit_no": "NFN/2026/0455",
+        "source": "Municipal permit portal",
+        "submitted_on": "2026-10-13"
+      },
+      "origin": "SEED",
+      "field_confidence": {},
+      "missing_fields": []
+    },
+    {
+      "id": "WRK-011",
+      "title": "Street-light cable trench, Sector 7 block interior",
+      "agency": "Navgarh Municipal Corporation",
+      "work_type": "TRENCH",
+      "utility": "POWER",
+      "path": [
+        [
+          270.0,
+          260.0
+        ],
+        [
+          310.0,
+          260.0
+        ]
+      ],
+      "width_m": 0.8,
+      "depth_from_m": 0.0,
+      "depth_to_m": 1.2,
+      "bore_path": null,
+      "bore_diameter_m": null,
+      "start_date": "2026-11-10",
+      "end_date": "2026-11-12",
+      "source_permit": {
+        "permit_no": "NMC/2026/224",
+        "source": "Municipal permit portal",
+        "submitted_on": "2026-10-11"
+      },
+      "origin": "SEED",
+      "field_confidence": {},
+      "missing_fields": []
+    }
+  ]
+}

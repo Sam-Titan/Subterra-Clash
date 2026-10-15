@@ -1,0 +1,42 @@
+[
+  {
+    "id": "R-EXC-GAS",
+    "applies_to": { "work_types": ["TRENCH", "PIT", "HDD"], "utility": ["GAS"], "work_utility": [] },
+    "min_clearance_m": 1.0,
+    "label": "Excavation vs gas — hand-dig zone"
+  },
+  {
+    "id": "R-EXC-POWER",
+    "applies_to": { "work_types": ["TRENCH", "PIT", "HDD"], "utility": ["POWER"], "work_utility": [] },
+    "min_clearance_m": 0.6,
+    "label": "Excavation vs power cable"
+  },
+  {
+    "id": "R-EXC-OTHER",
+    "applies_to": {
+      "work_types": ["TRENCH", "PIT", "HDD"],
+      "utility": ["WATER", "SEWER", "TELECOM"],
+      "work_utility": []
+    },
+    "min_clearance_m": 0.3,
+    "label": "Excavation vs water, sewer or telecom"
+  },
+  {
+    "id": "R-WATER-SEWER",
+    "applies_to": { "work_types": ["PIPE_LAY"], "utility": ["SEWER"], "work_utility": ["WATER"] },
+    "min_clearance_m": 0.5,
+    "label": "New water pipe vs existing sewer"
+  },
+  {
+    "id": "R-PIPE-GAS",
+    "applies_to": { "work_types": ["PIPE_LAY"], "utility": ["GAS"], "work_utility": [] },
+    "min_clearance_m": 0.5,
+    "label": "New pipe vs gas"
+  },
+  {
+    "id": "R-DEFAULT",
+    "applies_to": { "work_types": [], "utility": [], "work_utility": [] },
+    "min_clearance_m": 0.3,
+    "label": "Default clearance for any other pair"
+  }
+]

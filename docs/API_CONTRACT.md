@@ -26,7 +26,8 @@ Field definitions live in `docs/SPEC.md` §7. This file defines routes, params a
 `{ "status": "ok", "version": "0.1.0", "llm_mode": "live" | "cached", "demo_date": "2026-10-28" }`
 
 ### `GET /api/rules`
-`{ "items": [ { "id": "R-EXC-GAS", "applies_to": { "work_types": ["TRENCH","PIT","HDD"], "utility": "GAS" }, "min_clearance_m": 1.0, "label": "Excavation vs gas — hand-dig zone" } ], "total": 6, "disclaimer": "Illustrative values for this exercise; not a regulatory standard." }`
+`{ "items": [ { "id": "R-EXC-GAS", "applies_to": { "work_types": ["TRENCH","PIT","HDD"], "utility": ["GAS"], "work_utility": [] }, "min_clearance_m": 1.0, "label": "Excavation vs gas — hand-dig zone" } ], "total": 6, "disclaimer": "Illustrative values for this exercise; not a regulatory standard." }`
+In `applies_to`, `utility` = utilities of the existing asset and `work_utility` = utility being installed by the work; an empty list means "any". Rules are listed in match order (first match wins, SPEC §7.4).
 
 ---
 
