@@ -107,9 +107,11 @@ Response — a **draft**, nothing is saved to the plan yet:
 }
 ```
 Errors: `400 EMPTY_INPUT`, `413 FILE_TOO_LARGE`, `422 PDF_NO_TEXT`.
+Geocoding: `offset_m` is measured from the street **centreline** on the stated `side`. `status`: `RESOLVED` (street, both refs and side found), `PARTIAL` (side missing or not a side of that street → path left on the centreline), `FAILED` (unknown street/ref → `path: []`). `preview_clash_count` is the number of clashes the work would have if committed (0 when the draft cannot yet form a work); nothing is stored.
+Missing data: an unstated excavation depth is assessed over the plausible 0.5–3.0 m band and any clash becomes `NEEDS_DATA` (`measured_gap_m` / `uncertainty_m` null, `missing_data` contains `WRK-xxx.depth`). A missing trench width is assumed 0.6 m and stays listed in `missing_fields`.
 
 ### `PATCH /api/permits/{draft_id}`
-User edits before commit. Body: `{ "fields": { "<field>": <new value> } }` (values only; confidence becomes 1.0, quote becomes `"edited by reviewer"`). Response: same shape as parse (re-geocoded, re-previewed).
+User edits before commit. Body: `{ "fields": { "<field>": <new value> } }` (values only; confidence becomes 1.0, quote becomes `"edited by reviewer"`; `null` clears a field back to missing). Response: same shape as parse (re-geocoded, re-previewed). Errors: `404 DRAFT_NOT_FOUND`, `409 DRAFT_ALREADY_COMMITTED`, `422 UNKNOWN_FIELD`, `422 INVALID_FIELD_VALUE`.
 
 ### `POST /api/permits/{draft_id}/commit`
 Body: `{ "reviewer": "A. Sharma" }`
@@ -117,7 +119,9 @@ Response:
 ```json
 { "work": { /* Work, origin: "INTAKE" */ }, "new_clash_ids": ["CLH-0031","CLH-0032","CLH-0033"], "audit": { /* AuditEntry */ } }
 ```
-The work is added to the **plan** for analysis. This is NOT a permit approval — UI copy must say "Add to coordination plan".
+The work is added to the **plan** for analysis (existing clash ids stay stable); the audit action is `PERMIT_COMMIT`. This is NOT a permit approval — UI copy must say "Add to coordination plan".
+Errors: `404 DRAFT_NOT_FOUND`, `409 DRAFT_ALREADY_COMMITTED`, `422 GEOCODE_FAILED` (status FAILED), `422 DRAFT_INCOMPLETE` (work_type / start_date / end_date, or diameter for PIPE_LAY / HDD, missing). `RESOLVED` and `PARTIAL` drafts may be committed.
+INTAKE works carry their own positional uncertainty: `(1 − lowest location-field confidence) × 2 m`, +1 m if `offset_m` is missing, +0.3 m if the trench width was assumed.
 
 ### `GET /api/permits/samples`
 `{ "items": [ { "id": "sample-1", "title": "Discom 11kV trench — Station Road", "text": "..." } ] }` — the 3 demo permits (also available as PDFs).
@@ -160,4 +164,4 @@ Restores seed state (clears intake works, review decisions; keeps an audit entry
 | `shared/mocks/summary.json` | `GET /api/summary` |
 | `shared/mocks/permit_parse.json` | `POST /api/permits/parse` |
 
-`scene.json`, `clashes.json` and `groups.json` are generated from the real seed (`uv run python scripts/export_mocks.py`) and a test fails if they go stale. `summary.json` and `permit_parse.json` are hand-maintained until 3A / 2B. Frontend code should still not hard-code counts or IDs.
+`scene.json`, `clashes.json` and `groups.json` are generated from the real seed (`uv run python scripts/export_mocks.py`) and a test fails if they go stale. `permit_parse.json` is also generated (parse of sample-1). `summary.json` is hand-maintained until 3A. Frontend code should still not hard-code counts or IDs.

@@ -4,12 +4,14 @@ import pytest
 
 from app.api.schemas import ListResponse
 from app.models import Clash, ClashGroup, Scene
+from app.permits.models import PermitDraft
 from scripts import export_mocks
 
 MODELS = {
     "scene.json": Scene,
     "clashes.json": ListResponse[Clash],
     "groups.json": ListResponse[ClashGroup],
+    "permit_parse.json": PermitDraft,
 }
 STALE = "shared/mocks is stale: run `uv run python scripts/export_mocks.py`"
 

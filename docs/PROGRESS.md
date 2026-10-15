@@ -7,7 +7,7 @@
 **Current phase:** 1 — Core
 **Kickoff (H0):** 16 Oct 2026, 01:00 IST
 **Last gate passed:** Gate 0
-**Pending for frontend:** run pnpm gen:api (fields with defaults are now required)
+**Pending for frontend:** run pnpm gen:api (permit routes added in 2B: PermitDraft, CommitResponse, PatchDraftRequest, SamplePermit)
 
 ---
 
@@ -27,7 +27,7 @@
 
 ## Phase 2 — Features
 - [x] 2A — PDF text + sample permits + LLM extraction + cached fixtures — Sam — `app/permits/`: `extract_permit(text, settings=None, client=None) -> ExtractionResult(fields{15}, missing_fields, llm_mode_used)`; order live (LLM_MODE=live + key, 10 s) → fixture (exact sample text) → `rules_extract.extract_with_rules` (offline, conf 0.5, exact quotes); `llm_mode_used` ∈ live|cached|rules (contract updated); only empty text raises `ExtractionUnavailable`. `pdf_text.extract_pdf_text` raises `PdfNoTextError` (→422 PDF_NO_TEXT) / `PdfTooLargeError` (→413 FILE_TOO_LARGE). `sample_permits.SAMPLE_PERMITS` (sample-1..3; PDFs via `scripts/make_sample_permits.py`) is the source for 2B `/samples`. Fixtures hand-written (no API key). Rules set depth_from=0.0 for open-cut when only a depth is stated (as in the mock); HDD leaves it missing. No routes/models/OpenAPI changed. 2B: geocode `street/from_ref/to_ref/side/offset_m` (IDs ST-/JN-/LM-), `side` ∈ NORTH|SOUTH|EAST|WEST
-- [ ] 2B — geocoder + permit routes + missing-data handling — Sam
+- [x] 2B — geocoder + permit routes + missing-data handling — Sam — `permits/geocode.py` (offset from centreline; RESOLVED / PARTIAL side missing / FAILED), `permits/intake.py` (draft → INTAKE Work, PATCH validation, `intake_uncertainty`), `api/routes_permits.py` (samples, parse text|PDF, PATCH, commit; codes DRAFT_NOT_FOUND, DRAFT_ALREADY_COMMITTED, UNKNOWN_FIELD, INVALID_FIELD_VALUE, GEOCODE_FAILED, DRAFT_INCOMPLETE). Unknown work depth → `depth_to_m` in `missing_fields`, engine assesses 0.5–3.0 m, clashes NEEDS_DATA (`WRK-xxx.depth`). Missing trench width → 0.6 m assumed and listed. Commit counts (LIKELY/POSSIBLE/NEEDS_DATA): s1 0/8/0 + 1 LIKELY schedule overlap; s2 2 LIKELY + 1 POSSIBLE (locked by test); s3 0/0/7. `permit_parse.json` mock now generated from real parse (draft id PRM-0001)
 - [ ] 2C — review + audit routes, OpenAPI re-exported — Sam
 - [x] 2D — clash panel + fly-to + conflict list — Friend — `features/clashes/` (ClashPanel, ConflictList, CertaintyGlyph, factors.ts) + `scene3d/CameraRig.tsx`; factor bar = weighted terms rounded (largest remainder) to sum to the score; review works in mock mode, live API shows "not available yet" until 2C; reviewer name in Zustand; fly-to without new deps (stops on drag)
 - [ ] 2E — section plane + cross-section SVG — Friend
@@ -57,7 +57,7 @@
 
 ## Notes for 2B / 2C
 - Permit commit: add the work to `store.scene.works`, call `store.reanalyze()` (ids stay stable), log audit via `store.log_audit`. Reviews: `store.set_review(clash_id, Review)` then audit; the review model/route is 2C.
-- `work_uncertainty_m` and missing work depth band are still deferred to 2B (see 1C note).
+- 2B done: INTAKE uncertainty and missing work depth are implemented (see 2B line).
 - Re-run `uv run python scripts/export_openapi.py` and `scripts/export_mocks.py` whenever a response model or seed changes (`test_openapi_export.py` / `test_mocks.py` fail when stale).
 
 ## Decisions log

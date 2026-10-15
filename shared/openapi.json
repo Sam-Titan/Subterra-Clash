@@ -103,6 +103,53 @@
         "title": "Asset",
         "type": "object"
       },
+      "AuditEntry": {
+        "properties": {
+          "action": {
+            "title": "Action",
+            "type": "string"
+          },
+          "actor": {
+            "title": "Actor",
+            "type": "string"
+          },
+          "at": {
+            "format": "date-time",
+            "title": "At",
+            "type": "string"
+          },
+          "detail": {
+            "title": "Detail",
+            "type": "string"
+          },
+          "id": {
+            "pattern": "^AUD-\\d{4,}$",
+            "title": "Id",
+            "type": "string"
+          },
+          "target_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Id"
+          }
+        },
+        "required": [
+          "id",
+          "at",
+          "actor",
+          "action",
+          "target_id",
+          "detail"
+        ],
+        "title": "AuditEntry",
+        "type": "object"
+      },
       "Band": {
         "enum": [
           "CRITICAL",
@@ -393,6 +440,44 @@
         "title": "ClashKind",
         "type": "string"
       },
+      "CommitRequest": {
+        "properties": {
+          "reviewer": {
+            "minLength": 1,
+            "title": "Reviewer",
+            "type": "string"
+          }
+        },
+        "required": [
+          "reviewer"
+        ],
+        "title": "CommitRequest",
+        "type": "object"
+      },
+      "CommitResponse": {
+        "properties": {
+          "audit": {
+            "$ref": "#/components/schemas/AuditEntry"
+          },
+          "new_clash_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "New Clash Ids",
+            "type": "array"
+          },
+          "work": {
+            "$ref": "#/components/schemas/Work"
+          }
+        },
+        "required": [
+          "work",
+          "new_clash_ids",
+          "audit"
+        ],
+        "title": "CommitResponse",
+        "type": "object"
+      },
       "ErrorResponse": {
         "properties": {
           "code": {
@@ -433,6 +518,93 @@
           "detail"
         ],
         "title": "Evidence",
+        "type": "object"
+      },
+      "ExtractedField": {
+        "properties": {
+          "confidence": {
+            "default": 0.0,
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Confidence",
+            "type": "number"
+          },
+          "source_quote": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Quote"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          }
+        },
+        "required": [
+          "value",
+          "confidence",
+          "source_quote"
+        ],
+        "title": "ExtractedField",
+        "type": "object"
+      },
+      "GeocodeResult": {
+        "properties": {
+          "notes": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Notes",
+            "type": "array"
+          },
+          "path": {
+            "items": {
+              "maxItems": 2,
+              "minItems": 2,
+              "prefixItems": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "number"
+                }
+              ],
+              "type": "array"
+            },
+            "title": "Path",
+            "type": "array"
+          },
+          "status": {
+            "enum": [
+              "RESOLVED",
+              "PARTIAL",
+              "FAILED"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "path",
+          "notes"
+        ],
+        "title": "GeocodeResult",
         "type": "object"
       },
       "HTTPValidationError": {
@@ -582,6 +754,27 @@
         "title": "ListResponse[Clash]",
         "type": "object"
       },
+      "ListResponse_SamplePermit_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/SamplePermit"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "total": {
+            "title": "Total",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "items",
+          "total"
+        ],
+        "title": "ListResponse[SamplePermit]",
+        "type": "object"
+      },
       "Location": {
         "properties": {
           "x": {
@@ -603,6 +796,86 @@
           "z"
         ],
         "title": "Location",
+        "type": "object"
+      },
+      "PatchDraftRequest": {
+        "properties": {
+          "fields": {
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "title": "Fields",
+            "type": "object"
+          }
+        },
+        "required": [
+          "fields"
+        ],
+        "title": "PatchDraftRequest",
+        "type": "object"
+      },
+      "PermitDraft": {
+        "description": "Response of parse / PATCH: a draft, nothing is in the plan until commit.",
+        "properties": {
+          "draft_id": {
+            "title": "Draft Id",
+            "type": "string"
+          },
+          "fields": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/ExtractedField"
+            },
+            "title": "Fields",
+            "type": "object"
+          },
+          "geocode": {
+            "$ref": "#/components/schemas/GeocodeResult"
+          },
+          "llm_mode_used": {
+            "enum": [
+              "live",
+              "cached",
+              "rules"
+            ],
+            "title": "Llm Mode Used",
+            "type": "string"
+          },
+          "missing_fields": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Missing Fields",
+            "type": "array"
+          },
+          "preview_clash_count": {
+            "title": "Preview Clash Count",
+            "type": "integer"
+          },
+          "source_text": {
+            "title": "Source Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "draft_id",
+          "source_text",
+          "llm_mode_used",
+          "fields",
+          "missing_fields",
+          "geocode",
+          "preview_clash_count"
+        ],
+        "title": "PermitDraft",
         "type": "object"
       },
       "RecordMethod": {
@@ -776,6 +1049,29 @@
           "disclaimer"
         ],
         "title": "RulesResponse",
+        "type": "object"
+      },
+      "SamplePermit": {
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "text": {
+            "title": "Text",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "text"
+        ],
+        "title": "SamplePermit",
         "type": "object"
       },
       "Scene": {
@@ -1486,6 +1782,256 @@
           }
         },
         "summary": "Health"
+      }
+    },
+    "/api/permits/parse": {
+      "post": {
+        "description": "Multipart `file` (PDF ≤ 5 MB) or JSON `{text}` → a draft; nothing enters the plan.",
+        "operationId": "parse_permit_api_permits_parse_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "type": "object"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "properties": {
+                  "file": {
+                    "format": "binary",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "file"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PermitDraft"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Content Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Content"
+          }
+        },
+        "summary": "Parse Permit",
+        "tags": [
+          "permits"
+        ]
+      }
+    },
+    "/api/permits/samples": {
+      "get": {
+        "operationId": "list_samples_api_permits_samples_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListResponse_SamplePermit_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "List Samples",
+        "tags": [
+          "permits"
+        ]
+      }
+    },
+    "/api/permits/{draft_id}": {
+      "patch": {
+        "operationId": "patch_draft_api_permits__draft_id__patch",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "draft_id",
+            "required": true,
+            "schema": {
+              "title": "Draft Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchDraftRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PermitDraft"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Patch Draft",
+        "tags": [
+          "permits"
+        ]
+      }
+    },
+    "/api/permits/{draft_id}/commit": {
+      "post": {
+        "description": "Add the permit's work to the coordination plan. This is not a permit approval.",
+        "operationId": "commit_draft_api_permits__draft_id__commit_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "draft_id",
+            "required": true,
+            "schema": {
+              "title": "Draft Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CommitRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommitResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Content"
+          }
+        },
+        "summary": "Commit Draft",
+        "tags": [
+          "permits"
+        ]
       }
     },
     "/api/reset": {

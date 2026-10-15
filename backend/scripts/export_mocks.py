@@ -1,7 +1,7 @@
 """Write frontend mocks from the real, freshly seeded API (../shared/mocks).
 
 scene.json = GET /api/scene, clashes.json = GET /api/clashes, groups.json = GET /api/groups.
-summary.json and permit_parse.json are hand-maintained and not touched here.
+permit_parse.json = POST /api/permits/parse for sample-1. summary.json is hand-maintained (3A).
 """
 
 import json
@@ -13,6 +13,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))  # run as a plain s
 from fastapi.testclient import TestClient  # noqa: E402
 
 from app.main import app  # noqa: E402
+from app.permits.sample_permits import SAMPLE_PERMITS  # noqa: E402
 from app.store import Store, get_store  # noqa: E402
 
 MOCKS_DIR = Path(__file__).resolve().parents[2] / "shared" / "mocks"
@@ -36,6 +37,10 @@ def build() -> dict[str, object]:
             res = client.get(route)
             res.raise_for_status()
             out[name] = res.json()
+        sample = SAMPLE_PERMITS[0].text
+        res = client.post("/api/permits/parse", json={"text": sample})
+        res.raise_for_status()
+        out["permit_parse.json"] = res.json()
         return out
     finally:
         app.dependency_overrides.pop(get_store, None)

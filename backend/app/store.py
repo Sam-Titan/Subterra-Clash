@@ -5,18 +5,30 @@ survive re-analysis. ``reset()`` restores the seed and clears every decision.
 """
 
 import threading
-from collections.abc import Sequence
+from collections.abc import Callable, Sequence
 from datetime import UTC, datetime
 
 from app.config import get_settings
 from app.data.loader import load_rules, load_scene, load_truth
 from app.engine.analyze import AnalysisResult, ClashKey, analyze
-from app.models import Asset, AuditEntry, Clash, ClashGroup, Review, Rule, Scene, TruthCase, Work
+from app.models import (
+    Asset,
+    AuditEntry,
+    Clash,
+    ClashGroup,
+    Review,
+    Rule,
+    Scene,
+    TruthCase,
+    Work,
+)
+from app.permits.intake import DraftRecord, intake_uncertainty, next_work_id
 
 
 class Store:
     def __init__(self) -> None:
         self._lock = threading.RLock()
+        self._draft_counter = 0  # draft ids are not reused, even after reset
         self.reset(log=False)
 
     # -- lifecycle ---------------------------------------------------------------------
@@ -28,6 +40,7 @@ class Store:
             self._rules: list[Rule] = load_rules()
             self._truth: list[TruthCase] = load_truth()
             self._reviews: dict[ClashKey, Review] = {}
+            self._drafts: dict[str, DraftRecord] = {}
             self._audit: list[AuditEntry] = audit
             self._result: AnalysisResult = analyze(
                 self._scene, self._rules, get_settings().demo_date
@@ -43,8 +56,13 @@ class Store:
                 self._rules,
                 get_settings().demo_date,
                 previous_ids=self._result.key_to_id,
+                work_uncertainty_m=self._work_uncertainty(self._scene.works),
             )
             return self._result
+
+    @staticmethod
+    def _work_uncertainty(works: Sequence[Work]) -> dict[str, float]:
+        return {w.id: intake_uncertainty(w) for w in works if intake_uncertainty(w) > 0}
 
     # -- reads -------------------------------------------------------------------------
     @property
@@ -94,6 +112,40 @@ class Store:
     def works_by_id(self, ids: Sequence[str]) -> list[Work]:
         by_id = {w.id: w for w in self._scene.works}
         return [by_id[i] for i in ids if i in by_id]
+
+    # -- permit drafts -----------------------------------------------------------------
+    def new_draft(self, record_factory: Callable[[str], DraftRecord]) -> DraftRecord:
+        with self._lock:
+            self._draft_counter += 1
+            record = record_factory(f"PRM-{self._draft_counter:04d}")
+            self._drafts[record.draft_id] = record
+            return record
+
+    def draft(self, draft_id: str) -> DraftRecord | None:
+        return self._drafts.get(draft_id)
+
+    def next_work_id(self) -> str:
+        return next_work_id([w.id for w in self._scene.works])
+
+    def preview_clash_count(self, work: Work) -> int:
+        """Clashes the work would have if committed; the store is not modified."""
+        with self._lock:
+            works = [*self._scene.works, work]
+            result = analyze(
+                self._scene.model_copy(update={"works": works}),
+                self._rules,
+                get_settings().demo_date,
+                previous_ids=self._result.key_to_id,
+                work_uncertainty_m=self._work_uncertainty(works),
+            )
+            return sum(1 for c in result.clashes if work.id in c.work_ids)
+
+    def add_work(self, work: Work) -> list[str]:
+        """Add a work to the plan and re-run the engine; returns ids of the clashes touching it."""
+        with self._lock:
+            self._scene.works.append(work)
+            result = self.reanalyze()
+            return [c.id for c in result.clashes if work.id in c.work_ids]
 
     # -- writes ------------------------------------------------------------------------
     def set_review(self, clash_id: str, review: Review) -> Clash | None:

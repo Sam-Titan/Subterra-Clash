@@ -141,3 +141,24 @@ def test_find_rule(
     work = make_work(work_type, utility=work_utility)
     asset = make_asset([(0, 0, -1), (1, 0, -1)], utility=asset_utility)
     assert find_rule(RULES, work, asset).id == rule_id
+
+
+def test_unknown_work_depth_gives_needs_data_without_gap() -> None:
+    """A trench with no stated depth over a known-depth pipe is assessed over 0.5-3.0 m."""
+    from app.data.loader import load_rules, load_scene
+    from app.engine.detect import detect_spatial
+
+    scene = load_scene()
+    asset = next(a for a in scene.assets if a.depth_known and a.depth_precision_m is not None)
+    seed = next(w for w in scene.works if w.work_type.value == "TRENCH")
+    # same corridor as a seed trench but with an unstated depth, shallow placeholder
+    work = seed.model_copy(
+        update={"id": "WRK-099", "depth_to_m": 0.5, "missing_fields": ["depth_to_m"]}
+    )
+    found = [
+        f for f in detect_spatial([work], scene.assets, load_rules()) if f.work.id == "WRK-099"
+    ]
+    assert found
+    assert all(f.certainty.value == "NEEDS_DATA" and f.gap_m is None for f in found)
+    assert all("WRK-099.depth" in f.missing_data for f in found)
+    assert asset  # fixture sanity

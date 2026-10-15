@@ -1,29 +1,104 @@
 {
-  "draft_id": "PRM-0004",
-  "source_text": "NVVN Discom — permit 2026/STN/114. Lay 11kV cable by open trench along north side of Station Road from J3 to Bus Depot, approx 1.2 m deep, 0.6 m wide. Work 3–20 Nov 2026.",
-  "llm_mode_used": "cached",
+  "draft_id": "PRM-0001",
   "fields": {
-    "agency": { "value": "NVVN Discom", "confidence": 0.97, "source_quote": "NVVN Discom" },
-    "permit_no": { "value": "2026/STN/114", "confidence": 0.98, "source_quote": "permit 2026/STN/114" },
-    "work_type": { "value": "TRENCH", "confidence": 0.9, "source_quote": "open trench" },
-    "utility": { "value": "POWER", "confidence": 0.93, "source_quote": "11kV cable" },
-    "street": { "value": "ST-01", "confidence": 0.95, "source_quote": "Station Road" },
-    "from_ref": { "value": "JN-03", "confidence": 0.88, "source_quote": "from J3" },
-    "to_ref": { "value": "LM-02", "confidence": 0.86, "source_quote": "to Bus Depot" },
-    "side": { "value": "NORTH", "confidence": 0.92, "source_quote": "north side" },
-    "offset_m": { "value": null, "confidence": 0, "source_quote": null },
-    "depth_from_m": { "value": 0.0, "confidence": 0.6, "source_quote": "approx 1.2 m deep" },
-    "depth_to_m": { "value": 1.2, "confidence": 0.7, "source_quote": "approx 1.2 m deep" },
-    "width_m": { "value": 0.6, "confidence": 0.9, "source_quote": "0.6 m wide" },
-    "diameter_m": { "value": null, "confidence": 0, "source_quote": null },
-    "start_date": { "value": "2026-11-03", "confidence": 0.9, "source_quote": "3–20 Nov 2026" },
-    "end_date": { "value": "2026-11-20", "confidence": 0.9, "source_quote": "3–20 Nov 2026" }
+    "agency": {
+      "confidence": 0.97,
+      "source_quote": "NVVN Discom",
+      "value": "NVVN Discom"
+    },
+    "depth_from_m": {
+      "confidence": 0.6,
+      "source_quote": "approx 1.2 m deep",
+      "value": 0.0
+    },
+    "depth_to_m": {
+      "confidence": 0.7,
+      "source_quote": "approx 1.2 m deep",
+      "value": 1.2
+    },
+    "diameter_m": {
+      "confidence": 0.0,
+      "source_quote": null,
+      "value": null
+    },
+    "end_date": {
+      "confidence": 0.9,
+      "source_quote": "3–20 Nov 2026",
+      "value": "2026-11-20"
+    },
+    "from_ref": {
+      "confidence": 0.88,
+      "source_quote": "from J3",
+      "value": "JN-03"
+    },
+    "offset_m": {
+      "confidence": 0.0,
+      "source_quote": null,
+      "value": null
+    },
+    "permit_no": {
+      "confidence": 0.98,
+      "source_quote": "permit 2026/STN/114",
+      "value": "2026/STN/114"
+    },
+    "side": {
+      "confidence": 0.92,
+      "source_quote": "north side",
+      "value": "NORTH"
+    },
+    "start_date": {
+      "confidence": 0.9,
+      "source_quote": "3–20 Nov 2026",
+      "value": "2026-11-03"
+    },
+    "street": {
+      "confidence": 0.95,
+      "source_quote": "Station Road",
+      "value": "ST-01"
+    },
+    "to_ref": {
+      "confidence": 0.86,
+      "source_quote": "to Bus Depot",
+      "value": "LM-02"
+    },
+    "utility": {
+      "confidence": 0.93,
+      "source_quote": "11kV cable",
+      "value": "POWER"
+    },
+    "width_m": {
+      "confidence": 0.9,
+      "source_quote": "0.6 m wide",
+      "value": 0.6
+    },
+    "work_type": {
+      "confidence": 0.9,
+      "source_quote": "open trench",
+      "value": "TRENCH"
+    }
   },
-  "missing_fields": ["offset_m", "diameter_m"],
   "geocode": {
-    "status": "RESOLVED",
-    "path": [[180, 206], [420, 206]],
-    "notes": ["offset_m missing → using street side edge (3 m from kerb)"]
+    "notes": [
+      "JN-03 → LM-02 projected onto Station Road centreline",
+      "offset_m missing → using street side edge (3 m from kerb), north side"
+    ],
+    "path": [
+      [
+        180.0,
+        206.0
+      ],
+      [
+        420.0,
+        206.0
+      ]
+    ],
+    "status": "RESOLVED"
   },
-  "preview_clash_count": 2
+  "llm_mode_used": "cached",
+  "missing_fields": [
+    "offset_m",
+    "diameter_m"
+  ],
+  "preview_clash_count": 9,
+  "source_text": "NVVN Discom — permit 2026/STN/114. Lay 11kV cable by open trench along north side of Station Road from J3 to Bus Depot, approx 1.2 m deep, 0.6 m wide. Work 3–20 Nov 2026."
 }

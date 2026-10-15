@@ -22,9 +22,24 @@ def _permit(work: Work) -> Evidence:
 def spatial_explanation(f: SpatialFinding) -> str:
     w, a, req = f.work.title, f"{f.asset.label} ({f.asset.id})", f.required_m
     if f.certainty is Certainty.NEEDS_DATA:
+        band = f"{PLAUSIBLE_DEPTH_MIN_M:.1f}-{PLAUSIBLE_DEPTH_MAX_M:.1f} m"
+        work_missing = f"{f.work.id}.depth" in f.missing_data
+        asset_missing = f"{f.asset.id}.depth" in f.missing_data
+        if work_missing and asset_missing:
+            return (
+                f"Neither {w} ({f.work.id}) nor {a} states a depth; at plausible depths of "
+                f"{band} they could breach the {req:.2f} m clearance ({f.rule.id}), so both "
+                "depths must be confirmed."
+            )
+        if work_missing:
+            return (
+                f"{w} ({f.work.id}) states no excavation depth; at a plausible depth of {band} "
+                f"it could breach the {req:.2f} m clearance to {a} ({f.rule.id}), so the depth "
+                "must be confirmed with the applicant."
+            )
         return (
             f"{a} has no recorded depth; at a plausible depth of "
-            f"{PLAUSIBLE_DEPTH_MIN_M:.1f}-{PLAUSIBLE_DEPTH_MAX_M:.1f} m, {w} could breach the "
+            f"{band}, {w} could breach the "
             f"{req:.2f} m clearance ({f.rule.id}), so the depth must be surveyed."
         )
     assert f.gap_m is not None and f.uncertainty_m is not None
@@ -50,7 +65,7 @@ def spatial_evidence(f: SpatialFinding) -> list[Evidence]:
         if a.depth_precision_m is not None and a.depth_known
         else "depth not recorded"
     )
-    return [
+    out = [
         Evidence(
             type="ASSET_RECORD",
             ref=s.record_id,
@@ -68,6 +83,18 @@ def spatial_evidence(f: SpatialFinding) -> list[Evidence]:
             detail=f"horizontal ±{a.horiz_precision_m:.2f} m; {depth}",
         ),
     ]
+    if f"{f.work.id}.depth" in f.missing_data:
+        out.append(
+            Evidence(
+                type="PRECISION",
+                ref=f.work.id,
+                detail=(
+                    "excavation depth not stated in the permit; "
+                    f"{PLAUSIBLE_DEPTH_MIN_M:.1f}-{PLAUSIBLE_DEPTH_MAX_M:.1f} m assessed"
+                ),
+            )
+        )
+    return out
 
 
 def schedule_explanation(f: ScheduleFinding) -> str:

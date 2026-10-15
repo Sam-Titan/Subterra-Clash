@@ -13,7 +13,7 @@ from app.engine.geometry import (
     work_footprint,
 )
 from app.engine.rules import find_rule
-from app.models import Asset, Certainty, ClashKind, Point3, Rule, Work
+from app.models import Asset, Certainty, ClashKind, Point3, Rule, Work, WorkType
 
 # Plausible depth band used when an asset's depth is not recorded (SPEC §8.3).
 PLAUSIBLE_DEPTH_MIN_M = 0.5
@@ -62,17 +62,38 @@ def _at_depth(asset: Asset, depth: float) -> Asset:
     return asset.model_copy(update={"path": [(x, y, -depth) for x, y, _ in asset.path]})
 
 
+def work_depth_unknown(work: Work) -> bool:
+    """INTAKE works whose permit stated no excavation depth (the stored depth is a placeholder)."""
+    return "depth_to_m" in work.missing_fields
+
+
+def _work_at_depth(work: Work, depth: float) -> Work:
+    update: dict[str, object] = {"depth_to_m": depth}
+    if work.work_type is WorkType.HDD and work.bore_path and work.bore_diameter_m:
+        z = -(depth - work.bore_diameter_m / 2)
+        update["bore_path"] = [(x, y, z) for x, y, _ in work.bore_path]
+    return work.model_copy(update=update)
+
+
 def _evaluate_pair(work: Work, asset: Asset, rule: Rule, work_u: float) -> SpatialFinding | None:
     required = rule.min_clearance_m
+    work_unknown = work_depth_unknown(work)
+    asset_unknown = not depth_is_known(asset)
 
-    if not depth_is_known(asset):
+    if work_unknown or asset_unknown:
         # Worst case over the plausible depth band; lateral precision still applies.
+        depths = plausible_depths()
+        works = [_work_at_depth(work, d) for d in depths] if work_unknown else [work]
+        assets = [_at_depth(asset, d) for d in depths] if asset_unknown else [asset]
         worst = min(
-            (work_asset_gap(work, _at_depth(asset, d)) for d in plausible_depths()),
+            (work_asset_gap(w, a) for w in works for a in assets),
             key=lambda r: r.gap,
         )
-        if worst.gap >= required + asset.horiz_precision_m:
+        if worst.gap >= required + math.hypot(asset.horiz_precision_m, work_u):
             return None
+        missing = ([f"{asset.id}.depth"] if asset_unknown else []) + (
+            [f"{work.id}.depth"] if work_unknown else []
+        )
         return SpatialFinding(
             work=work,
             asset=asset,
@@ -83,7 +104,7 @@ def _evaluate_pair(work: Work, asset: Asset, rule: Rule, work_u: float) -> Spati
             required_m=required,
             uncertainty_m=None,
             location=worst.location,
-            missing_data=(f"{asset.id}.depth",),
+            missing_data=tuple(missing),
         )
 
     res = work_asset_gap(work, asset)
