@@ -15,6 +15,11 @@ import type {
 	ClashGroup,
 	ClashQuery,
 	ListResponse,
+	Review,
+	ReviewAction,
+	ReviewRequest,
+	ReviewResponse,
+	ReviewStatus,
 	Scene,
 	Summary,
 } from "./types";
@@ -33,9 +38,28 @@ async function loadScene(): Promise<Scene> {
 	return mod.default as unknown as Scene;
 }
 
+// Review decisions made in mock mode live here until the page reloads.
+const reviewOverrides = new Map<string, Review>();
+let auditSeq = 0;
+
+const STATUS_FOR: Record<ReviewAction, ReviewStatus> = {
+	ACKNOWLEDGE: "ACKNOWLEDGED",
+	ESCALATE: "ESCALATED",
+	DISMISS: "DISMISSED",
+	REOPEN: "OPEN",
+};
+
 async function loadClashes(): Promise<ListResponse<Clash>> {
 	const mod = await import("../../../shared/mocks/clashes.json");
-	return mod.default as unknown as ListResponse<Clash>;
+	const list = mod.default as unknown as ListResponse<Clash>;
+	if (reviewOverrides.size === 0) return list;
+	return {
+		...list,
+		items: list.items.map((c) => {
+			const review = reviewOverrides.get(c.id);
+			return review ? { ...c, review } : c;
+		}),
+	};
 }
 
 async function loadGroups(): Promise<ListResponse<ClashGroup>> {
@@ -96,6 +120,45 @@ export async function mockClash(id: string): Promise<ClashDetail> {
 		assets: scene.assets.filter((a) => clash.asset_ids.includes(a.id)),
 		works: scene.works.filter((w) => clash.work_ids.includes(w.id)),
 		rule: null, // no rules mock; the real API always sends the rule
+	});
+}
+
+export async function mockReview(
+	id: string,
+	body: ReviewRequest,
+): Promise<ReviewResponse> {
+	const { items } = await loadClashes();
+	const clash = items.find((c) => c.id === id);
+	if (!clash) {
+		throw new ApiError(404, "CLASH_NOT_FOUND", `No clash with id ${id}`);
+	}
+	const note = body.note?.trim() || null;
+	if (body.action === "DISMISS" && !note) {
+		throw new ApiError(
+			422,
+			"NOTE_REQUIRED",
+			"Dismissing a finding requires a note.",
+		);
+	}
+	const at = new Date().toISOString();
+	const review: Review = {
+		status: STATUS_FOR[body.action],
+		reviewer: body.reviewer,
+		note,
+		updated_at: at,
+	};
+	reviewOverrides.set(id, review);
+	auditSeq += 1;
+	return delay({
+		clash: { ...clash, review },
+		audit: {
+			id: `AUD-M${String(auditSeq).padStart(3, "0")}`,
+			at,
+			actor: body.reviewer,
+			action: body.action,
+			target_id: id,
+			detail: note ?? "",
+		},
 	});
 }
 

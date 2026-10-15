@@ -1,47 +1,21 @@
-import { Loader2, X } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { lazy, Suspense, useMemo } from "react";
 import { useClashes, useScene } from "@/api/hooks";
 import { ErrorBlock, LoadingBlock } from "@/components/QueryState";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { ClashPanel } from "@/features/clashes/ClashPanel";
+import { ConflictList } from "@/features/clashes/ConflictList";
 import { LeftRail } from "@/features/scene3d/LeftRail";
-import { humanizeEnum } from "@/lib/format";
 import { useAppStore } from "@/store/useAppStore";
 
 // three.js is heavy; keep it out of the main bundle until the workspace opens.
 const SceneCanvas = lazy(() => import("@/features/scene3d/SceneCanvas"));
 
-function SelectedChip() {
-	const clashes = useClashes();
-	const selectedClashId = useAppStore((s) => s.selectedClashId);
-	const selectClash = useAppStore((s) => s.selectClash);
-	const clash = clashes.data?.items.find((c) => c.id === selectedClashId);
-	if (!selectedClashId) return null;
-	return (
-		<div className="pointer-events-auto flex items-center gap-2 rounded-md border border-zinc-700 bg-zinc-950/90 py-1 pr-1 pl-3 text-sm backdrop-blur">
-			<span className="font-mono">{selectedClashId}</span>
-			{clash && (
-				<span className="text-zinc-400">
-					{humanizeEnum(clash.kind)} · {humanizeEnum(clash.certainty)}
-				</span>
-			)}
-			<Button
-				variant="ghost"
-				size="icon"
-				className="size-6 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-100"
-				onClick={() => selectClash(null)}
-				aria-label="Clear selection"
-			>
-				<X className="size-3.5" aria-hidden />
-			</Button>
-		</div>
-	);
-}
-
 export default function Workspace() {
 	const scene = useScene();
 	const clashes = useClashes();
 	const items = useMemo(() => clashes.data?.items ?? [], [clashes.data]);
+	const selectedClashId = useAppStore((s) => s.selectedClashId);
 
 	return (
 		<section className="flex min-h-[560px] flex-1">
@@ -93,9 +67,20 @@ export default function Workspace() {
 							/>
 						</div>
 					)}
-					<SelectedChip />
 				</div>
 			</div>
+
+			{/* Absolute inner box: the column scrolls on its own and never
+			    stretches the row, so the canvas keeps the viewport height. */}
+			<aside className="relative w-[340px] shrink-0 border-l border-zinc-800 bg-zinc-950 xl:w-[380px]">
+				<div className="absolute inset-0 overflow-y-auto p-4">
+					{selectedClashId ? (
+						<ClashPanel clashId={selectedClashId} />
+					) : (
+						<ConflictList />
+					)}
+				</div>
+			</aside>
 		</section>
 	);
 }

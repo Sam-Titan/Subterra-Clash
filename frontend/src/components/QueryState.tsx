@@ -14,7 +14,10 @@ export function LoadingBlock({ label = "Loading…" }: { label?: string }) {
 	);
 }
 
-function describe(error: unknown): { code: string; detail: string } {
+export function describeError(error: unknown): {
+	code: string;
+	detail: string;
+} {
 	if (error instanceof ApiError)
 		return { code: error.code, detail: error.detail };
 	if (error instanceof Error)
@@ -31,7 +34,7 @@ export function ErrorBlock({
 	onRetry?: () => void;
 	title?: string;
 }) {
-	const { code, detail } = describe(error);
+	const { code, detail } = describeError(error);
 	return (
 		<div
 			role="alert"

@@ -61,3 +61,14 @@ export const SCENE_COLORS = {
 	keyLight: "#FFFFFF",
 	fillLight: "#B8C4FF",
 } as const;
+
+/**
+ * Severity factor bar segments (SPEC §8.5). A neutral ramp on purpose, so the
+ * bar never reads as a utility colour; the legend names each segment.
+ */
+export const FACTOR_COLORS = {
+	hazard: "#E4E4E7",
+	breach: "#A1A1AA",
+	urgency: "#71717A",
+	confidence: "#52525B",
+} as const;

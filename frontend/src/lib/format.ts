@@ -83,3 +83,17 @@ const UTILITY_LABELS: Record<Utility, string> = {
 export function utilityLabel(utility: Utility): string {
 	return UTILITY_LABELS[utility];
 }
+
+const dateTimeFormat = new Intl.DateTimeFormat("en-IN", {
+	day: "numeric",
+	month: "short",
+	hour: "2-digit",
+	minute: "2-digit",
+});
+
+/** ISO timestamp → "16 Oct, 02:11 pm" in local time. */
+export function formatDateTime(iso: string | null | undefined): string {
+	if (!iso) return MISSING;
+	const date = new Date(iso);
+	return Number.isNaN(date.getTime()) ? iso : dateTimeFormat.format(date);
+}

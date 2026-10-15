@@ -20,6 +20,8 @@ interface AppState {
 	certaintyFilter: Certainty[];
 	/** ISO date; null = no date filter. */
 	dateFilter: string | null;
+	/** Name recorded on review decisions (no auth in this tool). */
+	reviewerName: string;
 
 	selectClash: (id: string | null) => void;
 	toggleLayer: (layer: LayerId) => void;
@@ -29,6 +31,7 @@ interface AppState {
 	toggleCertainty: (certainty: Certainty) => void;
 	setDateFilter: (date: string | null) => void;
 	resetFilters: () => void;
+	setReviewerName: (name: string) => void;
 }
 
 export const useAppStore = create<AppState>()((set) => ({
@@ -38,6 +41,7 @@ export const useAppStore = create<AppState>()((set) => ({
 	halos: true,
 	certaintyFilter: [...CERTAINTIES],
 	dateFilter: null,
+	reviewerName: "A. Sharma",
 
 	selectClash: (id) => set({ selectedClashId: id }),
 	toggleLayer: (layer) =>
@@ -59,4 +63,5 @@ export const useAppStore = create<AppState>()((set) => ({
 			certaintyFilter: [...CERTAINTIES],
 			dateFilter: null,
 		}),
+	setReviewerName: (name) => set({ reviewerName: name }),
 }));

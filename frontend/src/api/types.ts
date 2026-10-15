@@ -106,3 +106,29 @@ export interface Summary {
 		cases: EvaluationCase[];
 	};
 }
+
+// Review types are hand-written from docs/API_CONTRACT.md because
+// POST /api/clashes/{id}/review (backend 2C) is not in shared/openapi.json yet.
+// Switch these to generated aliases after 2C exports it.
+export type ReviewAction = "ACKNOWLEDGE" | "ESCALATE" | "DISMISS" | "REOPEN";
+
+export interface ReviewRequest {
+	action: ReviewAction;
+	reviewer: string;
+	/** Required (non-empty) for DISMISS only. */
+	note: string | null;
+}
+
+export interface AuditEntry {
+	id: string;
+	at: string;
+	actor: string;
+	action: string;
+	target_id: string;
+	detail: string;
+}
+
+export interface ReviewResponse {
+	clash: Clash;
+	audit: AuditEntry;
+}

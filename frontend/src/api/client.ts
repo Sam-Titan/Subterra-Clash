@@ -5,6 +5,8 @@ import type {
 	ClashGroup,
 	ClashQuery,
 	ListResponse,
+	ReviewRequest,
+	ReviewResponse,
 	Scene,
 	Summary,
 } from "./types";
@@ -35,6 +37,8 @@ function isErrorBody(value: unknown): value is ApiErrorBody {
 	);
 }
 
+const GENERIC_ROUTE_CODES = new Set(["NOT_FOUND", "METHOD_NOT_ALLOWED"]);
+
 type QueryParams = Record<string, string | number | undefined>;
 
 function buildUrl(path: string, params?: QueryParams): string {
@@ -46,15 +50,22 @@ function buildUrl(path: string, params?: QueryParams): string {
 	return `/api${path}${qs ? `?${qs}` : ""}`;
 }
 
-export async function apiGet<T>(
+async function request<T>(
+	method: "GET" | "POST",
 	path: string,
-	params?: QueryParams,
+	{ params, body: payload }: { params?: QueryParams; body?: unknown } = {},
 ): Promise<T> {
 	const url = buildUrl(path, params);
+	const headers: Record<string, string> = { Accept: "application/json" };
+	if (payload !== undefined) headers["Content-Type"] = "application/json";
 
 	let response: Response;
 	try {
-		response = await fetch(url, { headers: { Accept: "application/json" } });
+		response = await fetch(url, {
+			method,
+			headers,
+			body: payload === undefined ? undefined : JSON.stringify(payload),
+		});
 	} catch {
 		throw new ApiError(0, "NETWORK", `Could not reach the server for ${url}.`);
 	}
@@ -86,6 +97,19 @@ export async function apiGet<T>(
 	}
 
 	if (!response.ok) {
+		// A route the backend does not have yet answers with the router's
+		// generic 404/405 ({detail, code: NOT_FOUND | METHOD_NOT_ALLOWED}, or a
+		// bare body); specific codes such as CLASH_NOT_FOUND pass through.
+		const missingRoute =
+			(response.status === 404 || response.status === 405) &&
+			(!isErrorBody(body) || GENERIC_ROUTE_CODES.has(body.code));
+		if (missingRoute) {
+			throw new ApiError(
+				response.status,
+				"NOT_AVAILABLE",
+				`${method} ${url} is not available on this backend yet.`,
+			);
+		}
 		if (isErrorBody(body)) {
 			throw new ApiError(response.status, body.code, body.detail);
 		}
@@ -97,6 +121,14 @@ export async function apiGet<T>(
 	}
 
 	return body as T;
+}
+
+export function apiGet<T>(path: string, params?: QueryParams): Promise<T> {
+	return request<T>("GET", path, { params });
+}
+
+export function apiPost<T>(path: string, body: unknown): Promise<T> {
+	return request<T>("POST", path, { body });
 }
 
 export async function getScene(): Promise<Scene> {
@@ -119,6 +151,17 @@ export async function getClash(id: string): Promise<ClashDetail> {
 export async function getGroups(): Promise<ListResponse<ClashGroup>> {
 	if (USE_MOCKS) return (await import("./mocks")).mockGroups();
 	return apiGet<ListResponse<ClashGroup>>("/groups");
+}
+
+export async function reviewClash(
+	id: string,
+	body: ReviewRequest,
+): Promise<ReviewResponse> {
+	if (USE_MOCKS) return (await import("./mocks")).mockReview(id, body);
+	return apiPost<ReviewResponse>(
+		`/clashes/${encodeURIComponent(id)}/review`,
+		body,
+	);
 }
 
 export async function getSummary(): Promise<Summary> {

@@ -82,3 +82,15 @@ export const MARKER = {
 
 /** At most this many street + landmark labels; no occlusion tests. */
 export const MAX_LABELS = 16;
+
+/** Camera fly-to on clash select. */
+export const FLY_TO = {
+	/** Camera distance from the clash after the move (m), before clamping. */
+	distance: 45,
+	/** Minimum upward component of the view direction, so we look down at it. */
+	minElevation: 0.35,
+	/** Exponential ease rate (1/s). */
+	rate: 4,
+	/** Stop once both target and camera are this close (m). */
+	epsilon: 0.05,
+} as const;

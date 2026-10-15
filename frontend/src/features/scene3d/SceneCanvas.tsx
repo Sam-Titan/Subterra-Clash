@@ -5,6 +5,7 @@ import type { Clash, Scene } from "@/api/types";
 import { SCENE_COLORS } from "@/lib/colors";
 import { boundsCenter, type Vec3 } from "@/lib/coords";
 import { useAppStore } from "@/store/useAppStore";
+import { CameraRig } from "./CameraRig";
 import { ClashMarkers } from "./ClashMarkers";
 import { Ground } from "./Ground";
 import { Pipes } from "./Pipes";
@@ -86,6 +87,7 @@ export default function SceneCanvas({
 				maxDistance={camera.maxDistance}
 				enableDamping
 			/>
+			<CameraRig clashes={clashes} />
 			{children}
 		</Canvas>
 	);
