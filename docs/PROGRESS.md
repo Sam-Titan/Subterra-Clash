@@ -21,7 +21,7 @@
 - [x] 1B — geometry + tests — Sam — `app/engine/geometry.py`: segment/polyline 3D distance, pipe_gap, depth_at, footprints, excavation_gap, work_asset_gap, work_work_distance_2d; GapResult(gap, location). h≤0 uses shallowest depth inside footprint; asset wholly above an excavation band (depth_from>0) is vertically separated. Seed T1–T5 gaps verified (−0.6, 0.18, 1.045, 2.4, 0.2). 1C: ignore `depth_known` here, evaluate 0.5–3.0 m band by substituting depth
 - [ ] 1C — detect / certainty / schedule / severity / grouping / baseline + planted-case tests — Sam
 - [ ] 1D — store + routes + OpenAPI exported — Sam
-- [ ] 1E — API client + hooks + mocks mode + coords/colors + store + shell + routes — Friend
+- [x] 1E — API client + hooks + mocks mode + coords/colors + store + shell + routes — Friend — hand-written SPEC §7 types until gen:api; groups/clash-detail derived from mocks (rule null in mock mode); needs Node 24 (fnm use 24)
 - [ ] 1F — 3D scene (ground, pipes, works, markers, halos) + left rail — Friend
 - [ ] **Gate 1 passed**
 
@@ -51,7 +51,7 @@
 ---
 
 ## Blockers
-_none_
+- frontend: switch to generated schema.d.ts types at Gate 1 (rule always present)
 
 ## Decisions log
 - Python 3.14 (fallback 3.13 if wheels missing).
