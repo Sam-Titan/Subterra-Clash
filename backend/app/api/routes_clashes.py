@@ -2,8 +2,16 @@ from typing import Annotated, Literal
 
 from fastapi import APIRouter, Depends, Query
 
-from app.api.schemas import AppError, ClashDetail, ErrorResponse, ListResponse
+from app.api.schemas import (
+    AppError,
+    ClashDetail,
+    ErrorResponse,
+    ListResponse,
+    ReviewRequest,
+    ReviewResponse,
+)
 from app.models import Band, Certainty, Clash, ClashGroup, ClashKind, ReviewStatus, Utility
+from app.models.enums import ReviewAction
 from app.store import Store, get_store
 
 router = APIRouter(prefix="/api", tags=["clashes"])
@@ -64,6 +72,27 @@ def get_clash(clash_id: str, store: StoreDep) -> ClashDetail:
         works=store.works_by_id(clash.work_ids),
         rule=store.rule(clash.rule_id),
     )
+
+
+@router.post(
+    "/clashes/{clash_id}/review",
+    response_model=ReviewResponse,
+    responses={404: {"model": ErrorResponse}, 422: {"model": ErrorResponse}},
+)
+def review_clash(clash_id: str, body: ReviewRequest, store: StoreDep) -> ReviewResponse:
+    if store.clash(clash_id) is None:
+        raise AppError(404, "CLASH_NOT_FOUND", f"No clash with id {clash_id}")
+    reviewer = body.reviewer.strip()
+    if not reviewer:
+        raise AppError(422, "REVIEWER_REQUIRED", "A reviewer name is required")
+    note = (body.note or "").strip() or None
+    if body.action == ReviewAction.DISMISS and note is None:
+        raise AppError(422, "NOTE_REQUIRED", "Dismissing a clash requires a note")
+    done = store.review_clash(clash_id, body.action, reviewer, note)
+    if done is None:  # pragma: no cover - checked above
+        raise AppError(404, "CLASH_NOT_FOUND", f"No clash with id {clash_id}")
+    clash, audit = done
+    return ReviewResponse(clash=clash, audit=audit)
 
 
 @router.get("/groups", response_model=ListResponse[ClashGroup])

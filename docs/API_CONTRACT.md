@@ -66,8 +66,8 @@ Request:
 ```json
 { "action": "ACKNOWLEDGE" | "ESCALATE" | "DISMISS" | "REOPEN", "reviewer": "A. Sharma", "note": "Field check booked for 2 Nov" }
 ```
-`DISMISS` requires a non-empty `note` → else `422 { code: "NOTE_REQUIRED" }`.
-Response: `{ "clash": Clash, "audit": AuditEntry }`
+`reviewer` is required (blank → `422 { code: "REVIEWER_REQUIRED" }`). `DISMISS` requires a non-empty `note` → else `422 { code: "NOTE_REQUIRED" }`. Unknown id → `404 CLASH_NOT_FOUND`; unknown action → `422 VALIDATION_ERROR`. Status mapping: ACKNOWLEDGE→`ACKNOWLEDGED`, ESCALATE→`ESCALATED`, DISMISS→`DISMISSED`, REOPEN→`OPEN` (REOPEN keeps the reviewer and replaces the note with the request's note, `null` if none). Note and reviewer are trimmed. Failed requests change nothing and log nothing.
+Response: `{ "clash": Clash, "audit": AuditEntry }` — `audit.action` is the request action, `audit.detail` is the note or `Marked <STATUS>`.
 
 ### `GET /api/groups`
 `{ "items": [ { "id": "GRP-03", "title": "Station Road fibre trench — 3 clashes", "clash_ids": [...], "work_ids": [...], "max_severity_score": 91, "review_rank": 1 } ], "total": n }`
@@ -145,7 +145,7 @@ INTAKE works carry their own positional uncertainty: `(1 − lowest location-fie
 ```
 
 ### `GET /api/audit`
-`{ "items": [ { "id": "AUD-0007", "at": "2026-10-16T14:02:11+05:30", "actor": "A. Sharma", "action": "ESCALATE", "target_id": "CLH-0004", "detail": "Gas main — needs GAIL-style standby" } ], "total": n }` newest first.
+`{ "items": [ { "id": "AUD-0007", "at": "2026-10-16T14:02:11+05:30", "actor": "A. Sharma", "action": "ESCALATE", "target_id": "CLH-0004", "detail": "Gas main — needs GAIL-style standby" } ], "total": n }` newest first. `target_id` is `null` for entries with no target (`RESET`). Actions: `ACKNOWLEDGE`, `ESCALATE`, `DISMISS`, `REOPEN`, `PERMIT_COMMIT`, `RESET`.
 
 ### `GET /api/report?format=html|csv`
 `html` → `text/html` printable report (SPEC §11). `csv` → `text/csv` attachment `subterra-clash-report.csv`.

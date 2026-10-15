@@ -56,6 +56,13 @@ class ReviewStatus(StrEnum):
     DISMISSED = "DISMISSED"
 
 
+class ReviewAction(StrEnum):
+    ACKNOWLEDGE = "ACKNOWLEDGE"
+    ESCALATE = "ESCALATE"
+    DISMISS = "DISMISS"
+    REOPEN = "REOPEN"
+
+
 class TruthOutcome(StrEnum):
     CLASH = "CLASH"
     NO_CLASH = "NO_CLASH"

@@ -712,6 +712,27 @@
         "title": "Landmark",
         "type": "object"
       },
+      "ListResponse_AuditEntry_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/AuditEntry"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "total": {
+            "title": "Total",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "items",
+          "total"
+        ],
+        "title": "ListResponse[AuditEntry]",
+        "type": "object"
+      },
       "ListResponse_ClashGroup_": {
         "properties": {
           "items": {
@@ -950,6 +971,60 @@
           "updated_at"
         ],
         "title": "Review",
+        "type": "object"
+      },
+      "ReviewAction": {
+        "enum": [
+          "ACKNOWLEDGE",
+          "ESCALATE",
+          "DISMISS",
+          "REOPEN"
+        ],
+        "title": "ReviewAction",
+        "type": "string"
+      },
+      "ReviewRequest": {
+        "properties": {
+          "action": {
+            "$ref": "#/components/schemas/ReviewAction"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          },
+          "reviewer": {
+            "title": "Reviewer",
+            "type": "string"
+          }
+        },
+        "required": [
+          "action",
+          "reviewer"
+        ],
+        "title": "ReviewRequest",
+        "type": "object"
+      },
+      "ReviewResponse": {
+        "properties": {
+          "audit": {
+            "$ref": "#/components/schemas/AuditEntry"
+          },
+          "clash": {
+            "$ref": "#/components/schemas/Clash"
+          }
+        },
+        "required": [
+          "clash",
+          "audit"
+        ],
+        "title": "ReviewResponse",
         "type": "object"
       },
       "ReviewStatus": {
@@ -1533,6 +1608,27 @@
   },
   "openapi": "3.1.0",
   "paths": {
+    "/api/audit": {
+      "get": {
+        "operationId": "get_audit_api_audit_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListResponse_AuditEntry_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Get Audit",
+        "tags": [
+          "scene"
+        ]
+      }
+    },
     "/api/clashes": {
       "get": {
         "operationId": "list_clashes_api_clashes_get",
@@ -1740,6 +1836,68 @@
           }
         },
         "summary": "Get Clash",
+        "tags": [
+          "clashes"
+        ]
+      }
+    },
+    "/api/clashes/{clash_id}/review": {
+      "post": {
+        "operationId": "review_clash_api_clashes__clash_id__review_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "clash_id",
+            "required": true,
+            "schema": {
+              "title": "Clash Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Content"
+          }
+        },
+        "summary": "Review Clash",
         "tags": [
           "clashes"
         ]

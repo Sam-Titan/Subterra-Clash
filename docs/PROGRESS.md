@@ -4,10 +4,10 @@
 > Format: `- [x] 1B — geometry + tests — Sam — short note`. Add blockers under "Blockers" immediately.
 > Session details are in `docs/PHASES.md`.
 
-**Current phase:** 1 — Core
+**Current phase:** 2 — Features
 **Kickoff (H0):** 16 Oct 2026, 01:00 IST
-**Last gate passed:** Gate 0
-**Pending for frontend:** run pnpm gen:api (permit routes added in 2B: PermitDraft, CommitResponse, PatchDraftRequest, SamplePermit)
+**Last gate passed:** Gate 1
+**Pending for frontend:** run pnpm gen:api (permit routes from 2B: PermitDraft, CommitResponse, PatchDraftRequest, SamplePermit; review + audit routes from 2C: ReviewRequest, ReviewResponse, `GET /api/audit`; `AuditEntry.target_id` is nullable)
 
 ---
 
@@ -23,12 +23,12 @@
 - [x] 1D — store + routes + OpenAPI exported — Sam — `app/store.py` (`Store`, `get_store()`; reviews keyed by stable clash key, `reanalyze()` keeps ids, `reset()` logs RESET audit entry in memory; `GET /api/audit` still 2C). Routes `/api/scene|rules|clashes|clashes/{id}|groups|reset` in `app/api/`; errors are top-level `{detail, code}` via `AppError`. `ClashDetail.rule` is null for SCHEDULE_OVERLAP. `scripts/export_openapi.py` → `shared/openapi.json`; `scripts/export_mocks.py` → scene/clashes/groups mocks from the real API (tests fail if stale)
 - [x] 1E — API client + hooks + mocks mode + coords/colors + store + shell + routes — Friend — hand-written SPEC §7 types until gen:api; groups/clash-detail derived from mocks (rule null in mock mode); needs Node 24 (fnm use 24)
 - [x] 1F — 3D scene (ground, pipes, works, markers, halos) + left rail — Friend — scene lazy-loaded (three.js chunk ~970 kB, main 354 kB); pipes/halos/works merged per utility; markers filtered by certainty only (layers never hide clashes); depth_known=false assets drawn faded at placeholder z; HDD/PIPE_LAY built from SPEC §8.1/§8.2 but only checked on a synthetic scene, verify against the real seed at Gate 1
-- [ ] **Gate 1 passed**
+- [x] **Gate 1 passed** — verified by Sam with Rishit
 
 ## Phase 2 — Features
 - [x] 2A — PDF text + sample permits + LLM extraction + cached fixtures — Sam — `app/permits/`: `extract_permit(text, settings=None, client=None) -> ExtractionResult(fields{15}, missing_fields, llm_mode_used)`; order live (LLM_MODE=live + key, 10 s) → fixture (exact sample text) → `rules_extract.extract_with_rules` (offline, conf 0.5, exact quotes); `llm_mode_used` ∈ live|cached|rules (contract updated); only empty text raises `ExtractionUnavailable`. `pdf_text.extract_pdf_text` raises `PdfNoTextError` (→422 PDF_NO_TEXT) / `PdfTooLargeError` (→413 FILE_TOO_LARGE). `sample_permits.SAMPLE_PERMITS` (sample-1..3; PDFs via `scripts/make_sample_permits.py`) is the source for 2B `/samples`. Fixtures hand-written (no API key). Rules set depth_from=0.0 for open-cut when only a depth is stated (as in the mock); HDD leaves it missing. No routes/models/OpenAPI changed. 2B: geocode `street/from_ref/to_ref/side/offset_m` (IDs ST-/JN-/LM-), `side` ∈ NORTH|SOUTH|EAST|WEST
 - [x] 2B — geocoder + permit routes + missing-data handling — Sam — `permits/geocode.py` (offset from centreline; RESOLVED / PARTIAL side missing / FAILED), `permits/intake.py` (draft → INTAKE Work, PATCH validation, `intake_uncertainty`), `api/routes_permits.py` (samples, parse text|PDF, PATCH, commit; codes DRAFT_NOT_FOUND, DRAFT_ALREADY_COMMITTED, UNKNOWN_FIELD, INVALID_FIELD_VALUE, GEOCODE_FAILED, DRAFT_INCOMPLETE). Unknown work depth → `depth_to_m` in `missing_fields`, engine assesses 0.5–3.0 m, clashes NEEDS_DATA (`WRK-xxx.depth`). Missing trench width → 0.6 m assumed and listed. Commit counts (LIKELY/POSSIBLE/NEEDS_DATA): s1 0/8/0 + 1 LIKELY schedule overlap; s2 2 LIKELY + 1 POSSIBLE (locked by test); s3 0/0/7. `permit_parse.json` mock now generated from real parse (draft id PRM-0001)
-- [ ] 2C — review + audit routes, OpenAPI re-exported — Sam
+- [x] 2C — review + audit routes, OpenAPI re-exported — Sam — `POST /api/clashes/{id}/review` (`Store.review_clash` sets review + audit atomically; ACKNOWLEDGE/ESCALATE/DISMISS/REOPEN → ACKNOWLEDGED/ESCALATED/DISMISSED/OPEN) and `GET /api/audit` (newest first). Errors: 404 CLASH_NOT_FOUND, 422 REVIEWER_REQUIRED (new), 422 NOTE_REQUIRED (DISMISS), 422 VALIDATION_ERROR; failures change/log nothing. REOPEN keeps reviewer, replaces note with request note. Contract updated; `shared/openapi.json` re-exported (mocks unchanged)
 - [x] 2D — clash panel + fly-to + conflict list — Friend — `features/clashes/` (ClashPanel, ConflictList, CertaintyGlyph, factors.ts) + `scene3d/CameraRig.tsx`; factor bar = weighted terms rounded (largest remainder) to sum to the score; review works in mock mode, live API shows "not available yet" until 2C; reviewer name in Zustand; fly-to without new deps (stops on drag)
 - [ ] 2E — section plane + cross-section SVG — Friend
 - [ ] 2F — permit intake page — Friend
@@ -53,7 +53,7 @@
 ## Blockers
 - frontend: switch to generated schema.d.ts types at Gate 1 (`ClashDetail.rule` is nullable: null for SCHEDULE_OVERLAP clashes)
 - frontend: `Summary` in `src/api/types.ts` is still hand-written; alias it to the generated type after backend 3A adds `/api/summary` to openapi.json — Friend
-- frontend: review types hand-written in `src/api/types.ts`; alias to generated after 2C exports `/api/clashes/{id}/review` — Friend
+- frontend: review types hand-written in `src/api/types.ts`; 2C has exported `/api/clashes/{id}/review` and `/api/audit` — run pnpm gen:api and alias them; `AuditEntry.target_id` is `string | null` — Friend
 
 ## Notes for 2B / 2C
 - Permit commit: add the work to `store.scene.works`, call `store.reanalyze()` (ids stay stable), log audit via `store.log_audit`. Reviews: `store.set_review(clash_id, Review)` then audit; the review model/route is 2C.

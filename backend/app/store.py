@@ -17,12 +17,21 @@ from app.models import (
     Clash,
     ClashGroup,
     Review,
+    ReviewStatus,
     Rule,
     Scene,
     TruthCase,
     Work,
 )
+from app.models.enums import ReviewAction
 from app.permits.intake import DraftRecord, intake_uncertainty, next_work_id
+
+_ACTION_STATUS = {
+    ReviewAction.ACKNOWLEDGE: ReviewStatus.ACKNOWLEDGED,
+    ReviewAction.ESCALATE: ReviewStatus.ESCALATED,
+    ReviewAction.DISMISS: ReviewStatus.DISMISSED,
+    ReviewAction.REOPEN: ReviewStatus.OPEN,
+}
 
 
 class Store:
@@ -155,6 +164,25 @@ class Store:
                 return None
             self._reviews[key] = review
             return self.clash(clash_id)
+
+    def review_clash(
+        self, clash_id: str, action: ReviewAction, reviewer: str, note: str | None
+    ) -> tuple[Clash, AuditEntry] | None:
+        """Apply a review action and log it atomically; None if the clash id is unknown."""
+        status = _ACTION_STATUS[action]
+        with self._lock:
+            review = Review(
+                status=status,
+                reviewer=reviewer,
+                note=note,
+                updated_at=datetime.now(UTC),
+            )
+            clash = self.set_review(clash_id, review)
+            if clash is None:
+                return None
+            detail = note or f"Marked {status.value}"
+            audit = self.log_audit(reviewer, action.value, clash_id, detail)
+            return clash, audit
 
     def log_audit(self, actor: str, action: str, target_id: str | None, detail: str) -> AuditEntry:
         with self._lock:
