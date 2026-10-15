@@ -1,6 +1,6 @@
 # AGENTS.md — Subterra Clash
 
-Shared rules for every coding agent on this repo (Claude Code reads this through `CLAUDE.md`; Antigravity reads it directly). Keep this file under 12,000 characters.
+Shared rules for every coding agent on this repo. Both team members use Claude Code (it reads this file through `CLAUDE.md`), and each machine's gitignored `CLAUDE.local.md` says who the agent works for. Keep this file under 12,000 characters.
 
 ## What we are building
 A 3D review tool that finds probable spatial and schedule conflicts between proposed underground works and existing utilities, shows the evidence and uncertainty, and ranks them for engineering review. Hackathon: Code-E-Manipal 2.0, PS 32. 24-hour build.
@@ -17,12 +17,12 @@ Work happens in numbered sessions (e.g. `1B`, `2E`) listed in `docs/PHASES.md`. 
 | Who | Tool | Owns (may edit) |
 |---|---|---|
 | Sam | Claude Code (WSL2) | `backend/`, `docs/`, `shared/`, root config files |
-| Friend | Antigravity (Windows) | `frontend/` |
+| Rishit | Claude Code (Windows) | `frontend/` |
 
 - Never edit files outside the folders owned by the person you are working for. If a change is needed elsewhere, say so in your reply and stop.
 - The frontend agent never edits `docs/API_CONTRACT.md`, `shared/openapi.json` or `shared/mocks/`. Ask Sam.
 - `frontend/src/api/schema.d.ts` is generated. Never hand-edit it.
-- Backend sessions (Claude Code): 0B, 1A, 1B, 1C, 1D, 2A, 2B, 2C, 3A, 3B, 4A. Frontend sessions (Antigravity): 0F, 1E, 1F, 2D, 2E, 2F, 3C, 3D, 3E, 4B.
+- Backend sessions (Sam): 0B, 1A, 1B, 1C, 1D, 2A, 2B, 2C, 3A, 3B, 4A. Frontend sessions (Rishit): 0F, 1E, 1F, 2D, 2E, 2F, 3C, 3D, 3E, 4B.
 
 ## Git workflow (everyone commits to `main`, no branches)
 - `git pull --rebase` before starting work and before every push.

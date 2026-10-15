@@ -47,8 +47,8 @@ docker compose up --build
 | `docs/PROGRESS.md` | Live checklist |
 | `docs/API_CONTRACT.md` | Endpoints and payloads |
 | `docs/DEMO_SCRIPT.md` | 4-minute judge demo |
-| `AGENTS.md` | Rules for coding agents (Claude Code + Antigravity) |
+| `AGENTS.md` | Rules for coding agents (Claude Code, both of us) |
 
 ## Team
 - Sam — backend, clash engine, permit intake (Claude Code)
-- _Teammate_ — frontend, 3D viewer (Antigravity)
+- Rishit — frontend, 3D viewer (Claude Code)

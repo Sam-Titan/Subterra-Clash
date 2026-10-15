@@ -6,10 +6,10 @@
 
 ## How the two of us work
 
-- **Every phase has a backend half and a frontend half that run at the same time.** Sam's half is built with Claude Code (WSL2), the friend's half with Antigravity (Windows). Phase 0 is done together.
+- **Every phase has a backend half and a frontend half that run at the same time.** Sam's half is built with Claude Code (WSL2), Rishit's half with Claude Code (Windows). Phase 0 is done together.
 - **Integration happens at the gate at the end of each phase** (H1.5, H7, H13, H19). Both stop, pull, run the full app together, fix mismatches; Sam ticks the gate in PROGRESS.md. About 20 minutes each (see "How to run a gate").
 - **Each phase is split into sessions** (1A, 1B, …). One agent session = one session ID below:
-  1. `git pull --rebase`, then start a fresh session (`/clear` in Claude Code, a new conversation in Antigravity).
+  1. `git pull --rebase`, then start a fresh session (`/clear` in Claude Code).
   2. Paste the session prompt (below), filling in the phase, session ID and side.
   3. Review the plan, approve, let it build.
   4. It runs the checks (AGENTS.md "Definition of done") and ticks its own line in PROGRESS.md.
@@ -29,7 +29,7 @@ A gate is a joint check, not a build session. Both run it, each for their own si
 1. **Both:** finish your sessions for the phase, commit, push. Then `git pull --rebase` so both machines have everything.
 2. **Both, in parallel:** start a fresh agent session and paste the gate prompt (below) for your side. The agent runs the checks and reports what fails; it does not build features. Each of you fixes failures only in your own folder, then commits and pushes.
 3. **Together, on Sam's machine (WSL2):** pull, run the backend and the frontend with `VITE_USE_MOCKS=false`, and walk through that phase's gate line by hand in the browser.
-4. **Friend, once per gate:** also run both apps on Windows to confirm nothing is machine-specific.
+4. **Rishit, once per gate:** also run both apps on Windows to confirm nothing is machine-specific.
 5. **Sam:** if everything passes, tick the gate in PROGRESS.md, set "Current phase" to the next phase, update "Last gate passed", commit and push. If something fails, add it under "Blockers" and fix it before starting the next phase.
 
 ### Gate prompt (each runs it for their own side)
@@ -39,20 +39,20 @@ Read AGENTS.md, docs/PROGRESS.md and docs/PHASES.md. We are at Gate <N>. Do not 
 
 ## Before H0 — install these (both, ~30 min, do it the night before)
 
-| | Sam (Windows + WSL2 Ubuntu; everything inside WSL) | Friend (Windows) |
+| | Sam (Windows + WSL2 Ubuntu; everything inside WSL) | Rishit (Windows) |
 |---|---|---|
 | Git | `sudo apt install git curl` | Git for Windows (includes Git Bash) |
 | Git identity | `git config --global user.name "<GitHub username>"` and `user.email` = the email on your GitHub account | same, with their own account |
 | GitHub access | SSH key or `gh auth login`; you are the repo owner | Accept the collaborator invite you send; SSH key or Git Credential Manager |
 | Python tooling | uv (`curl -LsSf https://astral.sh/uv/install.sh \| sh`); uv downloads Python 3.14 itself | uv for Windows (see 0F); needed to run the backend at gates |
 | Node | Node 24 LTS via nvm (`nvm install 24`), then `corepack enable`; needed to run the frontend at gates | Node 24 LTS installer, then `corepack enable` |
-| Agent | Claude Code installed inside WSL, logged in | Antigravity installed, logged in |
+| Agent | Claude Code installed inside WSL, logged in | Claude Code installed on Windows, logged in |
 | Docker (Phase 4 only) | Docker Desktop on Windows with WSL integration turned on for your distro | Docker Desktop (optional; only one of you needs it) |
 | LLM key (optional) | Anthropic API key in `backend/.env` for live permit extraction; without it, `LLM_MODE=cached` still works | not needed |
 
 No system Python, no Postgres, no global npm packages. Everything else is installed by `uv sync` and `pnpm install`.
 
-| Phase | Hours | Backend sessions (Sam · Claude Code) | Frontend sessions (Friend · Antigravity) | Gate (integration) |
+| Phase | Hours | Backend sessions (Sam · Claude Code) | Frontend sessions (Rishit · Claude Code) | Gate (integration) |
 |---|---|---|---|---|
 | 0 Setup | H0–H1.5 | 0B | 0F | Both apps run; same tree on both machines |
 | 1 Core | H1.5–H7 | 1A · 1B · 1C · 1D | 1E · 1F | 3D scene shows real clashes from the real API |
@@ -64,7 +64,7 @@ No system Python, no Postgres, no global npm packages. Everything else is instal
 
 ## Phase 0 — Setup (H0–H1.5) · both of us, in parallel
 
-Order: Sam pushes the starter files first (5 min). The friend waits for that push, pulls, then both work on 0B and 0F at the same time. Gate 0 is done together.
+Order: Sam pushes the starter files first (5 min). Rishit waits for that push, pulls, then both work on 0B and 0F at the same time. Gate 0 is done together.
 
 ### 0B — Sam, backend (WSL2; repo under `~/`, never under `/mnt/c`)
 - [ ] Copy the starter files into the repo (AGENTS.md, CLAUDE.md, README.md, root dotfiles, `.claude/settings.json`, `.githooks/`, docs/, shared/, backend/.python-version, backend/.env.example).
@@ -83,7 +83,7 @@ Order: Sam pushes the starter files first (5 min). The friend waits for that pus
 - [ ] Ruff config in `pyproject.toml`: line-length 100, target-version py314 (py313 if pinned), select `E,F,I,UP,B,SIM`.
 - [ ] `uv run uvicorn app.main:app --reload --port 8000` → `http://localhost:8000/api/health` returns ok.
 
-### 0F — Friend, frontend (Windows)
+### 0F — Rishit, frontend (Windows)
 - [ ] Prerequisites from "Before H0" done (Node 24, Git, `corepack enable`).
 - [ ] Install uv for Windows (needed to run the backend at gates): `powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"`.
 - [ ] Clone (or pull) the repo after Sam's first push, then run once inside it: `git config core.hooksPath .githooks`.
@@ -98,7 +98,7 @@ Order: Sam pushes the starter files first (5 min). The friend waits for that pus
 - [ ] `frontend/.env.development` (committed, no secrets): `VITE_USE_MOCKS=true`.
 - [ ] `pnpm dev` → app at `http://localhost:5173`. Commit and push.
 
-**Gate 0 (together):** both pull; `git status` is clean on both machines (no line-ending noise); `git log` on GitHub shows only your two usernames as authors; backend `/api/health` ok; frontend dev server runs. Friend runs the backend once on Windows: `cd backend`, `copy .env.example .env`, `uv sync`, `uv run uvicorn app.main:app --port 8000`.
+**Gate 0 (together):** both pull; `git status` is clean on both machines (no line-ending noise); `git log` on GitHub shows only your two usernames as authors; backend `/api/health` ok; frontend dev server runs. Rishit runs the backend once on Windows: `cd backend`, `copy .env.example .env`, `uv sync`, `uv run uvicorn app.main:app --port 8000`.
 
 ---
 
@@ -203,7 +203,7 @@ Order: Sam pushes the starter files first (5 min). The friend waits for that pus
 - [ ] README quickstart verified on a clean clone.
 - [ ] Final seed tuning; `POST /api/reset` before the demo.
 
-### 4B — Friend
+### 4B — Rishit
 - [ ] `frontend/Dockerfile` (build, then serve static files with `/api` proxied to the backend service).
 - [ ] Polish pass, empty states, keyboard: `Esc` closes the panel, `X` toggles x-ray.
 - [ ] Check 1366×768 and 1920×1080.
