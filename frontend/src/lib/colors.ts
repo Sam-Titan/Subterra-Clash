@@ -72,3 +72,18 @@ export const FACTOR_COLORS = {
 	urgency: "#71717A",
 	confidence: "#52525B",
 } as const;
+
+/** Section plane (3D) and cross-section drawing (SVG). Neutral on purpose. */
+export const SECTION_COLORS = {
+	plane: "#A1A1AA",
+	handle: "#E4E4E7",
+	grid: "#27272A",
+	gridLabel: "#71717A",
+	surface: "#A1A1AA",
+	kerb: "#5A5C66",
+	/** Dimension line and its label. */
+	dimension: "#FFFFFF",
+	/** Required-clearance envelope around the selected work. */
+	envelope: "#C9CBD3",
+	labelBg: "#09090B",
+} as const;

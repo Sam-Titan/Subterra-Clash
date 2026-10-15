@@ -49,6 +49,7 @@ export const RENDER_ORDER = {
 	halos: 3,
 	ground: 4,
 	overlayLines: 5, // street kerbs, work footprints, leader lines
+	section: 5,
 	markers: 6,
 } as const;
 
@@ -59,6 +60,18 @@ export const OPACITY = {
 	works: 0.3,
 	workEdges: 0.8,
 	halo: 0.1,
+	sectionPlane: 0.08,
+	sectionOutline: 0.7,
+} as const;
+
+/** Draggable section plane (SPEC §10.2). */
+export const SECTION = {
+	/** Handle bar height above the road (m). */
+	handleHeight: 1.2,
+	/** Visible handle thickness (m). */
+	handleThickness: 0.5,
+	/** Invisible pick box around the handle (m), larger for easy grabbing. */
+	handleHitSize: 3,
 } as const;
 
 /** Screen-space widths (px) for lines that must stay visible from far away. */

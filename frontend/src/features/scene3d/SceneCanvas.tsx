@@ -2,6 +2,8 @@ import { OrbitControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { type ReactNode, useMemo } from "react";
 import type { Clash, Scene } from "@/api/types";
+import { SectionPlane } from "@/features/section/SectionPlane";
+import type { SectionState } from "@/features/section/sectionGeometry";
 import { SCENE_COLORS } from "@/lib/colors";
 import { boundsCenter, type Vec3 } from "@/lib/coords";
 import { useAppStore } from "@/store/useAppStore";
@@ -16,6 +18,8 @@ import { WorkVolumes } from "./WorkVolumes";
 export interface SceneCanvasProps {
 	scene: Scene;
 	clashes: Clash[];
+	/** Section plane to draw, or null when the cross-section is off. */
+	section?: { state: SectionState; depth: number } | null;
 	/** Extra scene children (e.g. dev-only probes). */
 	children?: ReactNode;
 }
@@ -28,6 +32,7 @@ export interface SceneCanvasProps {
 export default function SceneCanvas({
 	scene,
 	clashes,
+	section = null,
 	children,
 }: SceneCanvasProps) {
 	const layers = useAppStore((s) => s.layers);
@@ -79,6 +84,13 @@ export default function SceneCanvas({
 			{halos && <UncertaintyHalos assets={scene.assets} layers={layers} />}
 			{layers.WORKS && <WorkVolumes works={scene.works} />}
 			<ClashMarkers clashes={clashes} />
+			{section && (
+				<SectionPlane
+					section={section.state}
+					depth={section.depth}
+					bounds={bounds}
+				/>
+			)}
 
 			<OrbitControls
 				makeDefault

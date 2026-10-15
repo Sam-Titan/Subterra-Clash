@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { CERTAINTIES, type Certainty, type Utility } from "@/api/types";
+import type { SectionState } from "@/features/section/sectionGeometry";
 
 export type LayerId = Utility | "WORKS";
 
@@ -22,6 +23,13 @@ interface AppState {
 	dateFilter: string | null;
 	/** Name recorded on review decisions (no auth in this tool). */
 	reviewerName: string;
+	/** Section plane + cross-section panel shown. */
+	sectionEnabled: boolean;
+	/** The user has used the section switch; stop auto-enabling it. */
+	sectionTouched: boolean;
+	sectionCollapsed: boolean;
+	/** null = default (first street at its midpoint). */
+	section: SectionState | null;
 
 	selectClash: (id: string | null) => void;
 	toggleLayer: (layer: LayerId) => void;
@@ -32,6 +40,12 @@ interface AppState {
 	setDateFilter: (date: string | null) => void;
 	resetFilters: () => void;
 	setReviewerName: (name: string) => void;
+	/** From the user (rail switch, panel close): also marks the switch touched. */
+	setSectionEnabled: (on: boolean) => void;
+	/** First clash selection: turn the section on unless the user decided already. */
+	autoEnableSection: () => void;
+	setSectionCollapsed: (collapsed: boolean) => void;
+	setSection: (section: SectionState) => void;
 }
 
 export const useAppStore = create<AppState>()((set) => ({
@@ -64,4 +78,15 @@ export const useAppStore = create<AppState>()((set) => ({
 			dateFilter: null,
 		}),
 	setReviewerName: (name) => set({ reviewerName: name }),
+	sectionEnabled: false,
+	sectionTouched: false,
+	sectionCollapsed: false,
+	section: null,
+	setSectionEnabled: (on) => set({ sectionEnabled: on, sectionTouched: true }),
+	autoEnableSection: () =>
+		set((s) =>
+			s.sectionTouched ? {} : { sectionEnabled: true, sectionTouched: true },
+		),
+	setSectionCollapsed: (collapsed) => set({ sectionCollapsed: collapsed }),
+	setSection: (section) => set({ section }),
 }));

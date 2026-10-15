@@ -123,6 +123,8 @@ export function LeftRail() {
 	const certaintyFilter = useAppStore((s) => s.certaintyFilter);
 	const toggleCertainty = useAppStore((s) => s.toggleCertainty);
 	const resetFilters = useAppStore((s) => s.resetFilters);
+	const sectionEnabled = useAppStore((s) => s.sectionEnabled);
+	const setSectionEnabled = useAppStore((s) => s.setSectionEnabled);
 
 	const assetCounts = useMemo(() => {
 		const counts = new Map<LayerId, number>();
@@ -226,6 +228,12 @@ export function LeftRail() {
 					hint="Diameter / 2 + horizontal precision"
 					checked={halos}
 					onChange={setHalos}
+				/>
+				<SwitchRow
+					label="Cross-section"
+					hint="Drag the plane's handle bar to move the cut"
+					checked={sectionEnabled}
+					onChange={setSectionEnabled}
 				/>
 			</section>
 
