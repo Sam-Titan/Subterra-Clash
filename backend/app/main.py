@@ -1,10 +1,13 @@
 from datetime import date
 from typing import Annotated, Literal
 
-from fastapi import Depends, FastAPI
+from fastapi import Depends, FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
+from app.api import routes_clashes, routes_scene
+from app.api.schemas import AppError
 from app.config import Settings, get_settings
 
 VERSION = "0.1.0"
@@ -27,6 +30,15 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.include_router(routes_scene.router)
+app.include_router(routes_clashes.router)
+
+
+@app.exception_handler(AppError)
+def app_error_handler(_: Request, exc: AppError) -> JSONResponse:
+    return JSONResponse(
+        status_code=exc.status_code, content={"detail": exc.detail, "code": exc.code}
+    )
 
 
 class HealthResponse(BaseModel):

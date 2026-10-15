@@ -1,89 +1,810 @@
 {
   "items": [
     {
-      "id": "CLH-0001",
-      "kind": "INTERSECTION",
-      "certainty": "LIKELY",
-      "severity": {
-        "score": 100,
-        "band": "CRITICAL",
-        "factors": { "hazard": 1.0, "breach": 1.0, "urgency": 1.0, "confidence": 1.0 }
-      },
-      "work_ids": ["WRK-001"],
-      "asset_ids": ["AST-0001"],
-      "location": { "x": 300, "y": 194, "z": -1.0 },
-      "measured_gap_m": -0.6,
-      "required_clearance_m": 1.0,
-      "uncertainty_m": 0.28,
-      "rule_id": "R-EXC-GAS",
-      "schedule": null,
-      "explanation": "Trench WRK-001 reaches 1.5 m but gas main AST-0001 sits at about 0.9 m (top of pipe), so the excavation cuts through it; 1.0 m clearance is required.",
-      "evidence": [
-        { "type": "ASSET_RECORD", "ref": "NGL-GIS-1187", "detail": "Surveyed 2023-06-14, ±0.2 m horizontal, ±0.2 m depth" },
-        { "type": "PERMIT", "ref": "NFN/2026/0412", "detail": "Open trench 0.8 m wide, 0–1.5 m deep" },
-        { "type": "RULE", "ref": "R-EXC-GAS", "detail": "Excavation vs gas — hand-dig zone, 1.0 m" }
+      "asset_ids": [
+        "AST-0009"
       ],
-      "missing_data": [],
+      "baseline_flagged": true,
+      "certainty": "LIKELY",
+      "evidence": [
+        {
+          "detail": "AST-0009 200 mm MDPE gas main; Navgarh Gas Ltd GIS export; SURVEYED on 2023-06-14",
+          "ref": "NGL-GIS-1187",
+          "type": "ASSET_RECORD"
+        },
+        {
+          "detail": "WRK-001 Fibre ducting crossing, Station Road (Navgarh FiberNet); 2026-11-03 to 2026-11-12; source: Municipal permit portal",
+          "ref": "NFN/2026/0412",
+          "type": "PERMIT"
+        },
+        {
+          "detail": "Excavation vs gas — hand-dig zone: min 1.00 m (illustrative clearance, not a regulatory standard)",
+          "ref": "R-EXC-GAS",
+          "type": "RULE"
+        },
+        {
+          "detail": "horizontal ±0.20 m; depth ±0.20 m",
+          "ref": "AST-0009",
+          "type": "PRECISION"
+        }
+      ],
+      "explanation": "Fibre ducting crossing, Station Road cuts through 200 mm MDPE gas main (AST-0009) with 0.60 m of overlap, against 1.00 m required (R-EXC-GAS), a breach even allowing ±0.28 m.",
       "group_id": "GRP-01",
-      "review": { "status": "OPEN", "reviewer": null, "note": null, "updated_at": null },
-      "baseline_flagged": true
-    },
-    {
       "id": "CLH-0002",
       "kind": "INTERSECTION",
-      "certainty": "LIKELY",
-      "severity": {
-        "score": 96,
-        "band": "CRITICAL",
-        "factors": { "hazard": 0.9, "breach": 1.0, "urgency": 1.0, "confidence": 1.0 }
+      "location": {
+        "x": 299.6,
+        "y": 194.0,
+        "z": -1.0
       },
-      "work_ids": ["WRK-001"],
-      "asset_ids": ["AST-0002"],
-      "location": { "x": 300, "y": 207, "z": -0.9 },
-      "measured_gap_m": -0.68,
-      "required_clearance_m": 0.6,
-      "uncertainty_m": 0.42,
-      "rule_id": "R-EXC-POWER",
-      "schedule": null,
-      "explanation": "Trench WRK-001 reaches 1.5 m but the 11 kV cable AST-0002 sits at about 0.83 m (top of cable), so the excavation cuts through it; 0.6 m clearance is required.",
-      "evidence": [
-        { "type": "ASSET_RECORD", "ref": "NVVN-AB-2291", "detail": "As-built 2019-02-02, ±0.3 m horizontal, ±0.3 m depth" },
-        { "type": "PERMIT", "ref": "NFN/2026/0412", "detail": "Open trench 0.8 m wide, 0–1.5 m deep" },
-        { "type": "RULE", "ref": "R-EXC-POWER", "detail": "Excavation vs power, 0.6 m" }
-      ],
+      "measured_gap_m": -0.6,
       "missing_data": [],
-      "group_id": "GRP-01",
-      "review": { "status": "OPEN", "reviewer": null, "note": null, "updated_at": null },
-      "baseline_flagged": true
+      "required_clearance_m": 1.0,
+      "review": {
+        "note": null,
+        "reviewer": null,
+        "status": "OPEN",
+        "updated_at": null
+      },
+      "rule_id": "R-EXC-GAS",
+      "schedule": null,
+      "severity": {
+        "band": "CRITICAL",
+        "factors": {
+          "breach": 1.0,
+          "confidence": 1.0,
+          "hazard": 1.0,
+          "urgency": 1.0
+        },
+        "score": 100
+      },
+      "uncertainty_m": 0.2828,
+      "work_ids": [
+        "WRK-001"
+      ]
     },
     {
+      "asset_ids": [
+        "AST-0013"
+      ],
+      "baseline_flagged": true,
+      "certainty": "LIKELY",
+      "evidence": [
+        {
+          "detail": "AST-0013 150 mm power cable; NVVN Discom GIS export; SURVEYED on 2023-01-12",
+          "ref": "NVVN-AB-4432",
+          "type": "ASSET_RECORD"
+        },
+        {
+          "detail": "WRK-001 Fibre ducting crossing, Station Road (Navgarh FiberNet); 2026-11-03 to 2026-11-12; source: Municipal permit portal",
+          "ref": "NFN/2026/0412",
+          "type": "PERMIT"
+        },
+        {
+          "detail": "Excavation vs power cable: min 0.60 m (illustrative clearance, not a regulatory standard)",
+          "ref": "R-EXC-POWER",
+          "type": "RULE"
+        },
+        {
+          "detail": "horizontal ±0.10 m; depth ±0.10 m",
+          "ref": "AST-0013",
+          "type": "PRECISION"
+        }
+      ],
+      "explanation": "Fibre ducting crossing, Station Road cuts through 150 mm power cable (AST-0013) with 0.67 m of overlap, against 0.60 m required (R-EXC-POWER), a breach even allowing ±0.14 m.",
+      "group_id": "GRP-01",
       "id": "CLH-0003",
-      "kind": "CLEARANCE",
-      "certainty": "NEEDS_DATA",
-      "severity": {
-        "score": 65,
-        "band": "HIGH",
-        "factors": { "hazard": 0.9, "breach": 0.5, "urgency": 0.5, "confidence": 0.4 }
+      "kind": "INTERSECTION",
+      "location": {
+        "x": 299.6,
+        "y": 207.0,
+        "z": -0.9
       },
-      "work_ids": ["WRK-002"],
-      "asset_ids": ["AST-0005"],
-      "location": { "x": 174, "y": 104, "z": -1.0 },
-      "measured_gap_m": null,
+      "measured_gap_m": -0.675,
+      "missing_data": [],
       "required_clearance_m": 0.6,
-      "uncertainty_m": null,
+      "review": {
+        "note": null,
+        "reviewer": null,
+        "status": "OPEN",
+        "updated_at": null
+      },
       "rule_id": "R-EXC-POWER",
       "schedule": null,
-      "explanation": "Pit WRK-002 (0–2.0 m deep) sits over LT cable AST-0005, whose depth is not recorded; a clash is possible anywhere in the plausible 0.5–3.0 m band, so field verification is needed.",
-      "evidence": [
-        { "type": "ASSET_RECORD", "ref": "NVVN-LT-0912", "detail": "Estimated from 2008 feeder sketch, depth not recorded" },
-        { "type": "PERMIT", "ref": "NJB/VC/2026/031", "detail": "Pit 8 m × 8 m, 0–2.0 m deep" },
-        { "type": "RULE", "ref": "R-EXC-POWER", "detail": "Excavation vs power, 0.6 m" }
+      "severity": {
+        "band": "CRITICAL",
+        "factors": {
+          "breach": 1.0,
+          "confidence": 1.0,
+          "hazard": 0.9,
+          "urgency": 1.0
+        },
+        "score": 96
+      },
+      "uncertainty_m": 0.1414,
+      "work_ids": [
+        "WRK-001"
+      ]
+    },
+    {
+      "asset_ids": [
+        "AST-0005"
       ],
-      "missing_data": ["AST-0005.depth"],
+      "baseline_flagged": true,
+      "certainty": "LIKELY",
+      "evidence": [
+        {
+          "detail": "AST-0005 400 mm DI water main; Navgarh Jal Board as-built drawings; AS_BUILT on 2011-07-31",
+          "ref": "NJB-WT-1106",
+          "type": "ASSET_RECORD"
+        },
+        {
+          "detail": "WRK-001 Fibre ducting crossing, Station Road (Navgarh FiberNet); 2026-11-03 to 2026-11-12; source: Municipal permit portal",
+          "ref": "NFN/2026/0412",
+          "type": "PERMIT"
+        },
+        {
+          "detail": "Excavation vs water, sewer or telecom: min 0.30 m (illustrative clearance, not a regulatory standard)",
+          "ref": "R-EXC-OTHER",
+          "type": "RULE"
+        },
+        {
+          "detail": "horizontal ±0.25 m; depth ±0.30 m",
+          "ref": "AST-0005",
+          "type": "PRECISION"
+        }
+      ],
+      "explanation": "Fibre ducting crossing, Station Road cuts through 400 mm DI water main (AST-0005) with 0.20 m of overlap, against 0.30 m required (R-EXC-OTHER), a breach even allowing ±0.39 m.",
+      "group_id": "GRP-01",
+      "id": "CLH-0001",
+      "kind": "INTERSECTION",
+      "location": {
+        "x": 299.6,
+        "y": 203.5,
+        "z": -1.5
+      },
+      "measured_gap_m": -0.2,
+      "missing_data": [],
+      "required_clearance_m": 0.3,
+      "review": {
+        "note": null,
+        "reviewer": null,
+        "status": "OPEN",
+        "updated_at": null
+      },
+      "rule_id": "R-EXC-OTHER",
+      "schedule": null,
+      "severity": {
+        "band": "CRITICAL",
+        "factors": {
+          "breach": 1.0,
+          "confidence": 1.0,
+          "hazard": 0.6,
+          "urgency": 1.0
+        },
+        "score": 84
+      },
+      "uncertainty_m": 0.3905,
+      "work_ids": [
+        "WRK-001"
+      ]
+    },
+    {
+      "asset_ids": [
+        "AST-0016"
+      ],
+      "baseline_flagged": true,
+      "certainty": "LIKELY",
+      "evidence": [
+        {
+          "detail": "AST-0016 110 mm HDPE telecom duct; Navgarh FiberNet as-built drawings; AS_BUILT on 2016-12-30",
+          "ref": "NFN-GIS-6168",
+          "type": "ASSET_RECORD"
+        },
+        {
+          "detail": "WRK-001 Fibre ducting crossing, Station Road (Navgarh FiberNet); 2026-11-03 to 2026-11-12; source: Municipal permit portal",
+          "ref": "NFN/2026/0412",
+          "type": "PERMIT"
+        },
+        {
+          "detail": "Excavation vs water, sewer or telecom: min 0.30 m (illustrative clearance, not a regulatory standard)",
+          "ref": "R-EXC-OTHER",
+          "type": "RULE"
+        },
+        {
+          "detail": "horizontal ±0.15 m; depth ±0.20 m",
+          "ref": "AST-0016",
+          "type": "PRECISION"
+        }
+      ],
+      "explanation": "Fibre ducting crossing, Station Road cuts through 110 mm HDPE telecom duct (AST-0016) with 0.96 m of overlap, against 0.30 m required (R-EXC-OTHER), a breach even allowing ±0.25 m.",
+      "group_id": "GRP-01",
+      "id": "CLH-0004",
+      "kind": "INTERSECTION",
+      "location": {
+        "x": 299.6,
+        "y": 192.0,
+        "z": -0.6
+      },
+      "measured_gap_m": -0.955,
+      "missing_data": [],
+      "required_clearance_m": 0.3,
+      "review": {
+        "note": null,
+        "reviewer": null,
+        "status": "OPEN",
+        "updated_at": null
+      },
+      "rule_id": "R-EXC-OTHER",
+      "schedule": null,
+      "severity": {
+        "band": "HIGH",
+        "factors": {
+          "breach": 1.0,
+          "confidence": 1.0,
+          "hazard": 0.35,
+          "urgency": 1.0
+        },
+        "score": 74
+      },
+      "uncertainty_m": 0.25,
+      "work_ids": [
+        "WRK-001"
+      ]
+    },
+    {
+      "asset_ids": [
+        "AST-0048"
+      ],
+      "baseline_flagged": true,
+      "certainty": "LIKELY",
+      "evidence": [
+        {
+          "detail": "AST-0048 110 mm MDPE gas main; Navgarh Gas Ltd GIS export; SURVEYED on 2018-11-22",
+          "ref": "NGL-GIS-7658",
+          "type": "ASSET_RECORD"
+        },
+        {
+          "detail": "WRK-005 Drain connection trench, Nehru Path (Navgarh Municipal Corporation); 2026-12-01 to 2026-12-05; source: Municipal permit portal",
+          "ref": "NMC/2026/219",
+          "type": "PERMIT"
+        },
+        {
+          "detail": "Excavation vs gas — hand-dig zone: min 1.00 m (illustrative clearance, not a regulatory standard)",
+          "ref": "R-EXC-GAS",
+          "type": "RULE"
+        },
+        {
+          "detail": "horizontal ±0.10 m; depth ±0.10 m",
+          "ref": "AST-0048",
+          "type": "PRECISION"
+        }
+      ],
+      "explanation": "Drain connection trench, Nehru Path cuts through 110 mm MDPE gas main (AST-0048) with 0.66 m of overlap, against 1.00 m required (R-EXC-GAS), a breach even allowing ±0.14 m.",
+      "group_id": "GRP-05",
+      "id": "CLH-0009",
+      "kind": "INTERSECTION",
+      "location": {
+        "x": 299.6,
+        "y": 316.0,
+        "z": -0.9
+      },
+      "measured_gap_m": -0.655,
+      "missing_data": [],
+      "required_clearance_m": 1.0,
+      "review": {
+        "note": null,
+        "reviewer": null,
+        "status": "OPEN",
+        "updated_at": null
+      },
+      "rule_id": "R-EXC-GAS",
+      "schedule": null,
+      "severity": {
+        "band": "CRITICAL",
+        "factors": {
+          "breach": 1.0,
+          "confidence": 1.0,
+          "hazard": 1.0,
+          "urgency": 0.5
+        },
+        "score": 93
+      },
+      "uncertainty_m": 0.1414,
+      "work_ids": [
+        "WRK-005"
+      ]
+    },
+    {
+      "asset_ids": [
+        "AST-0045"
+      ],
+      "baseline_flagged": true,
+      "certainty": "LIKELY",
+      "evidence": [
+        {
+          "detail": "AST-0045 200 mm DI water main; Navgarh Jal Board GIS export; SURVEYED on 2012-04-07",
+          "ref": "NJB-WT-4139",
+          "type": "ASSET_RECORD"
+        },
+        {
+          "detail": "WRK-005 Drain connection trench, Nehru Path (Navgarh Municipal Corporation); 2026-12-01 to 2026-12-05; source: Municipal permit portal",
+          "ref": "NMC/2026/219",
+          "type": "PERMIT"
+        },
+        {
+          "detail": "Excavation vs water, sewer or telecom: min 0.30 m (illustrative clearance, not a regulatory standard)",
+          "ref": "R-EXC-OTHER",
+          "type": "RULE"
+        },
+        {
+          "detail": "horizontal ±0.20 m; depth ±0.20 m",
+          "ref": "AST-0045",
+          "type": "PRECISION"
+        }
+      ],
+      "explanation": "Drain connection trench, Nehru Path cuts through 200 mm DI water main (AST-0045) with 0.30 m of overlap, against 0.30 m required (R-EXC-OTHER), a breach even allowing ±0.28 m.",
+      "group_id": "GRP-05",
+      "id": "CLH-0008",
+      "kind": "INTERSECTION",
+      "location": {
+        "x": 299.6,
+        "y": 322.5,
+        "z": -1.3
+      },
+      "measured_gap_m": -0.3,
+      "missing_data": [],
+      "required_clearance_m": 0.3,
+      "review": {
+        "note": null,
+        "reviewer": null,
+        "status": "OPEN",
+        "updated_at": null
+      },
+      "rule_id": "R-EXC-OTHER",
+      "schedule": null,
+      "severity": {
+        "band": "CRITICAL",
+        "factors": {
+          "breach": 1.0,
+          "confidence": 1.0,
+          "hazard": 0.6,
+          "urgency": 0.5
+        },
+        "score": 77
+      },
+      "uncertainty_m": 0.2828,
+      "work_ids": [
+        "WRK-005"
+      ]
+    },
+    {
+      "asset_ids": [
+        "AST-0051"
+      ],
+      "baseline_flagged": true,
+      "certainty": "LIKELY",
+      "evidence": [
+        {
+          "detail": "AST-0051 110 mm HDPE telecom duct; Navgarh FiberNet as-built drawings; AS_BUILT on 2009-04-24",
+          "ref": "NFN-GIS-4566",
+          "type": "ASSET_RECORD"
+        },
+        {
+          "detail": "WRK-005 Drain connection trench, Nehru Path (Navgarh Municipal Corporation); 2026-12-01 to 2026-12-05; source: Municipal permit portal",
+          "ref": "NMC/2026/219",
+          "type": "PERMIT"
+        },
+        {
+          "detail": "Excavation vs water, sewer or telecom: min 0.30 m (illustrative clearance, not a regulatory standard)",
+          "ref": "R-EXC-OTHER",
+          "type": "RULE"
+        },
+        {
+          "detail": "horizontal ±0.15 m; depth ±0.20 m",
+          "ref": "AST-0051",
+          "type": "PRECISION"
+        }
+      ],
+      "explanation": "Drain connection trench, Nehru Path cuts through 110 mm HDPE telecom duct (AST-0051) with 0.86 m of overlap, against 0.30 m required (R-EXC-OTHER), a breach even allowing ±0.25 m.",
+      "group_id": "GRP-05",
+      "id": "CLH-0010",
+      "kind": "INTERSECTION",
+      "location": {
+        "x": 299.6,
+        "y": 324.5,
+        "z": -0.7
+      },
+      "measured_gap_m": -0.855,
+      "missing_data": [],
+      "required_clearance_m": 0.3,
+      "review": {
+        "note": null,
+        "reviewer": null,
+        "status": "OPEN",
+        "updated_at": null
+      },
+      "rule_id": "R-EXC-OTHER",
+      "schedule": null,
+      "severity": {
+        "band": "HIGH",
+        "factors": {
+          "breach": 1.0,
+          "confidence": 1.0,
+          "hazard": 0.35,
+          "urgency": 0.5
+        },
+        "score": 67
+      },
+      "uncertainty_m": 0.25,
+      "work_ids": [
+        "WRK-005"
+      ]
+    },
+    {
+      "asset_ids": [
+        "AST-0058"
+      ],
+      "baseline_flagged": false,
+      "certainty": "LIKELY",
+      "evidence": [
+        {
+          "detail": "AST-0058 11 kV XLPE cable; NVVN survey export; SURVEYED on 2022-03-08",
+          "ref": "NVVN-SV-0457",
+          "type": "ASSET_RECORD"
+        },
+        {
+          "detail": "WRK-003 Fibre HDD bore, Lake View Road (Navgarh FiberNet); 2026-11-16 to 2026-11-20; source: Municipal permit portal",
+          "ref": "NFN/2026/0431",
+          "type": "PERMIT"
+        },
+        {
+          "detail": "Excavation vs power cable: min 0.60 m (illustrative clearance, not a regulatory standard)",
+          "ref": "R-EXC-POWER",
+          "type": "RULE"
+        },
+        {
+          "detail": "horizontal ±0.20 m; depth ±0.20 m",
+          "ref": "AST-0058",
+          "type": "PRECISION"
+        }
+      ],
+      "explanation": "Fibre HDD bore, Lake View Road leaves 0.18 m to 11 kV XLPE cable (AST-0058), against 0.60 m required (R-EXC-POWER), a breach even allowing ±0.28 m.",
+      "group_id": "GRP-03",
+      "id": "CLH-0006",
+      "kind": "CLEARANCE",
+      "location": {
+        "x": 320.0,
+        "y": 84.178,
+        "z": -1.2
+      },
+      "measured_gap_m": 0.18,
+      "missing_data": [],
+      "required_clearance_m": 0.6,
+      "review": {
+        "note": null,
+        "reviewer": null,
+        "status": "OPEN",
+        "updated_at": null
+      },
+      "rule_id": "R-EXC-POWER",
+      "schedule": null,
+      "severity": {
+        "band": "CRITICAL",
+        "factors": {
+          "breach": 0.6999999999999933,
+          "confidence": 1.0,
+          "hazard": 0.9,
+          "urgency": 0.5
+        },
+        "score": 80
+      },
+      "uncertainty_m": 0.2828,
+      "work_ids": [
+        "WRK-003"
+      ]
+    },
+    {
+      "asset_ids": [
+        "AST-0027"
+      ],
+      "baseline_flagged": true,
+      "certainty": "NEEDS_DATA",
+      "evidence": [
+        {
+          "detail": "AST-0027 LT cable (depth not recorded); NVVN feeder sketch; ESTIMATED on 2008-04-11",
+          "ref": "NVVN-LT-0912",
+          "type": "ASSET_RECORD"
+        },
+        {
+          "detail": "WRK-002 LT cable jointing pit, Vikas Marg (NVVN Discom); 2026-11-05 to 2026-11-09; source: NVVN work order",
+          "ref": "NVVN/2026/0188",
+          "type": "PERMIT"
+        },
+        {
+          "detail": "Excavation vs power cable: min 0.60 m (illustrative clearance, not a regulatory standard)",
+          "ref": "R-EXC-POWER",
+          "type": "RULE"
+        },
+        {
+          "detail": "horizontal ±0.50 m; depth not recorded",
+          "ref": "AST-0027",
+          "type": "PRECISION"
+        }
+      ],
+      "explanation": "LT cable (depth not recorded) (AST-0027) has no recorded depth; at a plausible depth of 0.5-3.0 m, LT cable jointing pit, Vikas Marg could breach the 0.60 m clearance (R-EXC-POWER), so the depth must be surveyed.",
       "group_id": "GRP-02",
-      "review": { "status": "OPEN", "reviewer": null, "note": null, "updated_at": null },
-      "baseline_flagged": true
+      "id": "CLH-0005",
+      "kind": "CLEARANCE",
+      "location": {
+        "x": 174.0,
+        "y": 230.0,
+        "z": -0.5
+      },
+      "measured_gap_m": null,
+      "missing_data": [
+        "AST-0027.depth"
+      ],
+      "required_clearance_m": 0.6,
+      "review": {
+        "note": null,
+        "reviewer": null,
+        "status": "OPEN",
+        "updated_at": null
+      },
+      "rule_id": "R-EXC-POWER",
+      "schedule": null,
+      "severity": {
+        "band": "HIGH",
+        "factors": {
+          "breach": 0.5,
+          "confidence": 0.4,
+          "hazard": 0.9,
+          "urgency": 1.0
+        },
+        "score": 72
+      },
+      "uncertainty_m": null,
+      "work_ids": [
+        "WRK-002"
+      ]
+    },
+    {
+      "asset_ids": [],
+      "baseline_flagged": false,
+      "certainty": "LIKELY",
+      "evidence": [
+        {
+          "detail": "WRK-007 11 kV cable trench, Station Road (north verge) (NVVN Discom); 2026-11-09 to 2026-11-20; source: NVVN work order",
+          "ref": "NVVN/2026/0201",
+          "type": "PERMIT"
+        },
+        {
+          "detail": "WRK-008 Fibre ducting, Station Road (north verge) (Navgarh FiberNet); 2026-11-16 to 2026-11-27; source: Municipal permit portal",
+          "ref": "NFN/2026/0440",
+          "type": "PERMIT"
+        }
+      ],
+      "explanation": "11 kV cable trench, Station Road (north verge) (WRK-007) and Fibre ducting, Station Road (north verge) (WRK-008) are within 5 m and overlap for 5 days; sequence or coordinate the works.",
+      "group_id": "GRP-07",
+      "id": "CLH-0012",
+      "kind": "SCHEDULE_OVERLAP",
+      "location": {
+        "x": 490.0,
+        "y": 213.75,
+        "z": 0.0
+      },
+      "measured_gap_m": null,
+      "missing_data": [],
+      "required_clearance_m": null,
+      "review": {
+        "note": null,
+        "reviewer": null,
+        "status": "OPEN",
+        "updated_at": null
+      },
+      "rule_id": null,
+      "schedule": {
+        "gap_days": 0,
+        "overlap_days": 5
+      },
+      "severity": {
+        "band": "HIGH",
+        "factors": {
+          "breach": 0.5,
+          "confidence": 1.0,
+          "hazard": 0.5,
+          "urgency": 1.0
+        },
+        "score": 65
+      },
+      "uncertainty_m": null,
+      "work_ids": [
+        "WRK-007",
+        "WRK-008"
+      ]
+    },
+    {
+      "asset_ids": [],
+      "baseline_flagged": false,
+      "certainty": "LIKELY",
+      "evidence": [
+        {
+          "detail": "WRK-009 Gas service line trench, Vikas Marg (east verge) (Navgarh Gas Ltd); 2026-11-02 to 2026-11-13; source: Navgarh Gas Ltd work order",
+          "ref": "NGL/2026/071",
+          "type": "PERMIT"
+        },
+        {
+          "detail": "WRK-010 Fibre ducting, Vikas Marg (east verge) (Navgarh FiberNet); 2026-12-28 to 2027-01-08; source: Municipal permit portal",
+          "ref": "NFN/2026/0455",
+          "type": "PERMIT"
+        }
+      ],
+      "explanation": "Gas service line trench, Vikas Marg (east verge) (WRK-009) and Fibre ducting, Vikas Marg (east verge) (WRK-010) are within 5 m and 45 days apart; coordinating could let one excavation serve both (dig once).",
+      "group_id": "GRP-08",
+      "id": "CLH-0013",
+      "kind": "DIG_ONCE",
+      "location": {
+        "x": 193.5,
+        "y": 170.0,
+        "z": 0.0
+      },
+      "measured_gap_m": null,
+      "missing_data": [],
+      "required_clearance_m": null,
+      "review": {
+        "note": null,
+        "reviewer": null,
+        "status": "OPEN",
+        "updated_at": null
+      },
+      "rule_id": null,
+      "schedule": {
+        "gap_days": 45,
+        "overlap_days": 0
+      },
+      "severity": {
+        "band": "INFO",
+        "factors": {
+          "breach": 0.5,
+          "confidence": 1.0,
+          "hazard": 0.5,
+          "urgency": 1.0
+        },
+        "score": 65
+      },
+      "uncertainty_m": null,
+      "work_ids": [
+        "WRK-009",
+        "WRK-010"
+      ]
+    },
+    {
+      "asset_ids": [
+        "AST-0043"
+      ],
+      "baseline_flagged": false,
+      "certainty": "LIKELY",
+      "evidence": [
+        {
+          "detail": "AST-0043 300 mm DI water main; Jal Board GIS export; SURVEYED on 2024-01-19",
+          "ref": "NJB-WT-0212",
+          "type": "ASSET_RECORD"
+        },
+        {
+          "detail": "WRK-006 Water main extension, Nehru Path (Navgarh Jal Board); 2026-12-08 to 2026-12-15; source: Jal Board work order",
+          "ref": "NJB/2026/057",
+          "type": "PERMIT"
+        },
+        {
+          "detail": "Default clearance for any other pair: min 0.30 m (illustrative clearance, not a regulatory standard)",
+          "ref": "R-DEFAULT",
+          "type": "RULE"
+        },
+        {
+          "detail": "horizontal ±0.05 m; depth ±0.05 m",
+          "ref": "AST-0043",
+          "type": "PRECISION"
+        }
+      ],
+      "explanation": "Water main extension, Nehru Path leaves 0.20 m to 300 mm DI water main (AST-0043), against 0.30 m required (R-DEFAULT), a breach even allowing ±0.07 m.",
+      "group_id": "GRP-06",
+      "id": "CLH-0011",
+      "kind": "CLEARANCE",
+      "location": {
+        "x": 60.0,
+        "y": 322.275,
+        "z": -1.4
+      },
+      "measured_gap_m": 0.2,
+      "missing_data": [],
+      "required_clearance_m": 0.3,
+      "review": {
+        "note": null,
+        "reviewer": null,
+        "status": "OPEN",
+        "updated_at": null
+      },
+      "rule_id": "R-DEFAULT",
+      "schedule": null,
+      "severity": {
+        "band": "HIGH",
+        "factors": {
+          "breach": 0.3333333333333711,
+          "confidence": 1.0,
+          "hazard": 0.6,
+          "urgency": 0.5
+        },
+        "score": 57
+      },
+      "uncertainty_m": 0.0707,
+      "work_ids": [
+        "WRK-006"
+      ]
+    },
+    {
+      "asset_ids": [
+        "AST-0035"
+      ],
+      "baseline_flagged": false,
+      "certainty": "POSSIBLE",
+      "evidence": [
+        {
+          "detail": "AST-0035 110 mm HDPE telecom duct; Scanned 2011 route map; DIGITISED on 2011-09-30",
+          "ref": "NFN-PAPER-044",
+          "type": "ASSET_RECORD"
+        },
+        {
+          "detail": "WRK-004 Water service pipe, Gulmohar Lane (Navgarh Jal Board); 2026-11-23 to 2026-12-04; source: Jal Board work order",
+          "ref": "NJB/2026/052",
+          "type": "PERMIT"
+        },
+        {
+          "detail": "Default clearance for any other pair: min 0.30 m (illustrative clearance, not a regulatory standard)",
+          "ref": "R-DEFAULT",
+          "type": "RULE"
+        },
+        {
+          "detail": "horizontal ±2.00 m; depth ±0.50 m",
+          "ref": "AST-0035",
+          "type": "PRECISION"
+        }
+      ],
+      "explanation": "Water service pipe, Gulmohar Lane leaves 1.04 m to 110 mm HDPE telecom duct (AST-0035), against 0.30 m required (R-DEFAULT); with ±2.06 m of record uncertainty it may or may not meet the clearance.",
+      "group_id": "GRP-04",
+      "id": "CLH-0007",
+      "kind": "CLEARANCE",
+      "location": {
+        "x": 397.1,
+        "y": 230.0,
+        "z": -0.7
+      },
+      "measured_gap_m": 1.045,
+      "missing_data": [],
+      "required_clearance_m": 0.3,
+      "review": {
+        "note": null,
+        "reviewer": null,
+        "status": "OPEN",
+        "updated_at": null
+      },
+      "rule_id": "R-DEFAULT",
+      "schedule": null,
+      "severity": {
+        "band": "LOW",
+        "factors": {
+          "breach": 0.0,
+          "confidence": 0.6,
+          "hazard": 0.35,
+          "urgency": 0.5
+        },
+        "score": 31
+      },
+      "uncertainty_m": 2.0616,
+      "work_ids": [
+        "WRK-004"
+      ]
     }
   ],
-  "total": 3
+  "total": 13
 }

@@ -57,8 +57,9 @@ Response: `{ "items": [Clash], "total": n }` — Clash per SPEC §7.5.
 ### `GET /api/clashes/{clash_id}`
 `Clash` plus expanded refs:
 ```json
-{ "clash": { /* Clash */ }, "assets": [ /* Asset */ ], "works": [ /* Work */ ], "rule": { /* Rule */ } }
+{ "clash": { /* Clash */ }, "assets": [ /* Asset */ ], "works": [ /* Work */ ], "rule": { /* Rule */ } | null }
 ```
+`rule` is `null` for `SCHEDULE_OVERLAP` clashes (no clearance rule applies; `clash.rule_id` is also `null`). Unknown id → `404 { code: "CLASH_NOT_FOUND" }`.
 
 ### `POST /api/clashes/{clash_id}/review`
 Request:
@@ -155,7 +156,8 @@ Restores seed state (clears intake works, review decisions; keeps an audit entry
 |---|---|
 | `shared/mocks/scene.json` | `GET /api/scene` |
 | `shared/mocks/clashes.json` | `GET /api/clashes` |
+| `shared/mocks/groups.json` | `GET /api/groups` |
 | `shared/mocks/summary.json` | `GET /api/summary` |
 | `shared/mocks/permit_parse.json` | `POST /api/permits/parse` |
 
-The mocks are small but valid. The real seed is larger. Frontend code must not depend on exact counts or IDs from mocks.
+`scene.json`, `clashes.json` and `groups.json` are generated from the real seed (`uv run python scripts/export_mocks.py`) and a test fails if they go stale. `summary.json` and `permit_parse.json` are hand-maintained until 3A / 2B. Frontend code should still not hard-code counts or IDs.
