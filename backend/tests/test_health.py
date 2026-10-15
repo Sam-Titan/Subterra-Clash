@@ -5,7 +5,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from app.config import Settings, get_settings
-from app.main import app
+from app.main import app, cors_origins
 
 
 @pytest.fixture
@@ -45,7 +45,24 @@ def test_settings_have_defaults_without_env_file() -> None:
     assert s.frontend_origin == "http://localhost:5173"
 
 
-def test_cors_allows_frontend_origin(client: TestClient) -> None:
-    origin = "http://localhost:5173"
+@pytest.mark.parametrize("origin", ["http://localhost:5173", "http://127.0.0.1:5173"])
+def test_cors_allows_frontend_origin(client: TestClient, origin: str) -> None:
     res = client.get("/api/health", headers={"Origin": origin})
     assert res.headers["access-control-allow-origin"] == origin
+
+
+def test_cors_rejects_unrelated_origin(client: TestClient) -> None:
+    res = client.get("/api/health", headers={"Origin": "http://evil.example"})
+    assert "access-control-allow-origin" not in res.headers
+
+
+def test_cors_origins_primary_first_and_deduplicated() -> None:
+    assert cors_origins("http://localhost:5173") == [
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+    ]
+    assert cors_origins("http://127.0.0.1:5173") == [
+        "http://127.0.0.1:5173",
+        "http://localhost:5173",
+    ]
+    assert cors_origins("https://demo.example") == ["https://demo.example"]

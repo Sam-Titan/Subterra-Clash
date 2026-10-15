@@ -11,10 +11,19 @@ VERSION = "0.1.0"
 
 settings = get_settings()
 
+
+def cors_origins(frontend_origin: str) -> list[str]:
+    """Primary origin first, plus its localhost / 127.0.0.1 twin (distinct to browsers)."""
+    twin = frontend_origin.replace("localhost", "127.0.0.1")
+    if twin == frontend_origin:
+        twin = frontend_origin.replace("127.0.0.1", "localhost")
+    return list(dict.fromkeys([frontend_origin, twin]))
+
+
 app = FastAPI(title="Subterra Clash", version=VERSION)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[settings.frontend_origin],
+    allow_origins=cors_origins(settings.frontend_origin),
     allow_methods=["*"],
     allow_headers=["*"],
 )

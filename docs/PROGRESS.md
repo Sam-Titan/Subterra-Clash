@@ -4,9 +4,9 @@
 > Format: `- [x] 1B — geometry + tests — Sam — short note`. Add blockers under "Blockers" immediately.
 > Session details are in `docs/PHASES.md`.
 
-**Current phase:** 0 — Setup
-**Kickoff (H0):** _fill in date/time_
-**Last gate passed:** none
+**Current phase:** 1 — Core
+**Kickoff (H0):** 16 Oct 2026, 01:00 IST
+**Last gate passed:** Gate 0
 **Pending for frontend:** _e.g. "run pnpm gen:api" — clear once done_
 
 ---
@@ -14,7 +14,7 @@
 ## Phase 0 — Setup
 - [x] 0B — backend scaffold, /api/health, Python 3.14 wheels confirmed (or pinned 3.13) — Sam — py3.14.4, all deps resolve; no 3.13 pin needed; root `nvmrc` renamed to `.nvmrc`
 - [x] 0F — Vite + Tailwind + shadcn + libs + proxy + mocks mode; uv installed on Windows — Friend
-- [ ] **Gate 0 passed**
+- [x] **Gate 0 passed**
 
 ## Phase 1 — Core
 - [ ] 1A — models + rules + gazetteer + seed generator with T1–T9 — Sam
