@@ -19,7 +19,7 @@
 ## Phase 1 — Core
 - [x] 1A — models + rules + gazetteer + seed generator with T1–T9 — Sam — 72 assets, 11 works (WRK-001..011); planted assets dedicated + exact SPEC values, tests assert them; rules `applies_to` = `{work_types, utility[], work_utility[]}` (empty = any), contract updated; Evidence.type values: ASSET_RECORD, PERMIT, RULE, PRECISION; HDD depth_from/to = bore top/bottom, PIPE_LAY depth_to = centre depth + d/2
 - [x] 1B — geometry + tests — Sam — `app/engine/geometry.py`: segment/polyline 3D distance, pipe_gap, depth_at, footprints, excavation_gap, work_asset_gap, work_work_distance_2d; GapResult(gap, location). h≤0 uses shallowest depth inside footprint; asset wholly above an excavation band (depth_from>0) is vertically separated. Seed T1–T5 gaps verified (−0.6, 0.18, 1.045, 2.4, 0.2). 1C: ignore `depth_known` here, evaluate 0.5–3.0 m band by substituting depth
-- [ ] 1C — detect / certainty / schedule / severity / grouping / baseline + planted-case tests — Sam
+- [x] 1C — detect / certainty / schedule / severity / grouping / baseline + planted-case tests — Sam — `engine/analyze.py::analyze(scene, rules, today, previous_ids, work_uncertainty_m) -> AnalysisResult(clashes, groups, baseline_pairs, key_to_id, id_to_key)`; seed gives 13 clashes / 8 groups, T1–T9 pass, ours 5/0/0 vs baseline 2/1/3 (P 0.67, R 0.40), `baseline.evaluate()` ready for 3A. Stable keys: spatial `(kind, work_id, asset_id)`, schedule `(kind, min_work, max_work)`; ids never reused. SCHEDULE_OVERLAP certainty = LIKELY; NEEDS_DATA fires when worst-depth gap < required + horiz_precision. Deferred to 2B: INTAKE work uncertainty (param exists, default 0) and missing work depth → 0.5–3.0 m band
 - [ ] 1D — store + routes + OpenAPI exported — Sam
 - [x] 1E — API client + hooks + mocks mode + coords/colors + store + shell + routes — Friend — hand-written SPEC §7 types until gen:api; groups/clash-detail derived from mocks (rule null in mock mode); needs Node 24 (fnm use 24)
 - [ ] 1F — 3D scene (ground, pipes, works, markers, halos) + left rail — Friend
@@ -52,6 +52,10 @@
 
 ## Blockers
 - frontend: switch to generated schema.d.ts types at Gate 1 (rule always present)
+
+## Notes for 1D
+- The store must keep `AnalysisResult.key_to_id` and pass it as `previous_ids` on every re-analysis (permit commit), and attach review state (status/reviewer/note) to the stable key, not to the CLH id string, so reviews survive re-analysis. `reset()` clears the map.
+- Clash/group models unchanged in 1C → no OpenAPI re-export needed yet.
 
 ## Decisions log
 - Python 3.14 (fallback 3.13 if wheels missing).
