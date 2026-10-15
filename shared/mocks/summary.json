@@ -1,0 +1,21 @@
+{
+  "counts": { "open": 3, "critical": 2, "high": 1, "needs_data": 1, "dig_once": 0, "schedule_overlap": 0 },
+  "by_utility": [
+    { "utility": "GAS", "count": 1 },
+    { "utility": "POWER", "count": 2 }
+  ],
+  "by_certainty": [
+    { "certainty": "LIKELY", "count": 2 },
+    { "certainty": "POSSIBLE", "count": 0 },
+    { "certainty": "NEEDS_DATA", "count": 1 }
+  ],
+  "evaluation": {
+    "ours": { "true_positives": 3, "false_alarms": 0, "misses": 0, "precision": 1.0, "recall": 1.0 },
+    "baseline": { "true_positives": 3, "false_alarms": 1, "misses": 0, "precision": 0.75, "recall": 1.0 },
+    "cases": [
+      { "case_id": "T1", "description": "Trench cuts gas main", "expected": "INTERSECTION", "ours": "INTERSECTION", "baseline": "FLAGGED" },
+      { "case_id": "T4", "description": "Trench over deep sewer", "expected": "NO_CLASH", "ours": "NO_CLASH", "baseline": "FLAGGED" },
+      { "case_id": "T6", "description": "Pit over cable with unknown depth", "expected": "NEEDS_DATA", "ours": "NEEDS_DATA", "baseline": "FLAGGED" }
+    ]
+  }
+}

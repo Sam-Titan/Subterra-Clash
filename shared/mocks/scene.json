@@ -1,0 +1,118 @@
+{
+  "area": {
+    "name": "Navgarh — Sector 7",
+    "bounds": { "min_x": 0, "min_y": 0, "max_x": 600, "max_y": 400 }
+  },
+  "streets": [
+    { "id": "ST-01", "name": "Station Road", "centerline": [[0, 200], [600, 200]], "width_m": 18 },
+    { "id": "ST-02", "name": "Vikas Marg", "centerline": [[180, 0], [180, 400]], "width_m": 14 }
+  ],
+  "junctions": [
+    { "id": "JN-03", "name": "J3 — Vikas Marg × Station Road", "x": 180, "y": 200 }
+  ],
+  "landmarks": [
+    { "id": "LM-02", "name": "Bus Depot", "x": 420, "y": 214 }
+  ],
+  "assets": [
+    {
+      "id": "AST-0001",
+      "utility": "GAS",
+      "owner": "Navgarh Gas Ltd",
+      "label": "200 mm MDPE gas main",
+      "path": [[0, 194, -1.0], [600, 194, -1.0]],
+      "diameter_m": 0.2,
+      "horiz_precision_m": 0.2,
+      "depth_precision_m": 0.2,
+      "depth_known": true,
+      "source_record": { "record_id": "NGL-GIS-1187", "source": "Navgarh Gas Ltd GIS export", "captured_on": "2023-06-14", "method": "SURVEYED" }
+    },
+    {
+      "id": "AST-0002",
+      "utility": "POWER",
+      "owner": "NVVN Discom",
+      "label": "11 kV XLPE cable",
+      "path": [[0, 207, -0.9], [600, 207, -0.9]],
+      "diameter_m": 0.15,
+      "horiz_precision_m": 0.3,
+      "depth_precision_m": 0.3,
+      "depth_known": true,
+      "source_record": { "record_id": "NVVN-AB-2291", "source": "NVVN as-built drawings", "captured_on": "2019-02-02", "method": "AS_BUILT" }
+    },
+    {
+      "id": "AST-0003",
+      "utility": "TELECOM",
+      "owner": "Navgarh FiberNet",
+      "label": "110 mm HDPE telecom duct",
+      "path": [[186, 0, -0.7], [186, 400, -0.7]],
+      "diameter_m": 0.11,
+      "horiz_precision_m": 2.0,
+      "depth_precision_m": 0.5,
+      "depth_known": true,
+      "source_record": { "record_id": "NFN-PAPER-044", "source": "Scanned 2011 route map", "captured_on": "2011-09-30", "method": "DIGITISED" }
+    },
+    {
+      "id": "AST-0004",
+      "utility": "SEWER",
+      "owner": "Navgarh Jal Board",
+      "label": "600 mm RCC trunk sewer",
+      "path": [[0, 200, -4.2], [600, 200, -4.2]],
+      "diameter_m": 0.6,
+      "horiz_precision_m": 0.25,
+      "depth_precision_m": 0.3,
+      "depth_known": true,
+      "source_record": { "record_id": "NJB-SW-0073", "source": "Jal Board sewer register", "captured_on": "2016-11-21", "method": "AS_BUILT" }
+    },
+    {
+      "id": "AST-0005",
+      "utility": "POWER",
+      "owner": "NVVN Discom",
+      "label": "LT cable (depth not recorded)",
+      "path": [[174, 0, -1.0], [174, 400, -1.0]],
+      "diameter_m": 0.1,
+      "horiz_precision_m": 0.5,
+      "depth_precision_m": null,
+      "depth_known": false,
+      "source_record": { "record_id": "NVVN-LT-0912", "source": "NVVN feeder sketch", "captured_on": "2008-04-11", "method": "ESTIMATED" }
+    }
+  ],
+  "works": [
+    {
+      "id": "WRK-001",
+      "title": "Fibre ducting crossing, Station Road",
+      "agency": "Navgarh FiberNet",
+      "work_type": "TRENCH",
+      "utility": "TELECOM",
+      "path": [[300, 188], [300, 212]],
+      "width_m": 0.8,
+      "depth_from_m": 0.0,
+      "depth_to_m": 1.5,
+      "bore_path": null,
+      "bore_diameter_m": null,
+      "start_date": "2026-11-03",
+      "end_date": "2026-11-12",
+      "source_permit": { "permit_no": "NFN/2026/0412", "source": "Municipal permit portal", "submitted_on": "2026-10-02" },
+      "origin": "SEED",
+      "field_confidence": {},
+      "missing_fields": []
+    },
+    {
+      "id": "WRK-002",
+      "title": "Valve chamber pit, Vikas Marg",
+      "agency": "Navgarh Jal Board",
+      "work_type": "PIT",
+      "utility": "WATER",
+      "path": [[170, 100], [178, 100], [178, 108], [170, 108], [170, 100]],
+      "width_m": 8.0,
+      "depth_from_m": 0.0,
+      "depth_to_m": 2.0,
+      "bore_path": null,
+      "bore_diameter_m": null,
+      "start_date": "2026-12-10",
+      "end_date": "2026-12-18",
+      "source_permit": { "permit_no": "NJB/VC/2026/031", "source": "Jal Board work order", "submitted_on": "2026-09-19" },
+      "origin": "SEED",
+      "field_confidence": {},
+      "missing_fields": []
+    }
+  ]
+}

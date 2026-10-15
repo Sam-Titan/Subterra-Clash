@@ -1,0 +1,11 @@
+#!/bin/sh
+# Removes AI-tool attribution lines from every commit message, so commits
+# show only the human author. Works in WSL2 and Git for Windows (Git Bash).
+# Enable once per clone:  git config core.hooksPath .githooks
+
+msg_file="$1"
+tmp_file="$msg_file.tmp"
+
+grep -viE '^[[:space:]]*(co-authored-by:.*(claude|anthropic|gemini|antigravity|google|copilot|openai|codex)|claude-session:)|generated with .*(claude|gemini|antigravity)' "$msg_file" > "$tmp_file"
+mv "$tmp_file" "$msg_file"
+exit 0

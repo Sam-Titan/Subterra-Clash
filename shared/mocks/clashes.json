@@ -1,0 +1,89 @@
+{
+  "items": [
+    {
+      "id": "CLH-0001",
+      "kind": "INTERSECTION",
+      "certainty": "LIKELY",
+      "severity": {
+        "score": 100,
+        "band": "CRITICAL",
+        "factors": { "hazard": 1.0, "breach": 1.0, "urgency": 1.0, "confidence": 1.0 }
+      },
+      "work_ids": ["WRK-001"],
+      "asset_ids": ["AST-0001"],
+      "location": { "x": 300, "y": 194, "z": -1.0 },
+      "measured_gap_m": -0.6,
+      "required_clearance_m": 1.0,
+      "uncertainty_m": 0.28,
+      "rule_id": "R-EXC-GAS",
+      "schedule": null,
+      "explanation": "Trench WRK-001 reaches 1.5 m but gas main AST-0001 sits at about 0.9 m (top of pipe), so the excavation cuts through it; 1.0 m clearance is required.",
+      "evidence": [
+        { "type": "ASSET_RECORD", "ref": "NGL-GIS-1187", "detail": "Surveyed 2023-06-14, ±0.2 m horizontal, ±0.2 m depth" },
+        { "type": "PERMIT", "ref": "NFN/2026/0412", "detail": "Open trench 0.8 m wide, 0–1.5 m deep" },
+        { "type": "RULE", "ref": "R-EXC-GAS", "detail": "Excavation vs gas — hand-dig zone, 1.0 m" }
+      ],
+      "missing_data": [],
+      "group_id": "GRP-01",
+      "review": { "status": "OPEN", "reviewer": null, "note": null, "updated_at": null },
+      "baseline_flagged": true
+    },
+    {
+      "id": "CLH-0002",
+      "kind": "INTERSECTION",
+      "certainty": "LIKELY",
+      "severity": {
+        "score": 96,
+        "band": "CRITICAL",
+        "factors": { "hazard": 0.9, "breach": 1.0, "urgency": 1.0, "confidence": 1.0 }
+      },
+      "work_ids": ["WRK-001"],
+      "asset_ids": ["AST-0002"],
+      "location": { "x": 300, "y": 207, "z": -0.9 },
+      "measured_gap_m": -0.68,
+      "required_clearance_m": 0.6,
+      "uncertainty_m": 0.42,
+      "rule_id": "R-EXC-POWER",
+      "schedule": null,
+      "explanation": "Trench WRK-001 reaches 1.5 m but the 11 kV cable AST-0002 sits at about 0.83 m (top of cable), so the excavation cuts through it; 0.6 m clearance is required.",
+      "evidence": [
+        { "type": "ASSET_RECORD", "ref": "NVVN-AB-2291", "detail": "As-built 2019-02-02, ±0.3 m horizontal, ±0.3 m depth" },
+        { "type": "PERMIT", "ref": "NFN/2026/0412", "detail": "Open trench 0.8 m wide, 0–1.5 m deep" },
+        { "type": "RULE", "ref": "R-EXC-POWER", "detail": "Excavation vs power, 0.6 m" }
+      ],
+      "missing_data": [],
+      "group_id": "GRP-01",
+      "review": { "status": "OPEN", "reviewer": null, "note": null, "updated_at": null },
+      "baseline_flagged": true
+    },
+    {
+      "id": "CLH-0003",
+      "kind": "CLEARANCE",
+      "certainty": "NEEDS_DATA",
+      "severity": {
+        "score": 65,
+        "band": "HIGH",
+        "factors": { "hazard": 0.9, "breach": 0.5, "urgency": 0.5, "confidence": 0.4 }
+      },
+      "work_ids": ["WRK-002"],
+      "asset_ids": ["AST-0005"],
+      "location": { "x": 174, "y": 104, "z": -1.0 },
+      "measured_gap_m": null,
+      "required_clearance_m": 0.6,
+      "uncertainty_m": null,
+      "rule_id": "R-EXC-POWER",
+      "schedule": null,
+      "explanation": "Pit WRK-002 (0–2.0 m deep) sits over LT cable AST-0005, whose depth is not recorded; a clash is possible anywhere in the plausible 0.5–3.0 m band, so field verification is needed.",
+      "evidence": [
+        { "type": "ASSET_RECORD", "ref": "NVVN-LT-0912", "detail": "Estimated from 2008 feeder sketch, depth not recorded" },
+        { "type": "PERMIT", "ref": "NJB/VC/2026/031", "detail": "Pit 8 m × 8 m, 0–2.0 m deep" },
+        { "type": "RULE", "ref": "R-EXC-POWER", "detail": "Excavation vs power, 0.6 m" }
+      ],
+      "missing_data": ["AST-0005.depth"],
+      "group_id": "GRP-02",
+      "review": { "status": "OPEN", "reviewer": null, "note": null, "updated_at": null },
+      "baseline_flagged": true
+    }
+  ],
+  "total": 3
+}
