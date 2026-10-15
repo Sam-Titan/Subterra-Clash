@@ -13,12 +13,13 @@
   2. Paste the session prompt (below), filling in the phase, session ID and side.
   3. Review the plan, approve, let it build.
   4. It runs the checks (AGENTS.md "Definition of done") and ticks its own line in PROGRESS.md.
-  5. You commit and push (`git pull --rebase` first). Only then `/clear` and start the next session. PROGRESS.md is the memory between sessions, so it must be updated before clearing.
+  5. It shows you the files and the commit message. You say yes; it commits, runs `git pull --rebase`, and pushes (it resolves PROGRESS.md-only conflicts itself and stops on anything else). Only then `/clear` and start the next session. PROGRESS.md is the memory between sessions, so it must be pushed before clearing.
+- **One-time per machine:** local `main` must track `origin/main`. If `git pull` says "no tracking information", run `git push -u origin main` once (after `git pull --rebase origin main` if GitHub already has commits).
 - **Both agents edit PROGRESS.md**, but each only ticks its own session lines, so pulls rarely conflict. If they do, keep both sides' ticks.
 
 ### Session prompt (same for both of us)
 ```
-Read AGENTS.md, docs/PROGRESS.md and docs/PHASES.md. We are in Phase <N>. Do session <ID> only, for the <backend|frontend>. Confirm earlier sessions it depends on are ticked in PROGRESS.md. Plan first and wait for my approval before writing code. When done, run the definition-of-done checks, tick <ID> in docs/PROGRESS.md and suggest one commit message with no AI attribution.
+Read AGENTS.md, docs/PROGRESS.md and docs/PHASES.md. We are in Phase <N>. Do session <ID> only, for the <backend|frontend>. Confirm earlier sessions it depends on are ticked in PROGRESS.md. Plan first and wait for my approval before writing code. When done, run the definition-of-done checks, tick <ID> in docs/PROGRESS.md, then show me the files and a commit message with no AI attribution. After my yes, commit, git pull --rebase and push, following the git rules in AGENTS.md.
 ```
 Example: `… We are in Phase 1. Do session 1B only, for the backend. …`
 
@@ -33,7 +34,7 @@ A gate is a joint check, not a build session. Both run it, each for their own si
 
 ### Gate prompt (each runs it for their own side)
 ```
-Read AGENTS.md, docs/PROGRESS.md and docs/PHASES.md. We are at Gate <N>. Do not start new features. For the <backend|frontend>, run the definition-of-done checks, confirm every session of Phase <N> on my side is ticked and actually works, check my side against docs/API_CONTRACT.md, and list anything that fails with the smallest fix in my own folder. Wait for my approval before changing code.
+Read AGENTS.md, docs/PROGRESS.md and docs/PHASES.md. We are at Gate <N>. Do not start new features. For the <backend|frontend>, run the definition-of-done checks, confirm every session of Phase <N> on my side is ticked and actually works, check my side against docs/API_CONTRACT.md, and list anything that fails with the smallest fix in my own folder. Wait for my approval before changing code. If you fix anything, commit and push it the same way as a session (show me first).
 ```
 
 ## Before H0 — install these (both, ~30 min, do it the night before)

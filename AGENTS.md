@@ -26,6 +26,9 @@ Work happens in numbered sessions (e.g. `1B`, `2E`) listed in `docs/PHASES.md`. 
 
 ## Git workflow (everyone commits to `main`, no branches)
 - `git pull --rebase` before starting work and before every push.
+- **The agent runs git at the end of each session, with approval:** after the checks pass and PROGRESS.md is ticked, show the human the file list and the commit message and wait for "yes". Then: `git add` only files in your owner's folders plus `docs/PROGRESS.md` → `git commit` → `git pull --rebase` → `git push`.
+  - A rebase conflict in `docs/PROGRESS.md` only: resolve it by keeping both sides' ticks and notes, then `git rebase --continue`.
+  - Any other conflict, a rejected push, or a missing upstream: stop and show the human. Never force-push, never `git reset --hard`, never rewrite pushed history.
 - Small commits after each working step. Message format: `backend: add segment distance + tests` or `frontend: clash panel review actions`.
 - **No AI attribution, ever.** Commits and PR descriptions contain only the message. Never add `Co-authored-by` lines for any AI tool, "Generated with …" lines, session links, or tool names. The author is the human's own git identity. (`.githooks/commit-msg` strips such lines as a safety net; do not disable it.)
 - Never commit code that fails its checks (see Commands). Never commit `.env`, secrets, `node_modules`, `.venv`, build output.

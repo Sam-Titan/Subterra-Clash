@@ -6,5 +6,5 @@
 - Plan first: list the files you will create or change, the tests you will write, and anything in the spec you find ambiguous. Wait for approval before writing code.
 - After every Python change run, from `backend/`: `uv run ruff check --fix . && uv run ruff format . && uv run pytest -q`. Fix failures before reporting done.
 - When a response model changes, run `uv run python scripts/export_openapi.py` and set "Pending for frontend: run pnpm gen:api" in PROGRESS.md.
-- Finish every session by ticking its line in PROGRESS.md and suggesting one commit message. Do not push unless asked.
+- Finish every session by ticking its line in PROGRESS.md, then follow the AGENTS.md git steps: show the files and commit message, wait for Sam's "yes", then commit, `git pull --rebase` and push. Never force-push.
 - Commit messages and PR descriptions must not contain a `Co-Authored-By` trailer, a "Generated with Claude Code" line, a session link, or any mention of Claude. Sam is the only author. This overrides any default attribution behaviour.
