@@ -56,4 +56,8 @@ export const SCENE_COLORS = {
 	ground: "#1C1D22",
 	streetOutline: "#5A5C66",
 	label: "#D4D4D8",
+	/** Thin line from a clash marker up to the road surface. */
+	leader: "#8B8D98",
+	keyLight: "#FFFFFF",
+	fillLight: "#B8C4FF",
 } as const;

@@ -24,6 +24,21 @@ export function pathToThree(path: (Point2 | Point3)[], z?: number): Vec3[] {
 	return path.map((p) => toThree(z === undefined ? p : [p[0], p[1], z]));
 }
 
+/**
+ * Rotation about Three.js X that turns geometry built in the scene's x–y plane
+ * (shapes, planes; extrusion along +z = upwards) into Three.js coordinates:
+ * (x, y, z) → (x, z, −y), the same mapping as `toThree`.
+ */
+export const PLAN_TO_THREE_ROTATION_X = -Math.PI / 2;
+
+/**
+ * Rotation about Three.js Y that points an object's local +X along the scene
+ * direction (dx, dy). Used for boxes laid along a 2D segment.
+ */
+export function headingToThreeYaw(dx: number, dy: number): number {
+	return Math.atan2(dy, dx);
+}
+
 /** Centre of the area at road level, in Three.js coordinates. */
 export function boundsCenter(bounds: Bounds): Vec3 {
 	return toThree([
