@@ -4,6 +4,23 @@
  */
 
 export interface paths {
+    "/api/audit": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Audit */
+        get: operations["get_audit_api_audit_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/clashes": {
         parameters: {
             query?: never;
@@ -38,6 +55,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/clashes/{clash_id}/review": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Review Clash */
+        post: operations["review_clash_api_clashes__clash_id__review_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/groups": {
         parameters: {
             query?: never;
@@ -66,6 +100,80 @@ export interface paths {
         get: operations["health_api_health_get"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/permits/parse": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Parse Permit
+         * @description Multipart `file` (PDF ≤ 5 MB) or JSON `{text}` → a draft; nothing enters the plan.
+         */
+        post: operations["parse_permit_api_permits_parse_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/permits/samples": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Samples */
+        get: operations["list_samples_api_permits_samples_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/permits/{draft_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Patch Draft */
+        patch: operations["patch_draft_api_permits__draft_id__patch"];
+        trace?: never;
+    };
+    "/api/permits/{draft_id}/commit": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Commit Draft
+         * @description Add the permit's work to the coordination plan. This is not a permit approval.
+         */
+        post: operations["commit_draft_api_permits__draft_id__commit_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -161,6 +269,24 @@ export interface components {
             source_record: components["schemas"]["SourceRecord"];
             utility: components["schemas"]["Utility"];
         };
+        /** AuditEntry */
+        AuditEntry: {
+            /** Action */
+            action: string;
+            /** Actor */
+            actor: string;
+            /**
+             * At
+             * Format: date-time
+             */
+            at: string;
+            /** Detail */
+            detail: string;
+            /** Id */
+            id: string;
+            /** Target Id */
+            target_id: string | null;
+        };
         /**
          * Band
          * @enum {string}
@@ -244,6 +370,18 @@ export interface components {
          * @enum {string}
          */
         ClashKind: "INTERSECTION" | "CLEARANCE" | "SCHEDULE_OVERLAP" | "DIG_ONCE";
+        /** CommitRequest */
+        CommitRequest: {
+            /** Reviewer */
+            reviewer: string;
+        };
+        /** CommitResponse */
+        CommitResponse: {
+            audit: components["schemas"]["AuditEntry"];
+            /** New Clash Ids */
+            new_clash_ids: string[];
+            work: components["schemas"]["Work"];
+        };
         /** ErrorResponse */
         ErrorResponse: {
             /** Code */
@@ -262,6 +400,33 @@ export interface components {
             ref: string;
             /** Type */
             type: string;
+        };
+        /** ExtractedField */
+        ExtractedField: {
+            /**
+             * Confidence
+             * @default 0
+             */
+            confidence: number;
+            /** Source Quote */
+            source_quote: string | null;
+            /** Value */
+            value: string | number | null;
+        };
+        /** GeocodeResult */
+        GeocodeResult: {
+            /** Notes */
+            notes: string[];
+            /** Path */
+            path: [
+                number,
+                number
+            ][];
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "RESOLVED" | "PARTIAL" | "FAILED";
         };
         /** HTTPValidationError */
         HTTPValidationError: {
@@ -310,6 +475,13 @@ export interface components {
             /** Y */
             y: number;
         };
+        /** ListResponse[AuditEntry] */
+        ListResponse_AuditEntry_: {
+            /** Items */
+            items: components["schemas"]["AuditEntry"][];
+            /** Total */
+            total: number;
+        };
         /** ListResponse[ClashGroup] */
         ListResponse_ClashGroup_: {
             /** Items */
@@ -324,6 +496,13 @@ export interface components {
             /** Total */
             total: number;
         };
+        /** ListResponse[SamplePermit] */
+        ListResponse_SamplePermit_: {
+            /** Items */
+            items: components["schemas"]["SamplePermit"][];
+            /** Total */
+            total: number;
+        };
         /** Location */
         Location: {
             /** X */
@@ -332,6 +511,37 @@ export interface components {
             y: number;
             /** Z */
             z: number;
+        };
+        /** PatchDraftRequest */
+        PatchDraftRequest: {
+            /** Fields */
+            fields: {
+                [key: string]: string | number | null;
+            };
+        };
+        /**
+         * PermitDraft
+         * @description Response of parse / PATCH: a draft, nothing is in the plan until commit.
+         */
+        PermitDraft: {
+            /** Draft Id */
+            draft_id: string;
+            /** Fields */
+            fields: {
+                [key: string]: components["schemas"]["ExtractedField"];
+            };
+            geocode: components["schemas"]["GeocodeResult"];
+            /**
+             * Llm Mode Used
+             * @enum {string}
+             */
+            llm_mode_used: "live" | "cached" | "rules";
+            /** Missing Fields */
+            missing_fields: string[];
+            /** Preview Clash Count */
+            preview_clash_count: number;
+            /** Source Text */
+            source_text: string;
         };
         /**
          * RecordMethod
@@ -356,6 +566,24 @@ export interface components {
             status: components["schemas"]["ReviewStatus"];
             /** Updated At */
             updated_at: string | null;
+        };
+        /**
+         * ReviewAction
+         * @enum {string}
+         */
+        ReviewAction: "ACKNOWLEDGE" | "ESCALATE" | "DISMISS" | "REOPEN";
+        /** ReviewRequest */
+        ReviewRequest: {
+            action: components["schemas"]["ReviewAction"];
+            /** Note */
+            note?: string | null;
+            /** Reviewer */
+            reviewer: string;
+        };
+        /** ReviewResponse */
+        ReviewResponse: {
+            audit: components["schemas"]["AuditEntry"];
+            clash: components["schemas"]["Clash"];
         };
         /**
          * ReviewStatus
@@ -395,6 +623,15 @@ export interface components {
             items: components["schemas"]["Rule"][];
             /** Total */
             total: number;
+        };
+        /** SamplePermit */
+        SamplePermit: {
+            /** Id */
+            id: string;
+            /** Text */
+            text: string;
+            /** Title */
+            title: string;
         };
         /**
          * Scene
@@ -575,6 +812,26 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    get_audit_api_audit_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ListResponse_AuditEntry_"];
+                };
+            };
+        };
+    };
     list_clashes_api_clashes_get: {
         parameters: {
             query?: {
@@ -653,6 +910,50 @@ export interface operations {
             };
         };
     };
+    review_clash_api_clashes__clash_id__review_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                clash_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ReviewRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReviewResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unprocessable Content */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
     list_groups_api_groups_get: {
         parameters: {
             query?: never;
@@ -689,6 +990,189 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HealthResponse"];
+                };
+            };
+        };
+    };
+    parse_permit_api_permits_parse_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    text: string;
+                };
+                "multipart/form-data": {
+                    /** Format: binary */
+                    file: string;
+                };
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PermitDraft"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Content Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unprocessable Content */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    list_samples_api_permits_samples_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ListResponse_SamplePermit_"];
+                };
+            };
+        };
+    };
+    patch_draft_api_permits__draft_id__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                draft_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PatchDraftRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PermitDraft"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    commit_draft_api_permits__draft_id__commit_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                draft_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CommitRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommitResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unprocessable Content */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
                 };
             };
         };

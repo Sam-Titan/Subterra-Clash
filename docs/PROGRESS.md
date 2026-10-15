@@ -7,7 +7,7 @@
 **Current phase:** 2 — Features
 **Kickoff (H0):** 16 Oct 2026, 01:00 IST
 **Last gate passed:** Gate 1
-**Pending for frontend:** run pnpm gen:api (permit routes from 2B: PermitDraft, CommitResponse, PatchDraftRequest, SamplePermit; review + audit routes from 2C: ReviewRequest, ReviewResponse, `GET /api/audit`; `AuditEntry.target_id` is nullable)
+**Pending for frontend:** none (gen:api run after 2C; review/audit aliases in `src/api/types.ts` still hand-written, see Blockers)
 
 ---
 
