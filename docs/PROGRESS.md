@@ -12,7 +12,7 @@
 ---
 
 ## Phase 0 — Setup
-- [ ] 0B — backend scaffold, /api/health, Python 3.14 wheels confirmed (or pinned 3.13) — Sam
+- [x] 0B — backend scaffold, /api/health, Python 3.14 wheels confirmed (or pinned 3.13) — Sam — py3.14.4, all deps resolve; no 3.13 pin needed; root `nvmrc` renamed to `.nvmrc`
 - [ ] 0F — Vite + Tailwind + shadcn + libs + proxy + mocks mode; uv installed on Windows — Friend
 - [ ] **Gate 0 passed**
 
