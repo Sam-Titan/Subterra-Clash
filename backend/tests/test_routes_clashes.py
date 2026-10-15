@@ -22,7 +22,22 @@ def test_sort_id_and_severity(api: TestClient) -> None:
 
 
 def test_invalid_sort_rejected(api: TestClient) -> None:
-    assert api.get("/api/clashes?sort=nope").status_code == 422
+    res = api.get("/api/clashes?sort=nope")
+    assert res.status_code == 422
+    body = res.json()
+    assert body["code"] == "VALIDATION_ERROR"
+    assert isinstance(body["detail"], str)
+    assert body["detail"].startswith("sort:")
+
+
+def test_unknown_route_and_wrong_method_use_error_envelope(api: TestClient) -> None:
+    res = api.get("/api/nope")
+    assert res.status_code == 404
+    assert res.json() == {"detail": "Not Found", "code": "NOT_FOUND"}
+    res = api.post("/api/clashes")
+    assert res.status_code == 405
+    assert res.json()["code"] == "METHOD_NOT_ALLOWED"
+    assert api.get("/api/clashes/NOPE").json()["code"] == "CLASH_NOT_FOUND"
 
 
 def test_filter_certainty_counts(api: TestClient) -> None:

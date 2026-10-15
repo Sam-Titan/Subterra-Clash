@@ -2,8 +2,10 @@ from datetime import date
 from typing import Annotated, Literal
 
 from fastapi import Depends, FastAPI, Request
+from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from app.api import routes_clashes, routes_scene
 from app.api.schemas import AppError
@@ -38,6 +40,30 @@ app.include_router(routes_clashes.router)
 def app_error_handler(_: Request, exc: AppError) -> JSONResponse:
     return JSONResponse(
         status_code=exc.status_code, content={"detail": exc.detail, "code": exc.code}
+    )
+
+
+@app.exception_handler(RequestValidationError)
+def validation_error_handler(_: Request, exc: RequestValidationError) -> JSONResponse:
+    parts = []
+    for err in exc.errors():
+        loc = [str(p) for p in err["loc"] if p not in ("query", "path", "body")]
+        parts.append(f"{'.'.join(loc) or 'request'}: {err['msg']}")
+    return JSONResponse(
+        status_code=422, content={"detail": "; ".join(parts), "code": "VALIDATION_ERROR"}
+    )
+
+
+_HTTP_CODES = {404: "NOT_FOUND", 405: "METHOD_NOT_ALLOWED"}
+
+
+@app.exception_handler(StarletteHTTPException)
+def http_error_handler(_: Request, exc: StarletteHTTPException) -> JSONResponse:
+    code = _HTTP_CODES.get(exc.status_code, f"HTTP_{exc.status_code}")
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={"detail": str(exc.detail), "code": code},
+        headers=exc.headers,
     )
 
 
