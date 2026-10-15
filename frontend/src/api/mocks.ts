@@ -5,8 +5,8 @@
 // NOTE for 4B (Docker): these imports reach outside frontend/, so the frontend
 // image build needs the repo root (with shared/) as its build context.
 //
-// shared/mocks has no groups, clash-detail or rules file, so those responses
-// are derived here. Do not rely on mock counts or IDs.
+// shared/mocks has no clash-detail or rules file, so clash detail is derived
+// here (with `rule: null`). Do not rely on mock counts or IDs.
 
 import { ApiError } from "./client";
 import type {
@@ -38,6 +38,11 @@ async function loadClashes(): Promise<ListResponse<Clash>> {
 	return mod.default as unknown as ListResponse<Clash>;
 }
 
+async function loadGroups(): Promise<ListResponse<ClashGroup>> {
+	const mod = await import("../../../shared/mocks/groups.json");
+	return mod.default as ListResponse<ClashGroup>;
+}
+
 export async function mockScene(): Promise<Scene> {
 	return delay(await loadScene());
 }
@@ -45,10 +50,10 @@ export async function mockScene(): Promise<Scene> {
 export async function mockClashes(
 	query: ClashQuery,
 ): Promise<ListResponse<Clash>> {
-	const [{ items }, scene, groups] = await Promise.all([
+	const [{ items }, scene, { items: groups }] = await Promise.all([
 		loadClashes(),
 		loadScene(),
-		deriveGroups(),
+		loadGroups(),
 	]);
 	const utilityOf = new Map(scene.assets.map((a) => [a.id, a.utility]));
 
@@ -84,7 +89,7 @@ export async function mockClash(id: string): Promise<ClashDetail> {
 	const [{ items }, scene] = await Promise.all([loadClashes(), loadScene()]);
 	const clash = items.find((c) => c.id === id);
 	if (!clash) {
-		throw new ApiError(404, "NOT_FOUND", `Clash ${id} not found.`);
+		throw new ApiError(404, "CLASH_NOT_FOUND", `No clash with id ${id}`);
 	}
 	return delay({
 		clash,
@@ -94,32 +99,8 @@ export async function mockClash(id: string): Promise<ClashDetail> {
 	});
 }
 
-async function deriveGroups(): Promise<ClashGroup[]> {
-	const { items } = await loadClashes();
-	const byGroup = new Map<string, Clash[]>();
-	for (const clash of items) {
-		const list = byGroup.get(clash.group_id) ?? [];
-		list.push(clash);
-		byGroup.set(clash.group_id, list);
-	}
-	const groups = [...byGroup.entries()].map(([id, clashes]) => ({
-		id,
-		title: `${id} — ${clashes.length} clash${clashes.length === 1 ? "" : "es"}`,
-		clash_ids: clashes.map((c) => c.id),
-		work_ids: [...new Set(clashes.flatMap((c) => c.work_ids))],
-		max_severity_score: Math.max(...clashes.map((c) => c.severity.score)),
-		review_rank: 0,
-	}));
-	groups.sort(
-		(a, b) =>
-			b.max_severity_score - a.max_severity_score || a.id.localeCompare(b.id),
-	);
-	return groups.map((g, i) => ({ ...g, review_rank: i + 1 }));
-}
-
 export async function mockGroups(): Promise<ListResponse<ClashGroup>> {
-	const items = await deriveGroups();
-	return delay({ items, total: items.length });
+	return delay(await loadGroups());
 }
 
 export async function mockSummary(): Promise<Summary> {

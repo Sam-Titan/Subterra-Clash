@@ -52,6 +52,7 @@
 
 ## Blockers
 - frontend: switch to generated schema.d.ts types at Gate 1 (`ClashDetail.rule` is nullable: null for SCHEDULE_OVERLAP clashes)
+- frontend: `Summary` in `src/api/types.ts` is still hand-written; alias it to the generated type after backend 3A adds `/api/summary` to openapi.json — Friend
 
 ## Notes for 2B / 2C
 - Permit commit: add the work to `store.scene.works`, call `store.reanalyze()` (ids stay stable), log audit via `store.log_audit`. Reviews: `store.set_review(clash_id, Review)` then audit; the review model/route is 2C.

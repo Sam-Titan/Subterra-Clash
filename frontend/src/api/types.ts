@@ -1,20 +1,19 @@
-// Hand-written mirrors of SPEC §7 / docs/API_CONTRACT.md.
-// Used until shared/openapi.json exists; at Gate 1 these become aliases of the
-// generated types in ./schema.d.ts (`pnpm gen:api`). Field names must match the
-// contract exactly (snake_case).
+// API types. Everything the backend exposes is an alias of the generated
+// ./schema.d.ts (`pnpm gen:api` from shared/openapi.json); the local names stay
+// stable so feature code never imports schema.d.ts directly.
 
-export type Utility = "WATER" | "SEWER" | "POWER" | "TELECOM" | "GAS";
-export type WorkType = "TRENCH" | "PIT" | "HDD" | "PIPE_LAY";
-export type ClashKind =
-	| "INTERSECTION"
-	| "CLEARANCE"
-	| "SCHEDULE_OVERLAP"
-	| "DIG_ONCE";
-export type Certainty = "LIKELY" | "POSSIBLE" | "NEEDS_DATA";
-export type SeverityBand = "CRITICAL" | "HIGH" | "MEDIUM" | "LOW" | "INFO";
-export type ReviewStatus = "OPEN" | "ACKNOWLEDGED" | "ESCALATED" | "DISMISSED";
-export type CaptureMethod = "SURVEYED" | "AS_BUILT" | "DIGITISED" | "ESTIMATED";
-export type Origin = "SEED" | "INTAKE";
+import type { components } from "./schema";
+
+type Schemas = components["schemas"];
+
+export type Utility = Schemas["Utility"];
+export type WorkType = Schemas["WorkType"];
+export type ClashKind = Schemas["ClashKind"];
+export type Certainty = Schemas["Certainty"];
+export type SeverityBand = Schemas["Band"];
+export type ReviewStatus = Schemas["ReviewStatus"];
+export type CaptureMethod = Schemas["RecordMethod"];
+export type Origin = Schemas["WorkOrigin"];
 
 export const UTILITIES: readonly Utility[] = [
 	"WATER",
@@ -32,167 +31,34 @@ export const CERTAINTIES: readonly Certainty[] = [
 export type Point2 = [number, number];
 export type Point3 = [number, number, number];
 
-export interface Bounds {
-	min_x: number;
-	min_y: number;
-	max_x: number;
-	max_y: number;
-}
+export type Bounds = Schemas["Bounds"];
+export type Street = Schemas["Street"];
+export type Junction = Schemas["Junction"];
+export type Landmark = Schemas["Landmark"];
+export type SourceRecord = Schemas["SourceRecord"];
+export type Asset = Schemas["Asset"];
+export type SourcePermit = Schemas["SourcePermit"];
+export type Work = Schemas["Work"];
+export type Scene = Schemas["Scene"];
 
-export interface Street {
-	id: string;
-	name: string;
-	centerline: Point2[];
-	width_m: number;
-}
-
-export interface Junction {
-	id: string;
-	name: string;
-	x: number;
-	y: number;
-}
-
-export interface Landmark {
-	id: string;
-	name: string;
-	x: number;
-	y: number;
-}
-
-export interface SourceRecord {
-	record_id: string;
-	source: string;
-	captured_on: string;
-	method: CaptureMethod;
-}
-
-export interface Asset {
-	id: string;
-	utility: Utility;
-	owner: string;
-	label: string;
-	path: Point3[];
-	diameter_m: number;
-	horiz_precision_m: number;
-	depth_precision_m: number | null;
-	depth_known: boolean;
-	source_record: SourceRecord;
-}
-
-export interface SourcePermit {
-	permit_no: string;
-	source: string;
-	submitted_on: string;
-}
-
-export interface Work {
-	id: string;
-	title: string;
-	agency: string;
-	work_type: WorkType;
-	utility: Utility | null;
-	path: Point2[];
-	width_m: number;
-	depth_from_m: number;
-	depth_to_m: number;
-	bore_path: Point3[] | null;
-	bore_diameter_m: number | null;
-	start_date: string;
-	end_date: string;
-	source_permit: SourcePermit;
-	origin: Origin;
-	field_confidence: Record<string, number>;
-	missing_fields: string[];
-}
-
-export interface Scene {
-	area: { name: string; bounds: Bounds };
-	streets: Street[];
-	junctions: Junction[];
-	landmarks: Landmark[];
-	assets: Asset[];
-	works: Work[];
-}
-
-export interface SeverityFactors {
-	hazard: number;
-	breach: number;
-	urgency: number;
-	confidence: number;
-}
-
-export interface Severity {
-	score: number;
-	band: SeverityBand;
-	factors: SeverityFactors;
-}
-
-export interface Evidence {
-	type: string;
-	ref: string;
-	detail: string;
-}
-
-export interface Review {
-	status: ReviewStatus;
-	reviewer: string | null;
-	note: string | null;
-	updated_at: string | null;
-}
-
-export interface Clash {
-	id: string;
-	kind: ClashKind;
-	certainty: Certainty;
-	severity: Severity;
-	work_ids: string[];
-	asset_ids: string[];
-	location: { x: number; y: number; z: number };
-	measured_gap_m: number | null;
-	required_clearance_m: number | null;
-	uncertainty_m: number | null;
-	rule_id: string | null;
-	schedule: { overlap_days: number; gap_days: number } | null;
-	explanation: string;
-	evidence: Evidence[];
-	missing_data: string[];
-	group_id: string;
-	review: Review;
-	baseline_flagged: boolean;
-}
-
-export interface Rule {
-	id: string;
-	applies_to: { work_types: WorkType[]; utility: Utility | null };
-	min_clearance_m: number;
-	label: string;
-}
-
-export interface ClashDetail {
-	clash: Clash;
-	assets: Asset[];
-	works: Work[];
-	// The contract always returns a rule. `null` only happens in mock mode,
-	// because shared/mocks has no rules file. Remove the `| null` when switching
-	// to the generated schema.d.ts at Gate 1.
-	rule: Rule | null;
-}
-
-export interface ClashGroup {
-	id: string;
-	title: string;
-	clash_ids: string[];
-	work_ids: string[];
-	max_severity_score: number;
-	review_rank: number;
-}
+export type SeverityFactors = Schemas["SeverityFactors"];
+export type Severity = Schemas["Severity"];
+export type Evidence = Schemas["Evidence"];
+export type Review = Schemas["Review"];
+export type Clash = Schemas["Clash"];
+export type Rule = Schemas["Rule"];
+/** `rule` is null for SCHEDULE_OVERLAP / DIG_ONCE clashes, and always in mock mode (no rules mock). */
+export type ClashDetail = Schemas["ClashDetail"];
+export type ClashGroup = Schemas["ClashGroup"];
+export type ApiErrorBody = Schemas["ErrorResponse"];
 
 export interface ListResponse<T> {
 	items: T[];
 	total: number;
 }
 
+// Same params as the generated `list_clashes_api_clashes_get` query, minus its
+// `| null` (FastAPI's Optional), so they fit the URL builder in client.ts.
 export interface ClashQuery {
 	kind?: ClashKind;
 	certainty?: Certainty;
@@ -204,6 +70,9 @@ export interface ClashQuery {
 	sort?: "review_rank" | "severity" | "id";
 }
 
+// Summary is hand-written (SPEC §7 / API_CONTRACT) because GET /api/summary is
+// not in shared/openapi.json yet. Switch these to generated aliases after
+// backend 3A exports it.
 export interface EvaluationScore {
 	true_positives: number;
 	false_alarms: number;
@@ -236,9 +105,4 @@ export interface Summary {
 		baseline: EvaluationScore;
 		cases: EvaluationCase[];
 	};
-}
-
-export interface ApiErrorBody {
-	detail: string;
-	code: string;
 }
