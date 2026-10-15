@@ -83,7 +83,7 @@ Response — a **draft**, nothing is saved to the plan yet:
 {
   "draft_id": "PRM-0004",
   "source_text": "NVVN Discom — permit 2026/STN/114. Lay 11kV cable by open trench along north side of Station Road from J3 to Bus Depot, approx 1.2 m deep, 0.6 m wide. Work 3–20 Nov 2026.",
-  "llm_mode_used": "live" | "cached",
+  "llm_mode_used": "live" | "cached" | "rules",
   "fields": {
     "agency":      { "value": "NVVN Discom", "confidence": 0.97, "source_quote": "NVVN Discom" },
     "permit_no":   { "value": "2026/STN/114", "confidence": 0.98, "source_quote": "permit 2026/STN/114" },

@@ -1,0 +1,21 @@
+{
+  "llm_mode_used": "cached",
+  "fields": {
+    "agency": { "value": "NVVN Discom", "confidence": 0.97, "source_quote": "NVVN Discom" },
+    "permit_no": { "value": "2026/STN/114", "confidence": 0.98, "source_quote": "permit 2026/STN/114" },
+    "work_type": { "value": "TRENCH", "confidence": 0.9, "source_quote": "open trench" },
+    "utility": { "value": "POWER", "confidence": 0.93, "source_quote": "11kV cable" },
+    "street": { "value": "ST-01", "confidence": 0.95, "source_quote": "Station Road" },
+    "from_ref": { "value": "JN-03", "confidence": 0.88, "source_quote": "from J3" },
+    "to_ref": { "value": "LM-02", "confidence": 0.86, "source_quote": "to Bus Depot" },
+    "side": { "value": "NORTH", "confidence": 0.92, "source_quote": "north side" },
+    "offset_m": { "value": null, "confidence": 0, "source_quote": null },
+    "depth_from_m": { "value": 0.0, "confidence": 0.6, "source_quote": "approx 1.2 m deep" },
+    "depth_to_m": { "value": 1.2, "confidence": 0.7, "source_quote": "approx 1.2 m deep" },
+    "width_m": { "value": 0.6, "confidence": 0.9, "source_quote": "0.6 m wide" },
+    "diameter_m": { "value": null, "confidence": 0, "source_quote": null },
+    "start_date": { "value": "2026-11-03", "confidence": 0.9, "source_quote": "3–20 Nov 2026" },
+    "end_date": { "value": "2026-11-20", "confidence": 0.9, "source_quote": "3–20 Nov 2026" }
+  },
+  "missing_fields": ["offset_m", "diameter_m"]
+}

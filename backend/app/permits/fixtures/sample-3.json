@@ -1,0 +1,21 @@
+{
+  "llm_mode_used": "cached",
+  "fields": {
+    "agency": { "value": "Navgarh Fibre Networks", "confidence": 0.96, "source_quote": "Navgarh Fibre Networks" },
+    "permit_no": { "value": "NFN/2026/031", "confidence": 0.97, "source_quote": "permit NFN/2026/031" },
+    "work_type": { "value": "TRENCH", "confidence": 0.9, "source_quote": "open trench" },
+    "utility": { "value": "TELECOM", "confidence": 0.92, "source_quote": "Telecom duct" },
+    "street": { "value": "ST-02", "confidence": 0.95, "source_quote": "Vikas Marg" },
+    "from_ref": { "value": "JN-01", "confidence": 0.9, "source_quote": "J1" },
+    "to_ref": { "value": "JN-03", "confidence": 0.9, "source_quote": "J3" },
+    "side": { "value": null, "confidence": 0, "source_quote": null },
+    "offset_m": { "value": null, "confidence": 0, "source_quote": null },
+    "depth_from_m": { "value": null, "confidence": 0, "source_quote": null },
+    "depth_to_m": { "value": null, "confidence": 0, "source_quote": null },
+    "width_m": { "value": 0.4, "confidence": 0.9, "source_quote": "Width 0.4 m" },
+    "diameter_m": { "value": null, "confidence": 0, "source_quote": null },
+    "start_date": { "value": "2026-11-24", "confidence": 0.9, "source_quote": "24 Nov" },
+    "end_date": { "value": "2026-12-02", "confidence": 0.9, "source_quote": "2 Dec 2026" }
+  },
+  "missing_fields": ["side", "offset_m", "depth_from_m", "depth_to_m", "diameter_m"]
+}
