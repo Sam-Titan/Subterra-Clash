@@ -10,7 +10,7 @@
 → Click **Enter Sector 7**.
 
 **0:25 — See underground (Workspace, 3D)**
-Toggle **X-ray**. Orbit slowly.
+Start at **street level** on Station Road, then hit **X-ray** to reveal what's underneath. Click **Overview**, orbit slowly.
 "This is a synthetic city block. Each colour is a utility — red power, yellow gas, blue water, green sewer, orange telecom — at its recorded depth. Pink volumes are proposed works from permits."
 Toggle **uncertainty halos**: "Some records are surveyed to 10 cm. Some were digitised from paper maps — ±2 m. We draw that uncertainty instead of hiding it."
 

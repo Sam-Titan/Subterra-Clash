@@ -28,6 +28,7 @@ Required deliverables (judges will check these):
 | Differentiator | Why judges care |
 |---|---|
 | **3D "X-ray street" view** with pipes at true depth, pulsing clash markers, and **uncertainty halos** around low-precision assets | Nobody else will have a 3D underground viewer; uncertainty becomes visible, not a footnote |
+| **Street-level view + X-ray reveal**: the camera drops to eye height on a street; toggling X-ray fades the road and reveals pipes, works and clash markers underfoot | Instantly shows the problem to non-technical viewers |
 | **Permit intake with LLM extraction**: upload a messy permit PDF/text → structured fields with confidence + the exact source quote → placed in the scene → new clashes animate in | Uses our NLP strength; matches real-world reality (permits are documents, not GeoJSON) |
 | **Three honest certainty classes**: LIKELY / POSSIBLE / NEEDS_DATA | Directly answers "leave ambiguous cases for engineering review" |
 | **Dig-once opportunities**: two works in the same corridor within 90 days → suggest coordinating | Positive utility, ties to India's "dig once" policy push |
@@ -47,6 +48,7 @@ Required deliverables (judges will check these):
 - Clash engine (spatial + schedule + dig-once) with certainty classes and severity.
 - Grouping + severity-ranked review queue + review actions with audit log.
 - Permit intake (PDF or pasted text) → LLM extraction → gazetteer geocoding → commit → re-analysis.
+- Street-level mode in the 3D scene (eye-height camera on a street, X-ray reveal of what is underfoot).
 - 3D scene, cross-section view, clash detail panel, review queue table, dashboard, schedule strip.
 - Inspection report export (HTML, print-to-PDF) + CSV.
 - Baseline comparison against planted ground truth.
@@ -244,6 +246,7 @@ Certainty colours on markers: LIKELY solid + pulse, POSSIBLE dashed ring, NEEDS_
 2. **Workspace** (main screen):
    - **Left rail**: layer toggles per utility + works, certainty filter, "X-ray" toggle (ground opacity), "show uncertainty halos" toggle.
    - **Centre — 3D scene (React Three Fiber)**: translucent ground with street outlines and labels, pipes as tubes at true depth, works as translucent pink volumes (trench boxes, HDD tubes), clash markers at `location`, uncertainty halos = faint wider tubes of radius `diameter/2 + horiz_precision`. Orbit controls; "fly to" on clash select.
+     - **City context + street-level view** (frontend only, built in 3E): low-poly city generated on the frontend from `/api/scene` streets (road surface, kerbs, footpaths, lane markings, extruded building blocks in the gaps between streets, a few lamp posts and trees; landmarks as simple distinct shapes from `/api/scene` `landmarks`). Deterministic seeded layout, no CDN textures, no external models. A **"Street level"** button and an **"Overview"** button animate the camera between an eye-height view (~1.7 m) on a chosen street and the orbit view. X-ray fades road and buildings to low opacity so pipes, works and clash markers show through. Must keep 60 fps on a laptop; use instanced meshes for repeated geometry. No API changes.
    - **Section plane**: draggable plane across a street → bottom panel shows a **2D cross-section (SVG)** with pipe circles at depth, trench outline, and dimension lines labelled with measured vs required clearance.
    - **Right panel — clash detail**: kind + certainty badges, severity score with factor breakdown bar, measured vs required vs uncertainty, affected assets with source records and capture method, missing data list, explanation sentence, review actions (Acknowledge / Escalate / Dismiss-with-note).
    - **Bottom strip — schedule**: mini Gantt of works; schedule overlaps and dig-once links highlighted; date scrubber filters the scene.

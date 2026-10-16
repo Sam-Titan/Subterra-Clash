@@ -191,8 +191,9 @@ Order: Sam pushes the starter files first (5 min). Rishit waits for that push, p
 ### 3E — frontend: polish layer
 1. Landing hero (one wow effect only) + page transitions (Motion) + toasts on review/commit.
 2. Loading skeletons and error states for every query.
+3. Street-level view (SPEC §10): city context meshes, Street level / Overview camera transitions, X-ray fade of road + buildings.
 
-**Gate 3 (H19):** run `docs/DEMO_SCRIPT.md` start to finish without touching code. Report prints cleanly.
+**Gate 3 (H19):** run `docs/DEMO_SCRIPT.md` start to finish without touching code. Report prints cleanly. Street-level → X-ray reveal works in the demo.
 
 ---
 
@@ -219,6 +220,7 @@ Order: Sam pushes the starter files first (5 min). Rishit waits for that push, p
 3. PATCH permit editing (commit as extracted).
 4. CSV export (keep the HTML report).
 5. Landing hero (go straight to the workspace).
-6. Docker (run both dev servers for the demo instead).
+6. Street-level view (keep the orbit view and X-ray ground fade).
+7. Docker (run both dev servers for the demo instead).
 
 **Never cut:** clash detail evidence, certainty classes, review queue, report, baseline comparison.
