@@ -99,7 +99,7 @@
     "expected": {
       "outcome": "CLASH",
       "kind": "SCHEDULE_OVERLAP",
-      "certainty": null,
+      "certainty": "LIKELY",
       "band": null,
       "baseline_flagged": false
     }

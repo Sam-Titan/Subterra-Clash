@@ -198,6 +198,23 @@
         "title": "Certainty",
         "type": "string"
       },
+      "CertaintyCount": {
+        "properties": {
+          "certainty": {
+            "$ref": "#/components/schemas/Certainty"
+          },
+          "count": {
+            "title": "Count",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "certainty",
+          "count"
+        ],
+        "title": "CertaintyCount",
+        "type": "object"
+      },
       "Clash": {
         "properties": {
           "asset_ids": {
@@ -494,6 +511,123 @@
           "code"
         ],
         "title": "ErrorResponse",
+        "type": "object"
+      },
+      "EvalCase": {
+        "description": "`expected` / `ours` are a ClashKind name or NO_CLASH; `baseline` is FLAGGED / NOT_FLAGGED.\nCertainty fields are null when the outcome is NO_CLASH (or not specified by the truth).",
+        "properties": {
+          "baseline": {
+            "title": "Baseline",
+            "type": "string"
+          },
+          "case_id": {
+            "title": "Case Id",
+            "type": "string"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string"
+          },
+          "expected": {
+            "title": "Expected",
+            "type": "string"
+          },
+          "expected_certainty": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Certainty"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "ours": {
+            "title": "Ours",
+            "type": "string"
+          },
+          "ours_certainty": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Certainty"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "case_id",
+          "description",
+          "expected",
+          "expected_certainty",
+          "ours",
+          "ours_certainty",
+          "baseline"
+        ],
+        "title": "EvalCase",
+        "type": "object"
+      },
+      "EvalScore": {
+        "properties": {
+          "false_alarms": {
+            "title": "False Alarms",
+            "type": "integer"
+          },
+          "misses": {
+            "title": "Misses",
+            "type": "integer"
+          },
+          "precision": {
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Precision",
+            "type": "number"
+          },
+          "recall": {
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Recall",
+            "type": "number"
+          },
+          "true_positives": {
+            "title": "True Positives",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "true_positives",
+          "false_alarms",
+          "misses",
+          "precision",
+          "recall"
+        ],
+        "title": "EvalScore",
+        "type": "object"
+      },
+      "Evaluation": {
+        "properties": {
+          "baseline": {
+            "$ref": "#/components/schemas/EvalScore"
+          },
+          "cases": {
+            "items": {
+              "$ref": "#/components/schemas/EvalCase"
+            },
+            "title": "Cases",
+            "type": "array"
+          },
+          "ours": {
+            "$ref": "#/components/schemas/EvalScore"
+          }
+        },
+        "required": [
+          "ours",
+          "baseline",
+          "cases"
+        ],
+        "title": "Evaluation",
         "type": "object"
       },
       "Evidence": {
@@ -1378,6 +1512,77 @@
         "title": "Street",
         "type": "object"
       },
+      "Summary": {
+        "properties": {
+          "by_certainty": {
+            "items": {
+              "$ref": "#/components/schemas/CertaintyCount"
+            },
+            "title": "By Certainty",
+            "type": "array"
+          },
+          "by_utility": {
+            "items": {
+              "$ref": "#/components/schemas/UtilityCount"
+            },
+            "title": "By Utility",
+            "type": "array"
+          },
+          "counts": {
+            "$ref": "#/components/schemas/SummaryCounts"
+          },
+          "evaluation": {
+            "$ref": "#/components/schemas/Evaluation"
+          }
+        },
+        "required": [
+          "counts",
+          "by_utility",
+          "by_certainty",
+          "evaluation"
+        ],
+        "title": "Summary",
+        "type": "object"
+      },
+      "SummaryCounts": {
+        "description": "Unresolved clashes only: review status OPEN or ESCALATED (see API_CONTRACT).",
+        "properties": {
+          "critical": {
+            "title": "Critical",
+            "type": "integer"
+          },
+          "dig_once": {
+            "title": "Dig Once",
+            "type": "integer"
+          },
+          "high": {
+            "title": "High",
+            "type": "integer"
+          },
+          "needs_data": {
+            "title": "Needs Data",
+            "type": "integer"
+          },
+          "open": {
+            "title": "Open",
+            "type": "integer"
+          },
+          "schedule_overlap": {
+            "title": "Schedule Overlap",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "open",
+          "critical",
+          "high",
+          "needs_data",
+          "dig_once",
+          "schedule_overlap"
+        ],
+        "title": "SummaryCounts",
+        "type": "object"
+      },
       "Utility": {
         "enum": [
           "WATER",
@@ -1388,6 +1593,23 @@
         ],
         "title": "Utility",
         "type": "string"
+      },
+      "UtilityCount": {
+        "properties": {
+          "count": {
+            "title": "Count",
+            "type": "integer"
+          },
+          "utility": {
+            "$ref": "#/components/schemas/Utility"
+          }
+        },
+        "required": [
+          "utility",
+          "count"
+        ],
+        "title": "UtilityCount",
+        "type": "object"
       },
       "ValidationError": {
         "properties": {
@@ -2252,6 +2474,27 @@
         "summary": "Get Scene",
         "tags": [
           "scene"
+        ]
+      }
+    },
+    "/api/summary": {
+      "get": {
+        "operationId": "get_summary_api_summary_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Summary"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Get Summary",
+        "tags": [
+          "summary"
         ]
       }
     }

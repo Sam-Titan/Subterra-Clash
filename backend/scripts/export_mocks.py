@@ -1,7 +1,7 @@
 """Write frontend mocks from the real, freshly seeded API (../shared/mocks).
 
 scene.json = GET /api/scene, clashes.json = GET /api/clashes, groups.json = GET /api/groups.
-permit_parse.json = POST /api/permits/parse for sample-1. summary.json is hand-maintained (3A).
+summary.json = GET /api/summary. permit_parse.json = POST /api/permits/parse for sample-1.
 """
 
 import json
@@ -23,6 +23,7 @@ MOCK_ROUTES = {
     "scene.json": "/api/scene",
     "clashes.json": "/api/clashes",
     "groups.json": "/api/groups",
+    "summary.json": "/api/summary",
 }
 
 

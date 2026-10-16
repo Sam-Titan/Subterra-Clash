@@ -10,7 +10,7 @@
       "id": "GRP-01",
       "max_severity_score": 100,
       "review_rank": 1,
-      "title": "Fibre ducting crossing, Station Road — 4 clashes",
+      "title": "Fibre ducting crossing, Station Road — 4 clashes, highest CRITICAL",
       "work_ids": [
         "WRK-001"
       ]
@@ -24,7 +24,7 @@
       "id": "GRP-05",
       "max_severity_score": 93,
       "review_rank": 2,
-      "title": "Drain connection trench, Nehru Path — 3 clashes",
+      "title": "Drain connection trench, Nehru Path — 3 clashes, highest CRITICAL",
       "work_ids": [
         "WRK-005"
       ]
@@ -36,7 +36,7 @@
       "id": "GRP-03",
       "max_severity_score": 80,
       "review_rank": 3,
-      "title": "Fibre HDD bore, Lake View Road — 1 clash",
+      "title": "Fibre HDD bore, Lake View Road — 1 clash, highest CRITICAL",
       "work_ids": [
         "WRK-003"
       ]
@@ -48,7 +48,7 @@
       "id": "GRP-02",
       "max_severity_score": 72,
       "review_rank": 4,
-      "title": "LT cable jointing pit, Vikas Marg — 1 clash",
+      "title": "LT cable jointing pit, Vikas Marg — 1 clash, highest HIGH",
       "work_ids": [
         "WRK-002"
       ]
@@ -60,7 +60,7 @@
       "id": "GRP-07",
       "max_severity_score": 65,
       "review_rank": 5,
-      "title": "11 kV cable trench, Station Road (north verge) — 1 clash",
+      "title": "11 kV cable trench, Station Road (north verge) — 1 clash, highest HIGH",
       "work_ids": [
         "WRK-007",
         "WRK-008"
@@ -73,7 +73,7 @@
       "id": "GRP-08",
       "max_severity_score": 65,
       "review_rank": 6,
-      "title": "Gas service line trench, Vikas Marg (east verge) — 1 clash",
+      "title": "Gas service line trench, Vikas Marg (east verge) — 1 clash, highest INFO",
       "work_ids": [
         "WRK-009",
         "WRK-010"
@@ -86,7 +86,7 @@
       "id": "GRP-06",
       "max_severity_score": 57,
       "review_rank": 7,
-      "title": "Water main extension, Nehru Path — 1 clash",
+      "title": "Water main extension, Nehru Path — 1 clash, highest HIGH",
       "work_ids": [
         "WRK-006"
       ]
@@ -98,7 +98,7 @@
       "id": "GRP-04",
       "max_severity_score": 31,
       "review_rank": 8,
-      "title": "Water service pipe, Gulmohar Lane — 1 clash",
+      "title": "Water service pipe, Gulmohar Lane — 1 clash, highest LOW",
       "work_ids": [
         "WRK-004"
       ]

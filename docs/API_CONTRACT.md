@@ -70,7 +70,7 @@ Request:
 Response: `{ "clash": Clash, "audit": AuditEntry }` — `audit.action` is the request action, `audit.detail` is the note or `Marked <STATUS>`.
 
 ### `GET /api/groups`
-`{ "items": [ { "id": "GRP-03", "title": "Station Road fibre trench — 3 clashes", "clash_ids": [...], "work_ids": [...], "max_severity_score": 91, "review_rank": 1 } ], "total": n }`
+`{ "items": [ { "id": "GRP-03", "title": "Station Road fibre trench — 3 clashes, highest CRITICAL", "clash_ids": [...], "work_ids": [...], "max_severity_score": 91, "review_rank": 1 } ], "total": n }`
 
 ---
 
@@ -133,16 +133,27 @@ INTAKE works carry their own positional uncertainty: `(1 − lowest location-fie
 ### `GET /api/summary`
 ```json
 {
-  "counts": { "open": 14, "critical": 3, "high": 4, "needs_data": 2, "dig_once": 1, "schedule_overlap": 1 },
-  "by_utility": [ { "utility": "GAS", "count": 3 } ],
-  "by_certainty": [ { "certainty": "LIKELY", "count": 8 } ],
+  "counts": { "open": 13, "critical": 6, "high": 5, "needs_data": 1, "dig_once": 1, "schedule_overlap": 1 },
+  "by_utility": [ { "utility": "GAS", "count": 2 } ],
+  "by_certainty": [ { "certainty": "LIKELY", "count": 11 } ],
   "evaluation": {
     "ours":     { "true_positives": 5, "false_alarms": 0, "misses": 0, "precision": 1.0,  "recall": 1.0 },
     "baseline": { "true_positives": 2, "false_alarms": 1, "misses": 3, "precision": 0.67, "recall": 0.4 },
-    "cases": [ { "case_id": "T4", "description": "Trench over deep sewer", "expected": "NO_CLASH", "ours": "NO_CLASH", "baseline": "FLAGGED" } ]
+    "cases": [
+      { "case_id": "T6", "description": "Pit over power cable with unknown depth",
+        "expected": "CLEARANCE", "expected_certainty": "NEEDS_DATA",
+        "ours": "CLEARANCE", "ours_certainty": "NEEDS_DATA", "baseline": "FLAGGED" },
+      { "case_id": "T4", "description": "Trench over deep sewer",
+        "expected": "NO_CLASH", "expected_certainty": null,
+        "ours": "NO_CLASH", "ours_certainty": null, "baseline": "FLAGGED" }
+    ]
   }
 }
 ```
+- **Unresolved rule:** `counts`, `by_utility` and `by_certainty` cover *unresolved* clashes: review status `OPEN` or `ESCALATED`. `ACKNOWLEDGED` and `DISMISSED` drop out. The field keeps the name `open`. `critical` / `high` are severity bands of the same set; `dig_once` / `schedule_overlap` / `needs_data` are kinds / certainty of the same set.
+- `by_utility`: one count per distinct asset utility of each clash (schedule clashes have no assets and are not counted); sorted by utility; zero rows omitted. `by_certainty` follows LIKELY, POSSIBLE, NEEDS_DATA; zero rows omitted.
+- `evaluation` is computed on all engine output regardless of review status (SPEC §8.7).
+- `cases[]`: `expected` / `ours` = a clash kind (`INTERSECTION`, `CLEARANCE`, `SCHEDULE_OVERLAP`, `DIG_ONCE`) or `NO_CLASH`; `baseline` = `FLAGGED` / `NOT_FLAGGED`. `expected_certainty` comes from `truth.json` (null for `NO_CLASH`); `ours_certainty` is the certainty of the top clash found (null for `NO_CLASH`). The UI can show "CLEARANCE · NEEDS_DATA".
 
 ### `GET /api/audit`
 `{ "items": [ { "id": "AUD-0007", "at": "2026-10-16T14:02:11+05:30", "actor": "A. Sharma", "action": "ESCALATE", "target_id": "CLH-0004", "detail": "Gas main — needs GAIL-style standby" } ], "total": n }` newest first. `target_id` is `null` for entries with no target (`RESET`). Actions: `ACKNOWLEDGE`, `ESCALATE`, `DISMISS`, `REOPEN`, `PERMIT_COMMIT`, `RESET`.
@@ -164,4 +175,4 @@ Restores seed state (clears intake works, review decisions; keeps an audit entry
 | `shared/mocks/summary.json` | `GET /api/summary` |
 | `shared/mocks/permit_parse.json` | `POST /api/permits/parse` |
 
-`scene.json`, `clashes.json` and `groups.json` are generated from the real seed (`uv run python scripts/export_mocks.py`) and a test fails if they go stale. `permit_parse.json` is also generated (parse of sample-1). `summary.json` is hand-maintained until 3A. Frontend code should still not hard-code counts or IDs.
+`scene.json`, `clashes.json`, `groups.json` and `summary.json` are generated from the real seed (`uv run python scripts/export_mocks.py`) and a test fails if they go stale. `permit_parse.json` is also generated (parse of sample-1).  Frontend code should still not hard-code counts or IDs.

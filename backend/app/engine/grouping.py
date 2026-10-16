@@ -65,7 +65,7 @@ def group_clashes(
         count = len(members)
         title = (
             f"{work_title.get(top.work_ids[0], top.work_ids[0])} — "
-            f"{count} clash{'es' if count != 1 else ''}"
+            f"{count} clash{'es' if count != 1 else ''}, highest {top.severity.band.value}"
         )
         groups.append(
             ClashGroup(

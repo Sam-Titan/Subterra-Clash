@@ -103,4 +103,4 @@ def test_title_uses_top_severity_work_and_count() -> None:
         [clash("CLH-0001", ["WRK-004"], 100, 200, 30), clash("CLH-0002", ["WRK-001"], 105, 200, 80)]
     )
     title = next(w.title for w in SCENE.works if w.id == "WRK-001")
-    assert groups[0].title == f"{title} — 2 clashes"
+    assert groups[0].title == f"{title} — 2 clashes, highest HIGH"

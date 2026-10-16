@@ -645,7 +645,10 @@ def _build_truth(ids: dict[str, str]) -> list[TruthCase]:
             work_id="WRK-007",
             other_work_id="WRK-008",
             expected=TruthExpected(
-                outcome=clash, kind=ClashKind.SCHEDULE_OVERLAP, baseline_flagged=False
+                outcome=clash,
+                kind=ClashKind.SCHEDULE_OVERLAP,
+                certainty=Certainty.LIKELY,
+                baseline_flagged=False,
             ),
         ),
         TruthCase(

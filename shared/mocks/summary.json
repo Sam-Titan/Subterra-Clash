@@ -1,29 +1,141 @@
 {
-  "counts": { "open": 13, "critical": 6, "high": 5, "needs_data": 1, "dig_once": 1, "schedule_overlap": 1 },
-  "by_utility": [
-    { "utility": "GAS", "count": 2 },
-    { "utility": "POWER", "count": 3 },
-    { "utility": "TELECOM", "count": 3 },
-    { "utility": "WATER", "count": 3 }
-  ],
   "by_certainty": [
-    { "certainty": "LIKELY", "count": 11 },
-    { "certainty": "POSSIBLE", "count": 1 },
-    { "certainty": "NEEDS_DATA", "count": 1 }
+    {
+      "certainty": "LIKELY",
+      "count": 11
+    },
+    {
+      "certainty": "POSSIBLE",
+      "count": 1
+    },
+    {
+      "certainty": "NEEDS_DATA",
+      "count": 1
+    }
   ],
+  "by_utility": [
+    {
+      "count": 2,
+      "utility": "GAS"
+    },
+    {
+      "count": 3,
+      "utility": "POWER"
+    },
+    {
+      "count": 3,
+      "utility": "TELECOM"
+    },
+    {
+      "count": 3,
+      "utility": "WATER"
+    }
+  ],
+  "counts": {
+    "critical": 6,
+    "dig_once": 1,
+    "high": 5,
+    "needs_data": 1,
+    "open": 13,
+    "schedule_overlap": 1
+  },
   "evaluation": {
-    "ours": { "true_positives": 5, "false_alarms": 0, "misses": 0, "precision": 1.0, "recall": 1.0 },
-    "baseline": { "true_positives": 2, "false_alarms": 1, "misses": 3, "precision": 0.67, "recall": 0.4 },
+    "baseline": {
+      "false_alarms": 1,
+      "misses": 3,
+      "precision": 0.67,
+      "recall": 0.4,
+      "true_positives": 2
+    },
     "cases": [
-      { "case_id": "T1", "description": "Trench cuts through a gas main", "expected": "INTERSECTION", "ours": "INTERSECTION", "baseline": "FLAGGED" },
-      { "case_id": "T2", "description": "HDD bore runs 0.18 m beside a power cable", "expected": "CLEARANCE", "ours": "CLEARANCE", "baseline": "NOT_FLAGGED" },
-      { "case_id": "T3", "description": "New water pipe 1.05 m from a digitised telecom duct", "expected": "CLEARANCE", "ours": "CLEARANCE", "baseline": "NOT_FLAGGED" },
-      { "case_id": "T4", "description": "Trench over deep sewer", "expected": "NO_CLASH", "ours": "NO_CLASH", "baseline": "FLAGGED" },
-      { "case_id": "T5", "description": "New water pipe 0.2 m from a surveyed water main", "expected": "CLEARANCE", "ours": "CLEARANCE", "baseline": "NOT_FLAGGED" },
-      { "case_id": "T6", "description": "Pit over power cable with unknown depth", "expected": "NEEDS_DATA", "ours": "NEEDS_DATA", "baseline": "FLAGGED" },
-      { "case_id": "T7", "description": "Two works within 5 m with overlapping dates", "expected": "SCHEDULE_OVERLAP", "ours": "SCHEDULE_OVERLAP", "baseline": "NOT_FLAGGED" },
-      { "case_id": "T8", "description": "Two works within 5 m, 45 days apart", "expected": "DIG_ONCE", "ours": "DIG_ONCE", "baseline": "NOT_FLAGGED" },
-      { "case_id": "T9", "description": "Trench far from every asset and work", "expected": "NO_CLASH", "ours": "NO_CLASH", "baseline": "NOT_FLAGGED" }
-    ]
+      {
+        "baseline": "FLAGGED",
+        "case_id": "T1",
+        "description": "Trench cuts through a gas main (needs 1.0 m, gap -0.6 m)",
+        "expected": "INTERSECTION",
+        "expected_certainty": "LIKELY",
+        "ours": "INTERSECTION",
+        "ours_certainty": "LIKELY"
+      },
+      {
+        "baseline": "NOT_FLAGGED",
+        "case_id": "T2",
+        "description": "HDD bore runs 0.18 m beside a power cable, never crossing in plan",
+        "expected": "CLEARANCE",
+        "expected_certainty": "LIKELY",
+        "ours": "CLEARANCE",
+        "ours_certainty": "LIKELY"
+      },
+      {
+        "baseline": "NOT_FLAGGED",
+        "case_id": "T3",
+        "description": "New water pipe 1.05 m from a digitised telecom duct (+-2.06 m)",
+        "expected": "CLEARANCE",
+        "expected_certainty": "POSSIBLE",
+        "ours": "CLEARANCE",
+        "ours_certainty": "POSSIBLE"
+      },
+      {
+        "baseline": "FLAGGED",
+        "case_id": "T4",
+        "description": "Trench crosses a deep trunk sewer 2.4 m below the trench floor",
+        "expected": "NO_CLASH",
+        "expected_certainty": null,
+        "ours": "NO_CLASH",
+        "ours_certainty": null
+      },
+      {
+        "baseline": "NOT_FLAGGED",
+        "case_id": "T5",
+        "description": "New water pipe laid 0.2 m from a surveyed water main",
+        "expected": "CLEARANCE",
+        "expected_certainty": "LIKELY",
+        "ours": "CLEARANCE",
+        "ours_certainty": "LIKELY"
+      },
+      {
+        "baseline": "FLAGGED",
+        "case_id": "T6",
+        "description": "Pit over a power cable whose depth is not recorded",
+        "expected": "CLEARANCE",
+        "expected_certainty": "NEEDS_DATA",
+        "ours": "CLEARANCE",
+        "ours_certainty": "NEEDS_DATA"
+      },
+      {
+        "baseline": "NOT_FLAGGED",
+        "case_id": "T7",
+        "description": "Two works within 5 m on Station Road with overlapping dates",
+        "expected": "SCHEDULE_OVERLAP",
+        "expected_certainty": "LIKELY",
+        "ours": "SCHEDULE_OVERLAP",
+        "ours_certainty": "LIKELY"
+      },
+      {
+        "baseline": "NOT_FLAGGED",
+        "case_id": "T8",
+        "description": "Two works within 5 m on Vikas Marg, 45 days apart",
+        "expected": "DIG_ONCE",
+        "expected_certainty": "LIKELY",
+        "ours": "DIG_ONCE",
+        "ours_certainty": "LIKELY"
+      },
+      {
+        "baseline": "NOT_FLAGGED",
+        "case_id": "T9",
+        "description": "Trench far from every asset and work",
+        "expected": "NO_CLASH",
+        "expected_certainty": null,
+        "ours": "NO_CLASH",
+        "ours_certainty": null
+      }
+    ],
+    "ours": {
+      "false_alarms": 0,
+      "misses": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "true_positives": 5
+    }
   }
 }
