@@ -193,7 +193,7 @@ Order: Sam pushes the starter files first (5 min). Rishit waits for that push, p
 2. Loading skeletons and error states for every query.
 3. Street-level view (SPEC §10): city context meshes, Street level / Overview camera transitions, X-ray fade of road + buildings.
 
-**Gate 3 (H19):** run `docs/DEMO_SCRIPT.md` start to finish without touching code. Report prints cleanly. Street-level → X-ray reveal works in the demo.
+**Gate 3 (H19):** run `docs/DEMO_SCRIPT.md` start to finish without touching code. Report prints cleanly. Street-level → X-ray reveal works in the demo. *(Historical: DEMO_SCRIPT is no longer required from Phase 4.)*
 
 ---
 

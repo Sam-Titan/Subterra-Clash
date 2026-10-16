@@ -47,7 +47,7 @@
 - [ ] 4C — Playwright audit-and-fix loop — Sam
 - [ ] 4D — Analytics (PostHog, env-gated) + real client IPs in Render logs — Sam
 - [ ] 4E — Deployment (Render, frontend host, Docker, README, lazy-load, seed tuning) — Sam
-- [ ] **Gate 4** — DEMO_SCRIPT on deployed URLs + offline fallback + backup video — Sam
+- [ ] **Gate 4** — full e2e on deployed URLs + core-flow walkthrough + offline fallback + backup video — Sam
 
 ---
 

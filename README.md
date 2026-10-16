@@ -46,7 +46,7 @@ docker compose up --build
 | `docs/PHASES.md` | Build plan and integration gates |
 | `docs/PROGRESS.md` | Live checklist |
 | `docs/API_CONTRACT.md` | Endpoints and payloads |
-| `docs/DEMO_SCRIPT.md` | 4-minute judge demo |
+| `docs/DEMO_SCRIPT.md` | 4-minute judge demo (historical; not required from Phase 4) |
 | `AGENTS.md` | Rules for coding agents (Claude Code, both of us) |
 
 ## Team

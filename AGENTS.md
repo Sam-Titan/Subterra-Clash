@@ -83,7 +83,7 @@ frontend/src/
   features/      # scene3d/, section/, clashes/, permits/, timeline/, dashboard/
   pages/         # Landing, Workspace, Queue, Intake, Dashboard
 shared/          # openapi.json, mocks/*.json
-docs/            # SPEC, PHASES, PROGRESS, API_CONTRACT, DEMO_SCRIPT
+docs/            # SPEC, PHASES, PROGRESS, API_CONTRACT
 ```
 
 ## Backend conventions
