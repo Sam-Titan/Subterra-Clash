@@ -58,7 +58,7 @@ No system Python, no Postgres, no global npm packages. Everything else is instal
 | 1 Core | H1.5–H7 | 1A · 1B · 1C · 1D | 1E · 1F | 3D scene shows real clashes from the real API |
 | 2 Features | H7–H13 | 2A · 2B · 2C | 2D · 2E · 2F | Paste a permit → commit → new clashes appear in 3D |
 | 3 Depth | H13–H19 | 3A · 3B | 3C · 3D · 3E | Full demo runs end to end, report exports |
-| 4 Ship | H19–H24 | 4A | 4B | Docker up, demo rehearsed twice, buffer left |
+| 4 Polish & Ship | H19–H24 | see `docs/PHASE4_PLAN.md` (4A–4E, Sam, full stack) | — | Gate 4: deployed demo, offline fallback, backup video |
 
 ---
 
@@ -122,7 +122,7 @@ Order: Sam pushes the starter files first (5 min). Rishit waits for that push, p
 ### 1D — backend: store + routes
 1. `app/store.py`: in-memory state from seed, analysis on load, `reset()`.
 2. Routes: `/api/scene`, `/api/rules`, `/api/clashes`, `/api/clashes/{id}`, `/api/groups`, `/api/reset`.
-3. `scripts/export_openapi.py` → `shared/openapi.json`; commit it; note "frontend: run pnpm gen:api" in PROGRESS.
+3. `scripts/export_openapi.py` → `shared/openapi.json`; commit it; Sam then runs `pnpm gen:api`.
 
 ### 1E — frontend: data layer + shell
 1. `src/api/client.ts` (fetch wrapper; when `VITE_USE_MOCKS=true` return JSON from `../shared/mocks`), `src/api/hooks.ts` (TanStack Query: `useScene`, `useClashes`, `useClash`, `useGroups`, `useSummary`).
@@ -152,7 +152,7 @@ Order: Sam pushes the starter files first (5 min). Rishit waits for that push, p
 
 ### 2C — backend: review + audit
 1. `POST /api/clashes/{id}/review` (DISMISS needs a note), audit log, `GET /api/audit`.
-2. Re-export OpenAPI; note "frontend: run pnpm gen:api" in PROGRESS.
+2. Re-export OpenAPI; Sam then runs `pnpm gen:api`.
 
 ### 2D — frontend: clash panel
 1. `features/clashes/ClashPanel.tsx`: badges, severity factor bar, measured / required / uncertainty, assets with source records, missing data, explanation, review actions (dismiss requires a note).
@@ -197,20 +197,8 @@ Order: Sam pushes the starter files first (5 min). Rishit waits for that push, p
 
 ---
 
-## Phase 4 — Ship (H19–H24)
-
-### 4A — Sam
-- [ ] `backend/Dockerfile`, root `docker-compose.yml` (backend + frontend services); `docker compose up --build` works on a clean clone.
-- [ ] README quickstart verified on a clean clone.
-- [ ] Final seed tuning; `POST /api/reset` before the demo.
-
-### 4B — Rishit
-- [ ] `frontend/Dockerfile` (build, then serve static files with `/api` proxied to the backend service).
-- [ ] Polish pass, empty states, keyboard: `Esc` closes the panel, `X` toggles x-ray.
-- [ ] Check 1366×768 and 1920×1080.
-- [ ] Record a 60-second backup screen capture of the demo.
-
-**Both:** rehearse the demo twice. Freeze code at H23. Last hour = buffer + submission.
+## Phase 4 — Polish & Ship
+See `docs/PHASE4_PLAN.md` (sessions 4A–4E, owner Sam).
 
 ---
 

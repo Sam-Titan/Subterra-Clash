@@ -4,10 +4,9 @@
 > Format: `- [x] 1B — geometry + tests — Sam — short note`. Add blockers under "Blockers" immediately.
 > Session details are in `docs/PHASES.md`.
 
-**Current phase:** 4 — Ship
+**Current phase:** Polish and Ship
 **Kickoff (H0):** 16 Oct 2026, 01:00 IST
 **Last gate passed:** Gate 3
-**Pending for frontend:** review ranking changed: INFO-only groups (dig-once) now rank after every conflict group (seed: GRP-08 is #8, was #6); `shared/mocks/groups.json` and `clashes.json` regenerated, no model or OpenAPI change — Rishit: pull first. Also: `GET /api/report` is live (3B): `format` defaults to `html` (inline, opens in a tab; ends with a Review log), `csv` is an attachment `subterra-clash-report.csv`; run `pnpm gen:api` once for the new path (no model changed). Earlier: gen:api run after 3A; `Summary` is a generated alias; new group titles wrap, dig-once groups shown as opportunities. For 3D: show `cases[]` outcomes as kind · certainty, e.g. "CLEARANCE · NEEDS_DATA" (T6)
 
 ---
 
@@ -42,11 +41,13 @@
 - [x] 3E — landing hero + transitions + toasts + loading/error states — Friend — landing x-ray spotlight (SVG + CSS mask, rests on the hero clash) + live counters from /api/summary (NumberTicker moved to `components/`); enter-only page fade (no exit, canvas never double-mounts; MotionConfig reducedMotion=user); sonner toasts with server ids on review/escalate/commit + report export failure (inline errors kept); shadcn skeletons for scene/list/queue/dashboard/panel/rail counts, ErrorBoundary per route + around the 3D view, health error shown in schedule. `scene3d/city/`: pure seeded layout (roads, clipped footpaths, dashes, lamps, trees, ~240 lots clear of streets, landmarks, works +5 m and clash points +5 m; landmark shapes pushed off roads, labels unchanged) drawn as ~5 instanced meshes; X-ray eases road/buildings to 0.06/0.08 and drops depthWrite; "City context" layer toggle. Street level (picker, default Station Road: eye 150,200,1.7 → target J3 on the ground; near 0.1 m, Overview restores 0.5) forces X-ray off; drag/fly-to release the preset. Checked headless at 1366×768 (street → x-ray → overview). Main chunk +67 kB (sonner, ticker on landing); three.js still lazy
 - [x] **Gate 3 passed** — verified by Sam with Rishit; demo script numbers aligned with the live seed
 
-## Phase 4 — Ship
-- [ ] 4A — backend Dockerfile + compose + README verified + seed tuning — Sam
-- [ ] 4B — frontend Dockerfile + polish + resolutions + backup video — Friend
-- [ ] Rehearsed twice
-- [ ] **Submitted**
+## Phase 4 — Polish & Ship (docs/PHASE4_PLAN.md)
+- [ ] 4A — Playwright harness (e2e + screenshots 1366×768 / 1920×1080) — Sam
+- [ ] 4B — UI/UX declutter — Sam
+- [ ] 4C — Playwright audit-and-fix loop — Sam
+- [ ] 4D — Analytics (PostHog, env-gated) + real client IPs in Render logs — Sam
+- [ ] 4E — Deployment (Render, frontend host, Docker, README, lazy-load, seed tuning) — Sam
+- [ ] **Gate 4** — DEMO_SCRIPT on deployed URLs + offline fallback + backup video — Sam
 
 ---
 

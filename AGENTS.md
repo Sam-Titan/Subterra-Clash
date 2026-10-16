@@ -10,10 +10,13 @@ A 3D review tool that finds probable spatial and schedule conflicts between prop
 2. `docs/PHASES.md` — the tasks for the current phase.
 3. `docs/SPEC.md` — the product, data model and engine rules.
 4. `docs/API_CONTRACT.md` — every endpoint and payload.
+5. `docs/PHASE4_PLAN.md` — Phase 4 sessions 4A–4E (Sam, full stack).
 
 Work happens in numbered sessions (e.g. `1B`, `2E`) listed in `docs/PHASES.md`. Build only the session you were given: plan first, wait for approval, then build. If a task is unclear or the spec seems wrong, stop and ask instead of guessing. Before finishing, run the checks below and update `docs/PROGRESS.md` — the next session starts with no memory except that file.
 
 ## Team and folder ownership (strict)
+> **Ownership of the project stays shared between Sam and Rishit, but from Phase 4 Sam alone makes the changes** (backend and frontend). The table below is historical. Sessions 4A–4E live in `docs/PHASE4_PLAN.md`.
+
 | Who | Tool | Owns (may edit) |
 |---|---|---|
 | Sam | Claude Code (WSL2) | `backend/`, `docs/`, `shared/`, root config files |
@@ -90,7 +93,7 @@ docs/            # SPEC, PHASES, PROGRESS, API_CONTRACT, DEMO_SCRIPT
 - Deterministic: seed generator uses `random.Random(42)`; same input → same clash IDs and order.
 - Explanations are generated from templates using the computed numbers. Do not use the LLM for explanations.
 - LLM is used only in `permits/extract.py`. It returns value + confidence + exact source quote per field. It never produces coordinates. Respect `LLM_MODE=cached|live` and fall back to fixtures on any error or timeout (10 s).
-- After changing any response model: export OpenAPI and note in PROGRESS that the frontend must run `pnpm gen:api`.
+- After changing any response model: export OpenAPI; Sam runs `pnpm gen:api` after any `shared/openapi.json` change, before frontend work that uses the new types. The agent runs it only when Sam asks.
 - Errors: `HTTPException` with `{detail, code}` as in the contract.
 
 ## Frontend conventions
