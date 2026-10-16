@@ -68,24 +68,11 @@
     },
     {
       "clash_ids": [
-        "CLH-0013"
-      ],
-      "id": "GRP-08",
-      "max_severity_score": 65,
-      "review_rank": 6,
-      "title": "Gas service line trench, Vikas Marg (east verge) — 1 clash, highest INFO",
-      "work_ids": [
-        "WRK-009",
-        "WRK-010"
-      ]
-    },
-    {
-      "clash_ids": [
         "CLH-0011"
       ],
       "id": "GRP-06",
       "max_severity_score": 57,
-      "review_rank": 7,
+      "review_rank": 6,
       "title": "Water main extension, Nehru Path — 1 clash, highest HIGH",
       "work_ids": [
         "WRK-006"
@@ -97,10 +84,23 @@
       ],
       "id": "GRP-04",
       "max_severity_score": 31,
-      "review_rank": 8,
+      "review_rank": 7,
       "title": "Water service pipe, Gulmohar Lane — 1 clash, highest LOW",
       "work_ids": [
         "WRK-004"
+      ]
+    },
+    {
+      "clash_ids": [
+        "CLH-0013"
+      ],
+      "id": "GRP-08",
+      "max_severity_score": 65,
+      "review_rank": 8,
+      "title": "Gas service line trench, Vikas Marg (east verge) — 1 clash, highest INFO",
+      "work_ids": [
+        "WRK-009",
+        "WRK-010"
       ]
     }
   ],

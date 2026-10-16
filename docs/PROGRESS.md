@@ -7,7 +7,7 @@
 **Current phase:** 3 — Depth
 **Kickoff (H0):** 16 Oct 2026, 01:00 IST
 **Last gate passed:** Gate 2
-**Pending for frontend:** `GET /api/report` is live (3B): `format` defaults to `html` (inline, opens in a tab; ends with a Review log), `csv` is an attachment `subterra-clash-report.csv`; run `pnpm gen:api` once for the new path (no model changed). Earlier: gen:api run after 3A; `Summary` is a generated alias; new group titles wrap, dig-once groups shown as opportunities. For 3D: show `cases[]` outcomes as kind · certainty, e.g. "CLEARANCE · NEEDS_DATA" (T6)
+**Pending for frontend:** review ranking changed: INFO-only groups (dig-once) now rank after every conflict group (seed: GRP-08 is #8, was #6); `shared/mocks/groups.json` and `clashes.json` regenerated, no model or OpenAPI change — Rishit: pull first. Also: `GET /api/report` is live (3B): `format` defaults to `html` (inline, opens in a tab; ends with a Review log), `csv` is an attachment `subterra-clash-report.csv`; run `pnpm gen:api` once for the new path (no model changed). Earlier: gen:api run after 3A; `Summary` is a generated alias; new group titles wrap, dig-once groups shown as opportunities. For 3D: show `cases[]` outcomes as kind · certainty, e.g. "CLEARANCE · NEEDS_DATA" (T6)
 
 ---
 

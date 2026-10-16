@@ -148,7 +148,7 @@ Stored in `backend/app/data/rules.json`, served at `GET /api/rules`. **Illustrat
 | `baseline_flagged` | bool | did the naive 2D baseline flag this pair? |
 
 ### 7.6 Clash group
-`id, clash_ids[], work_ids[], max_severity_score, review_rank, title` — related clashes = sharing a work, or within 15 m of each other along the same street. `review_rank` 1 = review first.
+`id, clash_ids[], work_ids[], max_severity_score, review_rank, title` — related clashes = sharing a work, or within 15 m of each other along the same street. `review_rank` 1 = review first; groups containing only INFO clashes (dig-once opportunities) rank after every group with a conflict.
 
 ### 7.7 Audit entry
 `id, at, actor, action, target_id, detail` — every review action, permit commit and reset is logged. Append-only.

@@ -15,14 +15,16 @@ from app.models import (
 SCENE = load_scene()
 
 
-def clash(cid: str, works: list[str], x: float, y: float, score: int) -> Clash:
+def clash(
+    cid: str, works: list[str], x: float, y: float, score: int, band: Band = Band.HIGH
+) -> Clash:
     return Clash(
         id=cid,
         kind=ClashKind.CLEARANCE,
         certainty=Certainty.LIKELY,
         severity=Severity(
             score=score,
-            band=Band.HIGH,
+            band=band,
             factors=SeverityFactors(hazard=0.5, breach=0.5, urgency=0.5, confidence=1.0),
         ),
         work_ids=works,
@@ -104,3 +106,38 @@ def test_title_uses_top_severity_work_and_count() -> None:
     )
     title = next(w.title for w in SCENE.works if w.id == "WRK-001")
     assert groups[0].title == f"{title} — 2 clashes, highest HIGH"
+
+
+def test_info_only_groups_rank_after_every_conflict_group() -> None:
+    clashes = [
+        clash("CLH-0001", ["WRK-001"], 100, 200, 65, Band.INFO),  # dig-once, score 65
+        clash("CLH-0002", ["WRK-002"], 300, 80, 57),  # HIGH 57
+        clash("CLH-0003", ["WRK-003"], 450, 320, 20, Band.LOW),  # conflict, low score
+    ]
+    _, groups = run(clashes)
+    rank = {g.id: g.review_rank for g in groups}
+    assert rank == {"GRP-02": 1, "GRP-03": 2, "GRP-01": 3}
+
+
+def test_group_with_one_conflict_is_not_info_only() -> None:
+    clashes = [
+        clash("CLH-0001", ["WRK-001"], 100, 200, 65, Band.INFO),
+        clash("CLH-0002", ["WRK-001"], 500, 80, 30, Band.MEDIUM),  # shares work → same group
+        clash("CLH-0003", ["WRK-003"], 450, 320, 20, Band.LOW),
+    ]
+    _, groups = run(clashes)
+    rank = {g.id: g.review_rank for g in groups}
+    assert rank == {"GRP-01": 1, "GRP-02": 2}
+
+
+def test_seed_info_only_groups_rank_last() -> None:
+    from app.config import get_settings
+    from app.data.loader import load_rules
+    from app.engine.analyze import analyze
+
+    result = analyze(SCENE, load_rules(), get_settings().demo_date)
+    band_of = {c.id: c.severity.band for c in result.clashes}
+    info_only = [g for g in result.groups if all(band_of[c] is Band.INFO for c in g.clash_ids)]
+    assert info_only, "seed should contain at least one dig-once (INFO) group"
+    n = len(result.groups)
+    assert sorted(g.review_rank for g in info_only) == list(range(n - len(info_only) + 1, n + 1))

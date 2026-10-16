@@ -625,61 +625,6 @@
       ]
     },
     {
-      "asset_ids": [],
-      "baseline_flagged": false,
-      "certainty": "LIKELY",
-      "evidence": [
-        {
-          "detail": "WRK-009 Gas service line trench, Vikas Marg (east verge) (Navgarh Gas Ltd); 2026-11-02 to 2026-11-13; source: Navgarh Gas Ltd work order",
-          "ref": "NGL/2026/071",
-          "type": "PERMIT"
-        },
-        {
-          "detail": "WRK-010 Fibre ducting, Vikas Marg (east verge) (Navgarh FiberNet); 2026-12-28 to 2027-01-08; source: Municipal permit portal",
-          "ref": "NFN/2026/0455",
-          "type": "PERMIT"
-        }
-      ],
-      "explanation": "Gas service line trench, Vikas Marg (east verge) (WRK-009) and Fibre ducting, Vikas Marg (east verge) (WRK-010) are within 5 m and 45 days apart; coordinating could let one excavation serve both (dig once).",
-      "group_id": "GRP-08",
-      "id": "CLH-0013",
-      "kind": "DIG_ONCE",
-      "location": {
-        "x": 193.5,
-        "y": 170.0,
-        "z": 0.0
-      },
-      "measured_gap_m": null,
-      "missing_data": [],
-      "required_clearance_m": null,
-      "review": {
-        "note": null,
-        "reviewer": null,
-        "status": "OPEN",
-        "updated_at": null
-      },
-      "rule_id": null,
-      "schedule": {
-        "gap_days": 45,
-        "overlap_days": 0
-      },
-      "severity": {
-        "band": "INFO",
-        "factors": {
-          "breach": 0.5,
-          "confidence": 1.0,
-          "hazard": 0.5,
-          "urgency": 1.0
-        },
-        "score": 65
-      },
-      "uncertainty_m": null,
-      "work_ids": [
-        "WRK-009",
-        "WRK-010"
-      ]
-    },
-    {
       "asset_ids": [
         "AST-0043"
       ],
@@ -803,6 +748,61 @@
       "uncertainty_m": 2.0616,
       "work_ids": [
         "WRK-004"
+      ]
+    },
+    {
+      "asset_ids": [],
+      "baseline_flagged": false,
+      "certainty": "LIKELY",
+      "evidence": [
+        {
+          "detail": "WRK-009 Gas service line trench, Vikas Marg (east verge) (Navgarh Gas Ltd); 2026-11-02 to 2026-11-13; source: Navgarh Gas Ltd work order",
+          "ref": "NGL/2026/071",
+          "type": "PERMIT"
+        },
+        {
+          "detail": "WRK-010 Fibre ducting, Vikas Marg (east verge) (Navgarh FiberNet); 2026-12-28 to 2027-01-08; source: Municipal permit portal",
+          "ref": "NFN/2026/0455",
+          "type": "PERMIT"
+        }
+      ],
+      "explanation": "Gas service line trench, Vikas Marg (east verge) (WRK-009) and Fibre ducting, Vikas Marg (east verge) (WRK-010) are within 5 m and 45 days apart; coordinating could let one excavation serve both (dig once).",
+      "group_id": "GRP-08",
+      "id": "CLH-0013",
+      "kind": "DIG_ONCE",
+      "location": {
+        "x": 193.5,
+        "y": 170.0,
+        "z": 0.0
+      },
+      "measured_gap_m": null,
+      "missing_data": [],
+      "required_clearance_m": null,
+      "review": {
+        "note": null,
+        "reviewer": null,
+        "status": "OPEN",
+        "updated_at": null
+      },
+      "rule_id": null,
+      "schedule": {
+        "gap_days": 45,
+        "overlap_days": 0
+      },
+      "severity": {
+        "band": "INFO",
+        "factors": {
+          "breach": 0.5,
+          "confidence": 1.0,
+          "hazard": 0.5,
+          "urgency": 1.0
+        },
+        "score": 65
+      },
+      "uncertainty_m": null,
+      "work_ids": [
+        "WRK-009",
+        "WRK-010"
       ]
     }
   ],

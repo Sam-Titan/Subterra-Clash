@@ -6,7 +6,7 @@ from collections.abc import Sequence
 import networkx as nx
 from shapely.geometry import LineString, Point
 
-from app.models import Clash, ClashGroup, Street, Work
+from app.models import Band, Clash, ClashGroup, Street, Work
 
 GROUP_RADIUS_M = 15.0
 
@@ -31,7 +31,8 @@ def group_clashes(
     """Connect clashes that share a work, or lie within 15 m on the same street.
 
     Group ids ``GRP-01…`` follow the smallest stable clash id in each group; ``review_rank``
-    orders groups by max severity, then clash count, then id. Returns clashes with
+    orders groups with any conflict (a non-INFO clash) before INFO-only groups (dig-once
+    coordination opportunities), then by max severity, clash count, id. Returns clashes with
     ``group_id`` set (inputs are not mutated).
     """
     graph: nx.Graph = nx.Graph()
@@ -78,7 +79,12 @@ def group_clashes(
             )
         )
 
-    ranked = sorted(groups, key=lambda g: (-g.max_severity_score, -len(g.clash_ids), g.id))
+    def info_only(g: ClashGroup) -> bool:
+        return all(by_id[cid].severity.band is Band.INFO for cid in g.clash_ids)
+
+    ranked = sorted(
+        groups, key=lambda g: (info_only(g), -g.max_severity_score, -len(g.clash_ids), g.id)
+    )
     rank = {g.id: i for i, g in enumerate(ranked, start=1)}
     groups = [g.model_copy(update={"review_rank": rank[g.id]}) for g in groups]
 
