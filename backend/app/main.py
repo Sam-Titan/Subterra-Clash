@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
-from app.api import routes_clashes, routes_permits, routes_scene, routes_summary
+from app.api import routes_clashes, routes_permits, routes_report, routes_scene, routes_summary
 from app.api.schemas import AppError
 from app.config import Settings, get_settings
 from app.models.base import ApiModel
@@ -36,6 +36,7 @@ app.include_router(routes_scene.router)
 app.include_router(routes_clashes.router)
 app.include_router(routes_permits.router)
 app.include_router(routes_summary.router)
+app.include_router(routes_report.router)
 
 
 @app.exception_handler(AppError)

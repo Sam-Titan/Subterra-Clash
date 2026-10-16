@@ -159,7 +159,13 @@ INTAKE works carry their own positional uncertainty: `(1 − lowest location-fie
 `{ "items": [ { "id": "AUD-0007", "at": "2026-10-16T14:02:11+05:30", "actor": "A. Sharma", "action": "ESCALATE", "target_id": "CLH-0004", "detail": "Gas main — needs GAIL-style standby" } ], "total": n }` newest first. `target_id` is `null` for entries with no target (`RESET`). Actions: `ACKNOWLEDGE`, `ESCALATE`, `DISMISS`, `REOPEN`, `PERMIT_COMMIT`, `RESET`.
 
 ### `GET /api/report?format=html|csv`
-`html` → `text/html` printable report (SPEC §11). `csv` → `text/csv` attachment `subterra-clash-report.csv`.
+Query param `format`, default `html`; any other value → 422 `VALIDATION_ERROR`.
+- `html` → `200 text/html; charset=utf-8`, served **inline** (no `Content-Disposition`), so the frontend can open `/api/report?format=html` in a new tab and use the browser's "Save as PDF". Printable, offline (inline CSS, no external assets), `Cache-Control: no-store`.
+- `csv` → `200 text/csv; charset=utf-8` **download**: `Content-Disposition: attachment; filename="subterra-clash-report.csv"`. UTF-8 with BOM; one row per clash in review order.
+- Both include **all** clashes in review order (group rank, severity desc, id), resolved ones too with status, reviewer, note. Summary counts follow the unresolved rule and are labelled "Unresolved: N of M".
+- HTML only: a "Review log" appendix lists every audit event oldest first (time IST, action, clash/draft id, reviewer, note), or "No review actions yet." when empty. The CSV stays one row per clash.
+- Timestamps (generated-at, review time) are shown in Asia/Kolkata, e.g. `16 Oct 2026, 06:45 IST`. The JSON API stays UTC.
+- CSV columns: `rank, clash_id, group_id, kind, certainty, severity_score, severity_band, work_ids, work_titles, asset_ids, asset_labels, x, y, z, measured_gap_m, required_clearance_m, uncertainty_m, rule_id, missing_data, review_status, reviewer, note, review_updated_at, explanation`. Missing numbers are blank (never 0); list cells are `; `-joined; text cells starting with `= + - @` get a leading `'` (numeric cells never do, so negative gaps stay numbers).
 
 ### `POST /api/reset`
 Restores seed state (clears intake works, review decisions; keeps an audit entry "RESET"). Used before each demo run. Response `{ "status": "reset" }`.

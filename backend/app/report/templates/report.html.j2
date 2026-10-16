@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inspection report — {{ ctx.area_name }}</title>
+<style>
+  :root { color-scheme: light; }
+  body { font: 13px/1.45 system-ui, "Segoe UI", Roboto, sans-serif; color: #1a1d21; margin: 0 auto; padding: 24px; max-width: 980px; }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  h2 { font-size: 16px; margin: 28px 0 8px; border-bottom: 1px solid #c9ced6; padding-bottom: 4px; }
+  .meta { color: #4a5160; }
+  .disclaimer { border: 1px solid #b8860b; background: #fff8e1; padding: 10px 12px; margin: 14px 0; }
+  table { border-collapse: collapse; width: 100%; margin: 8px 0; }
+  th, td { border: 1px solid #c9ced6; padding: 4px 8px; text-align: left; vertical-align: top; }
+  th { background: #eef1f5; }
+  .num { text-align: right; font-variant-numeric: tabular-nums; }
+  .clash { border: 1px solid #c9ced6; border-radius: 4px; margin: 12px 0; padding: 10px 12px; break-inside: avoid; }
+  .clash h3 { font-size: 14px; margin: 0 0 6px; }
+  .tag { display: inline-block; border: 1px solid #8a93a3; border-radius: 3px; padding: 0 6px; margin-right: 4px; font-size: 11px; }
+  dl { display: grid; grid-template-columns: 160px 1fr; gap: 2px 12px; margin: 6px 0 0; }
+  dt { color: #4a5160; }
+  dd { margin: 0; }
+  .missing { color: #9a3412; }
+  @media print { body { padding: 0; } .clash { page-break-inside: avoid; } }
+</style>
+</head>
+<body>
+<h1>Inspection report — {{ ctx.area_name }}</h1>
+<p class="meta">Generated {{ ctx.generated_at | ist }} · demo date {{ ctx.demo_date.isoformat() }}</p>
+<p class="disclaimer">{{ disclaimer }}</p>
+
+<h2>Summary</h2>
+{% set c = ctx.summary.counts %}
+<p><strong>Unresolved: {{ ctx.unresolved }} of {{ ctx.total }}</strong> clashes
+  (review status Open or Escalated; Acknowledged and Dismissed clashes are listed below but not counted here).</p>
+<table>
+  <tr><th>Critical</th><th>High</th><th>Needs data</th><th>Dig-once</th><th>Schedule overlap</th></tr>
+  <tr><td class="num">{{ c.critical }}</td><td class="num">{{ c.high }}</td><td class="num">{{ c.needs_data }}</td><td class="num">{{ c.dig_once }}</td><td class="num">{{ c.schedule_overlap }}</td></tr>
+</table>
+{% if ctx.summary.by_utility %}
+<p>By utility (unresolved):
+  {% for u in ctx.summary.by_utility %}{{ u.utility.value }} {{ u.count }}{{ ", " if not loop.last }}{% endfor %}</p>
+{% endif %}
+{% if ctx.summary.by_certainty %}
+<p>By certainty (unresolved):
+  {% for k in ctx.summary.by_certainty %}{{ k.certainty.value }} {{ k.count }}{{ ", " if not loop.last }}{% endfor %}</p>
+{% endif %}
+
+<h2>This tool vs naive 2D baseline</h2>
+{% set ev = ctx.summary.evaluation %}
+<table>
+  <tr><th></th><th class="num">Found</th><th class="num">False alarms</th><th class="num">Misses</th><th class="num">Precision</th><th class="num">Recall</th></tr>
+  <tr><td>This tool</td><td class="num">{{ ev.ours.true_positives }}</td><td class="num">{{ ev.ours.false_alarms }}</td><td class="num">{{ ev.ours.misses }}</td><td class="num">{{ "%.2f"|format(ev.ours.precision) }}</td><td class="num">{{ "%.2f"|format(ev.ours.recall) }}</td></tr>
+  <tr><td>Naive 2D baseline</td><td class="num">{{ ev.baseline.true_positives }}</td><td class="num">{{ ev.baseline.false_alarms }}</td><td class="num">{{ ev.baseline.misses }}</td><td class="num">{{ "%.2f"|format(ev.baseline.precision) }}</td><td class="num">{{ "%.2f"|format(ev.baseline.recall) }}</td></tr>
+</table>
+<table>
+  <tr><th>Case</th><th>Description</th><th>Expected</th><th>This tool</th><th>Baseline</th></tr>
+  {% for k in ev.cases %}
+  <tr>
+    <td>{{ k.case_id }}</td><td>{{ k.description }}</td>
+    <td>{{ k.expected }}{% if k.expected_certainty %} · {{ k.expected_certainty.value }}{% endif %}</td>
+    <td>{{ k.ours }}{% if k.ours_certainty %} · {{ k.ours_certainty.value }}{% endif %}</td>
+    <td>{{ k.baseline }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+<h2>Clashes in review order ({{ ctx.total }})</h2>
+{% if not ctx.rows %}
+<p>No clashes found in the current plan.</p>
+{% endif %}
+{% for row in ctx.rows %}
+{% set k = row.clash %}
+<section class="clash">
+  <h3>#{{ row.rank }} · {{ k.id }} · {{ k.kind.value }}</h3>
+  <div>
+    <span class="tag">{{ k.certainty.value }}</span>
+    <span class="tag">Severity {{ k.severity.score }} · {{ k.severity.band.value }}</span>
+    <span class="tag">Review: {{ k.review.status.value }}</span>
+  </div>
+  <dl>
+    <dt>Group</dt><dd>{{ k.group_id }} — {{ row.group_title }}</dd>
+    <dt>Location</dt><dd>x {{ "%.1f"|format(k.location.x) }} m, y {{ "%.1f"|format(k.location.y) }} m, z {{ "%.2f"|format(k.location.z) }} m</dd>
+    <dt>Works</dt><dd>
+      {% for w in row.works %}{{ w.id }} — {{ w.title }} ({{ w.agency }}; permit {{ w.source_permit.permit_no }}){{ "; " if not loop.last }}{% else %}—{% endfor %}
+    </dd>
+    <dt>Affected assets</dt><dd>
+      {% for a in row.assets %}
+      <div>{{ a.id }} — {{ a.label }} ({{ a.utility.value }}, {{ a.owner }}); source record {{ a.source_record.record_id }}, {{ a.source_record.source }}, captured {{ a.source_record.captured_on.isoformat() }}</div>
+      {% else %}—{% endfor %}
+    </dd>
+    <dt>Measured gap</dt><dd>{% if k.measured_gap_m is not none %}{{ "%.2f"|format(k.measured_gap_m) }} m{% else %}not available{% endif %}</dd>
+    <dt>Required clearance</dt><dd>{% if k.required_clearance_m is not none %}{{ "%.2f"|format(k.required_clearance_m) }} m{% else %}not applicable{% endif %}</dd>
+    <dt>Uncertainty</dt><dd>{% if k.uncertainty_m is not none %}± {{ "%.2f"|format(k.uncertainty_m) }} m{% else %}not available{% endif %}</dd>
+    <dt>Rule</dt><dd>{% if row.rule %}{{ row.rule.id }} — {{ row.rule.label }} ({{ "%.2f"|format(row.rule.min_clearance_m) }} m, illustrative){% else %}no clearance rule applies to this kind{% endif %}</dd>
+    {% if k.schedule %}
+    <dt>Schedule</dt><dd>overlap {{ k.schedule.overlap_days }} days, gap {{ k.schedule.gap_days }} days</dd>
+    {% endif %}
+    {% if k.missing_data %}
+    <dt>Missing data</dt><dd class="missing">{{ k.missing_data | join("; ") }}</dd>
+    {% endif %}
+    <dt>Explanation</dt><dd>{{ k.explanation }}</dd>
+    <dt>Reviewer</dt><dd>{{ k.review.reviewer or "—" }}{% if k.review.updated_at %} · {{ k.review.updated_at | ist }}{% endif %}</dd>
+    <dt>Reviewer note</dt><dd>{{ k.review.note or "—" }}</dd>
+  </dl>
+</section>
+{% endfor %}
+
+<h2>Review log</h2>
+{% if ctx.audit %}
+<table>
+  <tr><th>Time</th><th>Action</th><th>Clash / draft</th><th>Reviewer</th><th>Note</th></tr>
+  {% for e in ctx.audit %}
+  <tr><td>{{ e.at | ist }}</td><td>{{ e.action }}</td><td>{{ e.target_id or "—" }}</td><td>{{ e.actor }}</td><td>{{ e.detail }}</td></tr>
+  {% endfor %}
+</table>
+{% else %}
+<p>No review actions yet.</p>
+{% endif %}
+
+<p class="disclaimer">{{ disclaimer }}</p>
+</body>
+</html>
