@@ -98,7 +98,7 @@ function DashboardBody({ summary }: { summary: Summary }) {
 				</Panel>
 			</div>
 
-			<div className="grid gap-4 lg:grid-cols-[minmax(0,2fr)_minmax(0,5fr)]">
+			<div className="grid gap-4">
 				<Panel
 					title="Ours vs baseline"
 					note="Precision and recall cover the planted spatial cases only, computed on all engine output whatever its review status."
