@@ -29,3 +29,7 @@ Thumbs.db
 # Agent local files
 CLAUDE.local.md
 .claude/settings.local.json
+# Playwright
+frontend/e2e/screenshots/
+frontend/playwright-report/
+frontend/test-results/

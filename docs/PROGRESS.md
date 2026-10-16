@@ -42,7 +42,7 @@
 - [x] **Gate 3 passed** — verified by Sam with Rishit; demo script numbers aligned with the live seed
 
 ## Phase 4 — Polish & Ship (docs/PHASE4_PLAN.md)
-- [ ] 4A — Playwright harness (e2e + screenshots 1366×768 / 1920×1080) — Sam
+- [x] 4A — Playwright harness (e2e + screenshots 1366×768 / 1920×1080) — Sam — `frontend/e2e/` + `playwright.config.ts` (workers 1; both servers via `webServer`, reuse if running) + `playwright.shots.config.ts`; `pnpm e2e`, `pnpm e2e:shots`. `helpers.ts` exports `test` with an auto fixture that resets the store before/after every test. Baseline screenshots (before any 4B change) in `frontend/e2e/screenshots/baseline/{laptop,desktop}/` (10 PNGs, gitignored — regenerate with `pnpm e2e:shots` on the 4A commit). Deps added: `@playwright/test`, `@axe-core/playwright`. Chromium via `pnpm exec playwright install chromium` (add `--with-deps` on a machine without the libs). Two known-failing groups are `test.fixme`, see Blockers
 - [ ] 4B — UI/UX declutter — Sam
 - [ ] 4C — Playwright audit-and-fix loop — Sam
 - [ ] 4D — Analytics (PostHog, env-gated) + real client IPs in Render logs — Sam
@@ -52,6 +52,8 @@
 ---
 
 ## Blockers
+- **4B — disclaimer below the fold (domain rule 7).** `quality.spec.ts` "disclaimer is visible in the viewport" is `test.fixme` (in `DISCLAIMER_FIXME`) for exactly: laptop 1366×768 → workspace, queue, dashboard; desktop 1920×1080 → queue, dashboard. Landing and intake pass on both; desktop workspace passes. Remove each entry when the footer is in view; the check is not weakened.
+- **4B — colour contrast (axe `color-contrast`, serious).** One `test.fixme` "no colour-contrast violations" per page. Failing nodes (laptop / desktop): landing 2 / 2, workspace 72 / 76, queue 27 / 27, intake 7 / 7, dashboard 20 / 20. The other serious/critical axe rules are active and green on every page.
 
 ## Notes for 2B / 2C
 - Permit commit: add the work to `store.scene.works`, call `store.reanalyze()` (ids stay stable), log audit via `store.log_audit`. Reviews: `store.set_review(clash_id, Review)` then audit; the review model/route is 2C.
