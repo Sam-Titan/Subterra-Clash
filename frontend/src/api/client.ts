@@ -97,44 +97,56 @@ async function request<T>(
 		);
 	}
 
-	let body: unknown;
+	if (!response.ok) throw errorFromResponse(response.status, text, method, url);
+
 	try {
-		body = text ? JSON.parse(text) : null;
+		return (text ? JSON.parse(text) : null) as T;
 	} catch {
 		throw new ApiError(
 			response.status,
 			"BAD_RESPONSE",
-			response.ok
-				? `Server returned non-JSON data for ${url}.`
-				: `Server error ${response.status} for ${url} (backend may be offline).`,
+			`Server returned non-JSON data for ${url}.`,
 		);
 	}
+}
 
-	if (!response.ok) {
-		// A route the backend does not have yet answers with the router's
-		// generic 404/405 ({detail, code: NOT_FOUND | METHOD_NOT_ALLOWED}, or a
-		// bare body); specific codes such as CLASH_NOT_FOUND pass through.
-		const missingRoute =
-			(response.status === 404 || response.status === 405) &&
-			(!isErrorBody(body) || GENERIC_ROUTE_CODES.has(body.code));
-		if (missingRoute) {
-			throw new ApiError(
-				response.status,
-				"NOT_AVAILABLE",
-				`${method} ${url} is not available on this backend yet.`,
-			);
-		}
-		if (isErrorBody(body)) {
-			throw new ApiError(response.status, body.code, body.detail);
-		}
-		throw new ApiError(
-			response.status,
+/** Map a non-OK response body (JSON or not) to an ApiError. */
+function errorFromResponse(
+	status: number,
+	text: string,
+	method: string,
+	url: string,
+): ApiError {
+	let body: unknown;
+	try {
+		body = text ? JSON.parse(text) : null;
+	} catch {
+		// With the backend down, the Vite proxy answers with a plain-text 500.
+		return new ApiError(
+			status,
 			"BAD_RESPONSE",
-			`Server error ${response.status} for ${url}.`,
+			`Server error ${status} for ${url} (backend may be offline).`,
 		);
 	}
-
-	return body as T;
+	// A route the backend does not have yet answers with the router's
+	// generic 404/405 ({detail, code: NOT_FOUND | METHOD_NOT_ALLOWED}, or a
+	// bare body); specific codes such as CLASH_NOT_FOUND pass through.
+	const missingRoute =
+		(status === 404 || status === 405) &&
+		(!isErrorBody(body) || GENERIC_ROUTE_CODES.has(body.code));
+	if (missingRoute) {
+		return new ApiError(
+			status,
+			"NOT_AVAILABLE",
+			`${method} ${url} is not available on this backend yet.`,
+		);
+	}
+	if (isErrorBody(body)) return new ApiError(status, body.code, body.detail);
+	return new ApiError(
+		status,
+		"BAD_RESPONSE",
+		`Server error ${status} for ${url}.`,
+	);
 }
 
 export function apiGet<T>(path: string, params?: QueryParams): Promise<T> {
@@ -185,6 +197,44 @@ export async function reviewClash(
 export async function getSummary(): Promise<Summary> {
 	if (USE_MOCKS) return (await import("./mocks")).mockSummary();
 	return apiGet<Summary>("/summary");
+}
+
+export type ReportFormat = "html" | "csv";
+
+/**
+ * GET /api/report as a Blob (HTML or CSV, not JSON). Errors map exactly like
+ * JSON requests, so a backend without the route gives NOT_AVAILABLE.
+ */
+export async function getReport(format: ReportFormat): Promise<Blob> {
+	const url = buildUrl("/report", { format });
+	if (USE_MOCKS) {
+		throw new ApiError(
+			0,
+			"NOT_AVAILABLE",
+			"The inspection report needs the live API (mock mode is on).",
+		);
+	}
+	let response: Response;
+	try {
+		response = await fetch(url, {
+			headers: { Accept: format === "html" ? "text/html" : "text/csv" },
+		});
+	} catch {
+		throw new ApiError(0, "NETWORK", `Could not reach the server for ${url}.`);
+	}
+	if (!response.ok) {
+		const text = await response.text().catch(() => "");
+		throw errorFromResponse(response.status, text, "GET", url);
+	}
+	try {
+		return await response.blob();
+	} catch {
+		throw new ApiError(
+			response.status,
+			"NETWORK",
+			`Connection dropped while reading ${url}.`,
+		);
+	}
 }
 
 export async function getPermitSamples(): Promise<ListResponse<SamplePermit>> {

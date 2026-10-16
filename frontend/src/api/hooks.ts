@@ -5,6 +5,7 @@ import {
 	getClashes,
 	getGroups,
 	getPermitSamples,
+	getReport,
 	getScene,
 	getSummary,
 	parsePermitPdf,
@@ -77,6 +78,11 @@ export function useReviewClash() {
 			queryClient.invalidateQueries({ queryKey: queryKeys.summary });
 		},
 	});
+}
+
+/** Fetch the inspection report (HTML or CSV) as a Blob; the caller shows it. */
+export function useReport() {
+	return useMutation({ mutationFn: getReport });
 }
 
 export function usePermitSamples() {

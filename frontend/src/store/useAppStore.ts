@@ -1,5 +1,11 @@
 import { create } from "zustand";
-import { CERTAINTIES, type Certainty, type Utility } from "@/api/types";
+import {
+	CERTAINTIES,
+	type Certainty,
+	REVIEW_STATUSES,
+	type ReviewStatus,
+	type Utility,
+} from "@/api/types";
 import type { SectionState } from "@/features/section/sectionGeometry";
 
 export type LayerId = Utility | "WORKS";
@@ -32,6 +38,10 @@ interface AppState {
 	section: SectionState | null;
 	/** Latest permit added to the plan; its clashes are highlighted in the workspace. */
 	intakeResult: IntakeResult | null;
+	/** Review statuses shown in the queue. */
+	queueStatusFilter: ReviewStatus[];
+	/** Queue rows split into clash-group sections (else one flat list). */
+	queueGrouped: boolean;
 
 	selectClash: (id: string | null) => void;
 	toggleLayer: (layer: LayerId) => void;
@@ -49,6 +59,9 @@ interface AppState {
 	setSectionCollapsed: (collapsed: boolean) => void;
 	setSection: (section: SectionState) => void;
 	setIntakeResult: (result: IntakeResult | null) => void;
+	toggleQueueStatus: (status: ReviewStatus) => void;
+	resetQueueStatus: () => void;
+	setQueueGrouped: (grouped: boolean) => void;
 }
 
 export interface IntakeResult {
@@ -102,4 +115,14 @@ export const useAppStore = create<AppState>()((set) => ({
 	setSection: (section) => set({ section }),
 	intakeResult: null,
 	setIntakeResult: (result) => set({ intakeResult: result }),
+	queueStatusFilter: [...REVIEW_STATUSES],
+	queueGrouped: true,
+	toggleQueueStatus: (status) =>
+		set((s) => ({
+			queueStatusFilter: s.queueStatusFilter.includes(status)
+				? s.queueStatusFilter.filter((x) => x !== status)
+				: [...s.queueStatusFilter, status],
+		})),
+	resetQueueStatus: () => set({ queueStatusFilter: [...REVIEW_STATUSES] }),
+	setQueueGrouped: (grouped) => set({ queueGrouped: grouped }),
 }));

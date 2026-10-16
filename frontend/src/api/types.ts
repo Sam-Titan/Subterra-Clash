@@ -28,6 +28,13 @@ export const CERTAINTIES: readonly Certainty[] = [
 	"NEEDS_DATA",
 ];
 
+export const REVIEW_STATUSES: readonly ReviewStatus[] = [
+	"OPEN",
+	"ACKNOWLEDGED",
+	"ESCALATED",
+	"DISMISSED",
+];
+
 export type Point2 = [number, number];
 export type Point3 = [number, number, number];
 
