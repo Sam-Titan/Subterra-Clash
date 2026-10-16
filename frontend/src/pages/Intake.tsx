@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { toast } from "sonner";
 import {
 	type ParseInput,
 	useClearIntakeSession,
@@ -135,7 +136,18 @@ export default function Intake() {
 								onCommit={(reviewer) =>
 									commit.mutate(
 										{ draftId: draft.draft_id, reviewer },
-										{ onSuccess: (result) => openWorkspace(result, draft) },
+										{
+											onSuccess: (result) => {
+												const n = result.new_clash_ids.length;
+												toast.success(
+													`${result.work.source_permit.permit_no} added to coordination plan`,
+													{
+														description: `${result.work.id} · ${n} new clash${n === 1 ? "" : "es"} found${n > 0 ? `: ${result.new_clash_ids.join(", ")}` : ""}.`,
+													},
+												);
+												openWorkspace(result, draft);
+											},
+										},
 									)
 								}
 								onOpenWorkspace={() =>

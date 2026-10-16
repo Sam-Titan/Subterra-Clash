@@ -16,7 +16,7 @@ export function sceneSpan(bounds: Bounds): number {
 export function cameraSettings(bounds: Bounds) {
 	const span = sceneSpan(bounds);
 	return {
-		near: 0.5,
+		near: NEAR_PLANE.overview,
 		far: span * 6,
 		fov: 45,
 		/** Offset from the area centre: up and towards the south. */
@@ -48,6 +48,8 @@ export const RENDER_ORDER = {
 	works: 2,
 	halos: 3,
 	ground: 4,
+	/** City context: drawn with the ground, after everything underground. */
+	city: 4,
 	overlayLines: 5, // street kerbs, work footprints, leader lines
 	section: 5,
 	markers: 6,
@@ -62,7 +64,21 @@ export const OPACITY = {
 	halo: 0.1,
 	sectionPlane: 0.08,
 	sectionOutline: 0.7,
+	/** City road layer (road, footpaths, markings): solid / x-ray. */
+	cityGroundSolid: 1,
+	cityGroundXray: 0.06,
+	/** Buildings, landmarks and street furniture: solid / x-ray. */
+	cityBuiltSolid: 1,
+	cityBuiltXray: 0.08,
+	/** Above this the city writes depth and hides what is underground. */
+	cityDepthWriteAbove: 0.95,
 } as const;
+
+/** X-ray fade of the city context: exponential ease rate (1/s). */
+export const CITY_FADE_RATE = 6;
+
+/** Camera near plane: overview keeps depth precision, street level sees kerbs. */
+export const NEAR_PLANE = { overview: 0.5, street: 0.1 } as const;
 
 /** Draggable section plane (SPEC §10.2). */
 export const SECTION = {

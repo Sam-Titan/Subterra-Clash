@@ -10,6 +10,7 @@ import { boundsCenter, type Vec3 } from "@/lib/coords";
 import { useAppStore } from "@/store/useAppStore";
 import { CameraRig } from "./CameraRig";
 import { ClashMarkers } from "./ClashMarkers";
+import { CityContext } from "./city/CityContext";
 import { Ground } from "./Ground";
 import { Pipes } from "./Pipes";
 import { cameraSettings, fogSettings } from "./sceneConfig";
@@ -29,7 +30,8 @@ export interface SceneCanvasProps {
  * The "X-ray street": translucent ground, pipes at true depth, pink works,
  * uncertainty halos and clash markers. Layer, x-ray and halo state comes from
  * the app store; clicking empty space clears the selection. The schedule
- * scrubber's date hides inactive works and their markers (never pipes).
+ * scrubber's date hides inactive works and their markers (never pipes). The
+ * generated city context (City layer) sits on top and fades with x-ray.
  */
 export default function SceneCanvas({
 	scene,
@@ -54,6 +56,10 @@ export default function SceneCanvas({
 			target[2] + camera.offset[2],
 		],
 		[target, camera],
+	);
+	const overview = useMemo(
+		() => ({ position: cameraPosition, target }),
+		[cameraPosition, target],
 	);
 
 	return (
@@ -83,6 +89,11 @@ export default function SceneCanvas({
 			/>
 
 			<Ground scene={scene} xray={xray} />
+			{/* All clashes, not the date-filtered ones: scrubbing never moves
+			    buildings. */}
+			{layers.CITY && (
+				<CityContext scene={scene} clashes={clashes} xray={xray} />
+			)}
 			<Pipes assets={scene.assets} layers={layers} />
 			{halos && <UncertaintyHalos assets={scene.assets} layers={layers} />}
 			{layers.WORKS && <WorkVolumes works={dated.works} />}
@@ -102,7 +113,7 @@ export default function SceneCanvas({
 				maxDistance={camera.maxDistance}
 				enableDamping
 			/>
-			<CameraRig clashes={clashes} />
+			<CameraRig clashes={clashes} scene={scene} overview={overview} />
 			{children}
 		</Canvas>
 	);

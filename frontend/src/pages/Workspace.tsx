@@ -2,12 +2,14 @@ import { Loader2 } from "lucide-react";
 import { lazy, Suspense, useMemo } from "react";
 import { useClashes, useScene } from "@/api/hooks";
 import { BottomDock } from "@/components/BottomDock";
-import { ErrorBlock, LoadingBlock } from "@/components/QueryState";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { ErrorBlock, SceneSkeleton } from "@/components/QueryState";
 import { Badge } from "@/components/ui/badge";
 import { ClashPanel } from "@/features/clashes/ClashPanel";
 import { ConflictList } from "@/features/clashes/ConflictList";
 import { IntakeBanner } from "@/features/permits/IntakeBanner";
 import { LeftRail } from "@/features/scene3d/LeftRail";
+import { ViewToolbar } from "@/features/scene3d/ViewToolbar";
 import { CrossSection } from "@/features/section/CrossSection";
 import {
 	useResolvedSection,
@@ -46,7 +48,7 @@ export default function Workspace() {
 				<div className="relative min-h-0 flex-1 bg-zinc-950">
 					{scene.isPending ? (
 						<div className="absolute inset-0 p-6">
-							<LoadingBlock label="Loading scene…" />
+							<SceneSkeleton label="Loading scene…" />
 						</div>
 					) : scene.isError ? (
 						<div className="absolute inset-0 p-6">
@@ -57,21 +59,29 @@ export default function Workspace() {
 							/>
 						</div>
 					) : (
-						<Suspense
-							fallback={
-								<div className="absolute inset-0 p-6">
-									<LoadingBlock label="Loading 3D view…" />
-								</div>
-							}
+						<ErrorBoundary
+							title="The 3D view stopped (WebGL error)"
+							className="absolute inset-0 p-6"
 						>
-							<div className="absolute inset-0">
-								<SceneCanvas
-									scene={scene.data}
-									clashes={items}
-									section={sectionView}
-								/>
+							<Suspense
+								fallback={
+									<div className="absolute inset-0 p-6">
+										<SceneSkeleton label="Loading 3D view…" />
+									</div>
+								}
+							>
+								<div className="absolute inset-0">
+									<SceneCanvas
+										scene={scene.data}
+										clashes={items}
+										section={sectionView}
+									/>
+								</div>
+							</Suspense>
+							<div className="pointer-events-none absolute right-3 bottom-3">
+								<ViewToolbar streets={scene.data.streets} />
 							</div>
-						</Suspense>
+						</ErrorBoundary>
 					)}
 
 					<div className="pointer-events-none absolute top-3 right-3 left-3 flex flex-col items-start gap-2">

@@ -1,13 +1,17 @@
 import type { ReactNode } from "react";
 import { useSummary } from "@/api/hooks";
 import type { Summary } from "@/api/types";
-import { ErrorBlock, LoadingBlock } from "@/components/QueryState";
+import { NumberTicker } from "@/components/NumberTicker";
+import {
+	ErrorBlock,
+	SkeletonRows,
+	SkeletonTiles,
+} from "@/components/QueryState";
 import {
 	BreakdownChart,
 	type BreakdownRow,
 } from "@/features/dashboard/BreakdownChart";
 import { CasesTable, ScoreTable } from "@/features/dashboard/EvaluationTable";
-import { NumberTicker } from "@/features/dashboard/NumberTicker";
 import { CERTAINTY_COLORS, UTILITY_COLORS } from "@/lib/colors";
 import { humanizeEnum, utilityLabel } from "@/lib/format";
 
@@ -28,7 +32,14 @@ export default function Dashboard() {
 				</p>
 			</header>
 			{summary.isPending ? (
-				<LoadingBlock label="Loading summary…" />
+				<div className="flex flex-col gap-6">
+					<SkeletonTiles
+						count={4}
+						label="Loading summary…"
+						className="grid-cols-2 lg:grid-cols-4"
+					/>
+					<SkeletonRows rows={6} />
+				</div>
 			) : summary.isError ? (
 				<ErrorBlock
 					title="Could not load the summary"

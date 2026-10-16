@@ -102,6 +102,36 @@ export const INTAKE_COLORS = {
 	newClashRing: "#D6409F",
 } as const;
 
+/**
+ * Generated city context (SPEC §10.2 street level). Neutral greys so the
+ * APWA utility colours stay the only saturated hues; trees a muted green.
+ */
+export const CITY_COLORS = {
+	road: "#2A2B31",
+	footpath: "#4A4B52",
+	laneMarking: "#C9CBD3",
+	/** Building facades, picked per lot by a seeded index. */
+	buildings: ["#4A4C55", "#555762", "#60626D", "#474952", "#6A6C77"],
+	lampPole: "#6F717A",
+	lampHead: "#F4EBD0",
+	trunk: "#4A3F35",
+	crown: "#3B5A45",
+	landmark: "#5F6170",
+	landmarkAccent: "#8B8D98",
+} as const;
+
+/** Landing hero: the road surface and the ground the spotlight reveals. */
+export const LANDING_COLORS = {
+	surface: "#16161A",
+	surfaceMarking: "#3F3F46",
+	kerb: "#27272A",
+	soilTop: "#0E0E11",
+	soilBottom: "#060608",
+	soilLine: "#1C1C21",
+	/** Faint rim drawn around the spotlight hole. */
+	spotlightRim: "#FFFFFF1A",
+} as const;
+
 /** Section plane (3D) and cross-section drawing (SVG). Neutral on purpose. */
 export const SECTION_COLORS = {
 	plane: "#A1A1AA",

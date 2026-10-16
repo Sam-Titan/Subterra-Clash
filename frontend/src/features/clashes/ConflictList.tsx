@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useClashes, useGroups } from "@/api/hooks";
 import type { Clash, ClashGroup } from "@/api/types";
-import { ErrorBlock, LoadingBlock } from "@/components/QueryState";
+import { ErrorBlock, SkeletonRows } from "@/components/QueryState";
 import {
 	INTAKE_COLORS,
 	REVIEW_STATUS_COLORS,
@@ -79,7 +79,8 @@ export function ConflictList() {
 		return result;
 	}, [all, visible, groups.data]);
 
-	if (clashes.isPending) return <LoadingBlock label="Loading conflicts…" />;
+	if (clashes.isPending)
+		return <SkeletonRows rows={8} label="Loading conflicts…" />;
 	if (clashes.isError) {
 		return (
 			<ErrorBlock
@@ -106,9 +107,19 @@ export function ConflictList() {
 					{hidden} hidden by the certainty filter in the left rail.
 				</p>
 			)}
+			{groups.isPending && (
+				<p className="text-xs text-zinc-500">Loading clash groups…</p>
+			)}
 			{groups.isError && (
-				<p className="text-xs text-zinc-500">
+				<p className="flex flex-wrap items-center gap-1 text-xs text-zinc-500">
 					Groups could not be loaded; showing clashes by group id.
+					<button
+						type="button"
+						onClick={() => groups.refetch()}
+						className="text-zinc-300 underline underline-offset-2"
+					>
+						Retry
+					</button>
 				</p>
 			)}
 			{total === 0 && (

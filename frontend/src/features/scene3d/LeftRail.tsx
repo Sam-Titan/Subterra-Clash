@@ -4,10 +4,12 @@ import { useClashes, useScene } from "@/api/hooks";
 import { CERTAINTIES, type Certainty, UTILITIES } from "@/api/types";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Switch } from "@/components/ui/switch";
 import {
 	CERTAINTY_COLORS,
 	CERTAINTY_STYLE,
+	CITY_COLORS,
 	SCENE_COLORS,
 	UTILITY_COLORS,
 	WORK_COLOR,
@@ -34,7 +36,8 @@ function SwitchRow({
 }: {
 	label: string;
 	swatch?: string;
-	count?: number;
+	/** "loading" shows a placeholder while the scene loads. */
+	count?: number | "loading";
 	checked: boolean;
 	onChange: (on: boolean) => void;
 	hint?: string;
@@ -55,10 +58,14 @@ function SwitchRow({
 					<span className="block text-[11px] text-zinc-500">{hint}</span>
 				)}
 			</label>
-			{count !== undefined && (
-				<span className="font-mono text-xs tabular-nums text-zinc-500">
-					{count}
-				</span>
+			{count === "loading" ? (
+				<Skeleton className="h-3 w-4 bg-zinc-800" />
+			) : (
+				count !== undefined && (
+					<span className="font-mono text-xs tabular-nums text-zinc-500">
+						{count}
+					</span>
+				)
 			)}
 			<Switch
 				id={id}
@@ -147,6 +154,7 @@ export function LeftRail() {
 	}, [clashes.data]);
 
 	const loaded = scene.isSuccess;
+	const pendingCount = scene.isPending ? ("loading" as const) : undefined;
 
 	return (
 		<aside className="flex w-64 shrink-0 flex-col gap-4 overflow-y-auto border-r border-zinc-800 bg-zinc-950 p-4">
@@ -157,7 +165,7 @@ export function LeftRail() {
 						key={u}
 						label={utilityLabel(u)}
 						swatch={UTILITY_COLORS[u]}
-						count={loaded ? (assetCounts.get(u) ?? 0) : undefined}
+						count={loaded ? (assetCounts.get(u) ?? 0) : pendingCount}
 						checked={layers[u]}
 						onChange={(on) => setLayer(u, on)}
 					/>
@@ -165,9 +173,16 @@ export function LeftRail() {
 				<SwitchRow
 					label="Proposed works"
 					swatch={WORK_COLOR}
-					count={loaded ? (assetCounts.get("WORKS") ?? 0) : undefined}
+					count={loaded ? (assetCounts.get("WORKS") ?? 0) : pendingCount}
 					checked={layers.WORKS}
 					onChange={(on) => setLayer("WORKS", on)}
+				/>
+				<SwitchRow
+					label="City context"
+					hint="Roads, buildings, street furniture"
+					swatch={CITY_COLORS.footpath}
+					checked={layers.CITY}
+					onChange={(on) => setLayer("CITY", on)}
 				/>
 				{unknownDepth > 0 && (
 					<p className="text-[11px] text-zinc-500">
@@ -202,7 +217,13 @@ export function LeftRail() {
 								</span>
 								<span className="flex-1">{humanizeEnum(c)}</span>
 								<span className="font-mono text-xs tabular-nums text-zinc-500">
-									{clashes.isSuccess ? (certaintyCounts.get(c) ?? 0) : "–"}
+									{clashes.isSuccess ? (
+										(certaintyCounts.get(c) ?? 0)
+									) : clashes.isError ? (
+										"–"
+									) : (
+										<Skeleton className="inline-block h-3 w-4 bg-zinc-800 align-middle" />
+									)}
 								</span>
 							</button>
 						);
@@ -219,7 +240,7 @@ export function LeftRail() {
 				<SectionTitle>View</SectionTitle>
 				<SwitchRow
 					label="X-ray"
-					hint="See-through ground"
+					hint="See-through ground, road and buildings"
 					checked={xray}
 					onChange={setXray}
 				/>

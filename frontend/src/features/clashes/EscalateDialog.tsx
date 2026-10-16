@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { humanizeEnum } from "@/lib/format";
 import { useAppStore } from "@/store/useAppStore";
+import { toastReviewed } from "./reviewToast";
 
 /**
  * Escalate one clash from the queue with an optional note. Only ESCALATE:
@@ -77,7 +78,12 @@ function EscalateForm({
 					note: note.trim() ? note.trim() : null,
 				},
 			},
-			{ onSuccess: (res) => onEscalated(res.clash) },
+			{
+				onSuccess: (res) => {
+					toastReviewed(res.clash);
+					onEscalated(res.clash);
+				},
+			},
 		);
 	};
 

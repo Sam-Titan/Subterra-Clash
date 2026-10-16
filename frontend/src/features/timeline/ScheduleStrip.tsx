@@ -301,6 +301,15 @@ function Gantt({ scene, clashes }: { scene: Scene; clashes: Clash[] }) {
 				className="relative w-full select-none"
 				style={{ height }}
 			>
+				{health.isError && (
+					<button
+						type="button"
+						onClick={() => health.refetch()}
+						className="absolute top-0 right-2 z-10 text-[10px] text-zinc-500 underline-offset-2 hover:text-zinc-200 hover:underline"
+					>
+						Demo date unavailable (no "today" line) · Retry
+					</button>
+				)}
 				{/* Row labels (HTML so long titles truncate cleanly). */}
 				{rows.map((r, i) => (
 					<div

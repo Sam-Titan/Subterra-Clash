@@ -12,7 +12,7 @@ import type {
 import {
 	describeError,
 	ErrorBlock,
-	LoadingBlock,
+	SkeletonRows,
 } from "@/components/QueryState";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -40,6 +40,7 @@ import { cn } from "@/lib/utils";
 import { useAppStore } from "@/store/useAppStore";
 import { CertaintyBadge } from "./CertaintyGlyph";
 import { FACTOR_LABELS, factorSegments } from "./factors";
+import { toastReviewed } from "./reviewToast";
 
 function SectionTitle({ children }: { children: ReactNode }) {
 	return (
@@ -298,7 +299,12 @@ function ReviewBlock({ clash }: { clash: Clash }) {
 				id: clash.id,
 				body: { action, reviewer, note: hasNote ? note.trim() : null },
 			},
-			{ onSuccess: () => setNote("") },
+			{
+				onSuccess: (res) => {
+					setNote("");
+					toastReviewed(res.clash);
+				},
+			},
 		);
 	};
 
@@ -529,7 +535,7 @@ export function ClashPanel({ clashId }: { clashId: string }) {
 			</header>
 
 			{detail.isPending ? (
-				<LoadingBlock label="Loading clash…" />
+				<SkeletonRows rows={6} label="Loading clash…" />
 			) : detail.isError ? (
 				<ErrorBlock
 					title="Could not load this clash"

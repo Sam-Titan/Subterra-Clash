@@ -8,7 +8,7 @@ import {
 	type ReviewStatus,
 	type Utility,
 } from "@/api/types";
-import { ErrorBlock, LoadingBlock } from "@/components/QueryState";
+import { ErrorBlock, SkeletonRows } from "@/components/QueryState";
 import { Switch } from "@/components/ui/switch";
 import { EscalateDialog } from "@/features/clashes/EscalateDialog";
 import { opportunityGroupIds } from "@/features/clashes/opportunity";
@@ -214,14 +214,21 @@ export default function Queue() {
 			)}
 
 			{groups.isError && (
-				<p className="text-xs text-zinc-500">
+				<p className="flex flex-wrap items-center gap-1 text-xs text-zinc-500">
 					Groups could not be loaded; ranks are missing and rows are listed by
 					group id.
+					<button
+						type="button"
+						onClick={() => groups.refetch()}
+						className="text-zinc-300 underline underline-offset-2"
+					>
+						Retry
+					</button>
 				</p>
 			)}
 
 			{clashes.isPending ? (
-				<LoadingBlock label="Loading review queue…" />
+				<SkeletonRows rows={10} label="Loading review queue…" />
 			) : clashes.isError ? (
 				<ErrorBlock
 					title="Could not load the review queue"

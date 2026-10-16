@@ -8,7 +8,11 @@ import {
 } from "@/api/types";
 import type { SectionState } from "@/features/section/sectionGeometry";
 
-export type LayerId = Utility | "WORKS";
+/** Utilities, proposed works and the generated city context (roads, buildings). */
+export type LayerId = Utility | "WORKS" | "CITY";
+
+/** Camera preset; "free" once the user orbits or a clash fly-to takes over. */
+export type ViewMode = "overview" | "street" | "free";
 
 /** Tabs of the workspace bottom dock. */
 export type DockTab = "section" | "schedule";
@@ -20,6 +24,7 @@ const ALL_LAYERS: Record<LayerId, boolean> = {
 	TELECOM: true,
 	GAS: true,
 	WORKS: true,
+	CITY: true,
 };
 
 interface AppState {
@@ -44,6 +49,12 @@ interface AppState {
 	section: SectionState | null;
 	/** Latest permit added to the plan; its clashes are highlighted in the workspace. */
 	intakeResult: IntakeResult | null;
+	/** Current camera preset (SPEC §10.2 street level / overview). */
+	viewMode: ViewMode;
+	/** Street for the street-level view; null = default (Station Road / first). */
+	streetViewId: string | null;
+	/** Bumped on every preset request so the camera rig animates once per click. */
+	viewNonce: number;
 	/** Review statuses shown in the queue. */
 	queueStatusFilter: ReviewStatus[];
 	/** Queue rows split into clash-group sections (else one flat list). */
@@ -66,6 +77,11 @@ interface AppState {
 	setDockTab: (tab: DockTab) => void;
 	setSection: (section: SectionState) => void;
 	setIntakeResult: (result: IntakeResult | null) => void;
+	/** Street level also turns x-ray off, so the reveal is one click away. */
+	requestView: (mode: "overview" | "street") => void;
+	setStreetViewId: (id: string) => void;
+	/** The camera left the preset (drag, fly-to); does not move it. */
+	releaseView: () => void;
 	toggleQueueStatus: (status: ReviewStatus) => void;
 	resetQueueStatus: () => void;
 	setQueueGrouped: (grouped: boolean) => void;
@@ -124,6 +140,18 @@ export const useAppStore = create<AppState>()((set) => ({
 	setSection: (section) => set({ section }),
 	intakeResult: null,
 	setIntakeResult: (result) => set({ intakeResult: result }),
+	viewMode: "overview",
+	streetViewId: null,
+	viewNonce: 0,
+	requestView: (mode) =>
+		set((s) => ({
+			viewMode: mode,
+			viewNonce: s.viewNonce + 1,
+			...(mode === "street" ? { xray: false } : {}),
+		})),
+	setStreetViewId: (id) => set({ streetViewId: id }),
+	releaseView: () =>
+		set((s) => (s.viewMode === "free" ? {} : { viewMode: "free" })),
 	queueStatusFilter: [...REVIEW_STATUSES],
 	queueGrouped: true,
 	toggleQueueStatus: (status) =>

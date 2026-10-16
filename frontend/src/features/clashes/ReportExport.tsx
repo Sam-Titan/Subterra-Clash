@@ -7,6 +7,7 @@ import { describeError } from "@/components/QueryState";
 import { Button } from "@/components/ui/button";
 import { BLOB_URL_TTL_MS, saveBlob } from "@/lib/download";
 import { clashesToCsv } from "./queueRows";
+import { toastFailed } from "./reviewToast";
 
 const REPORT_CSV_NAME = "subterra-clash-report.csv";
 const QUEUE_CSV_NAME = "subterra-clash-queue.csv";
@@ -58,7 +59,10 @@ export function ReportExport({
 					setFallbackUrl(url);
 				}
 			},
-			onError: () => tab?.close(),
+			onError: (err) => {
+				tab?.close();
+				toastFailed("Inspection report could not be exported", err);
+			},
 		});
 	};
 
@@ -66,6 +70,7 @@ export function ReportExport({
 		setFallbackUrl(null);
 		report.mutate("csv", {
 			onSuccess: (blob) => saveBlob(blob, REPORT_CSV_NAME),
+			onError: (err) => toastFailed("Report CSV could not be exported", err),
 		});
 	};
 
