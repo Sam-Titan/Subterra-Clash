@@ -136,6 +136,14 @@ export async function mockReview(
 	if (!clash) {
 		throw new ApiError(404, "CLASH_NOT_FOUND", `No clash with id ${id}`);
 	}
+	const reviewer = body.reviewer.trim();
+	if (!reviewer) {
+		throw new ApiError(
+			422,
+			"REVIEWER_REQUIRED",
+			"A reviewer name is required.",
+		);
+	}
 	const note = body.note?.trim() || null;
 	if (body.action === "DISMISS" && !note) {
 		throw new ApiError(
@@ -145,9 +153,10 @@ export async function mockReview(
 		);
 	}
 	const at = new Date().toISOString();
+	const status = STATUS_FOR[body.action];
 	const review: Review = {
-		status: STATUS_FOR[body.action],
-		reviewer: body.reviewer,
+		status,
+		reviewer,
 		note,
 		updated_at: at,
 	};
@@ -158,10 +167,10 @@ export async function mockReview(
 		audit: {
 			id: `AUD-M${String(auditSeq).padStart(3, "0")}`,
 			at,
-			actor: body.reviewer,
+			actor: reviewer,
 			action: body.action,
 			target_id: id,
-			detail: note ?? "",
+			detail: note ?? `Marked ${status}`,
 		},
 	});
 }
