@@ -20,7 +20,7 @@ class ClashDetail(ApiModel):
     clash: Clash
     assets: list[Asset]
     works: list[Work]
-    rule: Rule | None  # null for SCHEDULE_OVERLAP clashes (no clearance rule applies)
+    rule: Rule | None  # null for SCHEDULE_OVERLAP / DIG_ONCE clashes (no clearance rule applies)
 
 
 class ReviewRequest(ApiModel):

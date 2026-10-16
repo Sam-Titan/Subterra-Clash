@@ -59,7 +59,7 @@ Response: `{ "items": [Clash], "total": n }` — Clash per SPEC §7.5.
 ```json
 { "clash": { /* Clash */ }, "assets": [ /* Asset */ ], "works": [ /* Work */ ], "rule": { /* Rule */ } | null }
 ```
-`rule` is `null` for `SCHEDULE_OVERLAP` clashes (no clearance rule applies; `clash.rule_id` is also `null`). Unknown id → `404 { code: "CLASH_NOT_FOUND" }`.
+`rule` is `null` for `SCHEDULE_OVERLAP` and `DIG_ONCE` clashes (no clearance rule applies; `clash.rule_id` is also `null`). Unknown id → `404 { code: "CLASH_NOT_FOUND" }`.
 
 ### `POST /api/clashes/{clash_id}/review`
 Request:

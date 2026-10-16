@@ -51,7 +51,7 @@
 ---
 
 ## Blockers
-- frontend: switch to generated schema.d.ts types at Gate 1 (`ClashDetail.rule` is nullable: null for SCHEDULE_OVERLAP clashes)
+- frontend: switch to generated schema.d.ts types at Gate 1 (`ClashDetail.rule` is nullable: null for SCHEDULE_OVERLAP and DIG_ONCE clashes)
 - frontend: `Summary` in `src/api/types.ts` is still hand-written; alias it to the generated type after backend 3A adds `/api/summary` to openapi.json — Friend
 
 ## Notes for 2B / 2C
