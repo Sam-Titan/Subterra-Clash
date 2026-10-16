@@ -28,7 +28,7 @@ A gate is a joint check, not a build session. Both run it, each for their own si
 
 1. **Both:** finish your sessions for the phase, commit, push. Then `git pull --rebase` so both machines have everything.
 2. **Both, in parallel:** start a fresh agent session and paste the gate prompt (below) for your side. The agent runs the checks and reports what fails; it does not build features. Each of you fixes failures only in your own folder, then commits and pushes.
-3. **Together, on Sam's machine (WSL2):** pull, run the backend and the frontend with `VITE_USE_MOCKS=false`, and walk through that phase's gate line by hand in the browser.
+3. **Together, on Sam's machine (WSL2):** pull, run the backend and the frontend with `VITE_USE_MOCKS=false` (put it in the gitignored `frontend/.env.development.local`; `.env.local` loses to the committed `.env.development`), and walk through that phase's gate line by hand in the browser.
 4. **Rishit, once per gate:** also run both apps on Windows to confirm nothing is machine-specific.
 5. **Sam:** if everything passes, tick the gate in PROGRESS.md, set "Current phase" to the next phase, update "Last gate passed", commit and push. If something fails, add it under "Blockers" and fix it before starting the next phase.
 

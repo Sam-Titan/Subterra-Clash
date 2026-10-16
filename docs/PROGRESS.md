@@ -4,9 +4,9 @@
 > Format: `- [x] 1B — geometry + tests — Sam — short note`. Add blockers under "Blockers" immediately.
 > Session details are in `docs/PHASES.md`.
 
-**Current phase:** 2 — Features
+**Current phase:** 3 — Depth
 **Kickoff (H0):** 16 Oct 2026, 01:00 IST
-**Last gate passed:** Gate 1
+**Last gate passed:** Gate 2
 **Pending for frontend:** none (gen:api run after 2C; review/audit and permit types are generated aliases since 2F)
 
 ---
@@ -32,7 +32,7 @@
 - [x] 2D — clash panel + fly-to + conflict list — Friend — `features/clashes/` (ClashPanel, ConflictList, CertaintyGlyph, factors.ts) + `scene3d/CameraRig.tsx`; factor bar = weighted terms rounded (largest remainder) to sum to the score; review works in mock mode, live API shows "not available yet" until 2C; reviewer name in Zustand; fly-to without new deps (stops on drag)
 - [x] 2E — section plane + cross-section SVG — Friend — `features/section/` (sectionGeometry pure cut, SectionPlane drag handle, CrossSection SVG panel); plane = vertical cut along any horizontal normal; selecting a clash snaps it (square to the work unless a line element would lie in the plane, then square to the asset; kept 0.5 m inside pipe ends); label = engine numbers, note only if drawn gap differs > 5 cm (seed: all 13 match); unknown-depth assets drawn with the 0.5–3.0 m band; first selection auto-enables, rail switch wins after that; follows layer toggles
 - [x] 2F — permit intake page — Friend — `features/permits/` (InputPanel, SourceText, FieldList, PathPreview, CommitBar, IntakeBanner, pure `permitFields.ts`); draft kept in the query cache (`useIntakeSession`); quotes highlighted at first occurrence, overlaps split flat; numbers/dates not literal in their quote tagged "Assumed"; geocode notes shown in full + per field; PARTIAL = orange warning + dashed centreline path; edits batched into one PATCH (ids from scene dropdowns), commit blocked while edits unsaved; server error detail+code shown as sent; workspace banner + "New" tags + marker scale-in (off with prefers-reduced-motion), preview vs actual count shown if they differ; mock mode: commit "needs the live API"; review types now generated aliases
-- [ ] **Gate 2 passed**
+- [x] **Gate 2 passed** — verified by Sam with Rishit
 
 ## Phase 3 — Depth
 - [ ] 3A — summary + evaluation + explanation templates — Sam
