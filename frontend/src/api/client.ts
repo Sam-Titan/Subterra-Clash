@@ -6,6 +6,7 @@ import type {
 	ClashQuery,
 	CommitRequest,
 	CommitResponse,
+	Health,
 	ListResponse,
 	PatchDraftRequest,
 	PermitDraft,
@@ -192,6 +193,12 @@ export async function reviewClash(
 		`/clashes/${encodeURIComponent(id)}/review`,
 		body,
 	);
+}
+
+/** Null in mock mode: there is no health mock, so the demo date is unknown. */
+export async function getHealth(): Promise<Health | null> {
+	if (USE_MOCKS) return null;
+	return apiGet<Health>("/health");
 }
 
 export async function getSummary(): Promise<Summary> {

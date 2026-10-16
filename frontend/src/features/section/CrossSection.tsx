@@ -1,13 +1,7 @@
-import {
-	ChevronDown,
-	ChevronUp,
-	Crosshair,
-	Maximize2,
-	X,
-	ZoomIn,
-} from "lucide-react";
+import { Crosshair, Maximize2, X, ZoomIn } from "lucide-react";
 import { type ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import type { Clash, Point2, Scene, Utility } from "@/api/types";
+import { DockBar, type DockChrome } from "@/components/BottomDock";
 import { Button } from "@/components/ui/button";
 import {
 	Select,
@@ -40,7 +34,6 @@ import {
 } from "./sectionGeometry";
 import { useElementSize } from "./useElementSize";
 
-const PANEL_HEIGHT_PX = 230;
 const PAD = { left: 40, right: 12, top: 22, bottom: 10 };
 /** Depth shown above the road surface, for street labels (m). */
 const ABOVE_SURFACE_M = 0.6;
@@ -110,17 +103,19 @@ export function CrossSection({
 	clashes,
 	section,
 	cut,
+	chrome,
 }: {
 	scene: Scene;
 	clashes: Clash[];
 	section: SectionState;
 	cut: SectionCut;
+	/** Bar parts from the workspace bottom dock (tabs, collapse). */
+	chrome: DockChrome;
 }) {
 	const selectedClashId = useAppStore((s) => s.selectedClashId);
 	const halos = useAppStore((s) => s.halos);
 	const layers = useAppStore((s) => s.layers);
-	const collapsed = useAppStore((s) => s.sectionCollapsed);
-	const setCollapsed = useAppStore((s) => s.setSectionCollapsed);
+	const { collapsed } = chrome;
 	const setSection = useAppStore((s) => s.setSection);
 	const setSectionEnabled = useAppStore((s) => s.setSectionEnabled);
 
@@ -180,14 +175,8 @@ export function CrossSection({
 	}, [clash, scene.assets, layers]);
 
 	return (
-		<div
-			className="flex shrink-0 flex-col border-t border-zinc-800 bg-zinc-950"
-			style={collapsed ? undefined : { height: PANEL_HEIGHT_PX }}
-		>
-			<div className="flex h-10 shrink-0 items-center gap-3 border-b border-zinc-900 px-3">
-				<h2 className="shrink-0 text-[11px] font-semibold uppercase tracking-wider text-zinc-500">
-					Cross-section
-				</h2>
+		<div className="flex h-full min-h-0 flex-col">
+			<DockBar chrome={chrome}>
 				<Select
 					value={streetId}
 					onValueChange={(id) => {
@@ -219,7 +208,7 @@ export function CrossSection({
 					onValueChange={([v]) => setSection({ ...section, offset: v })}
 					aria-label="Move section plane"
 				/>
-				<span className="hidden truncate font-mono text-[11px] text-zinc-500 lg:inline">
+				<span className="hidden min-w-0 truncate font-mono text-[11px] text-zinc-500 lg:inline">
 					x {origin[0].toFixed(1)} · y {origin[1].toFixed(1)} m · looking{" "}
 					{compassName(section.normal)}
 				</span>
@@ -243,28 +232,13 @@ export function CrossSection({
 						variant="ghost"
 						size="icon"
 						className="size-7 text-zinc-400"
-						onClick={() => setCollapsed(!collapsed)}
-						aria-label={
-							collapsed ? "Expand cross-section" : "Collapse cross-section"
-						}
-					>
-						{collapsed ? (
-							<ChevronUp className="size-4" aria-hidden />
-						) : (
-							<ChevronDown className="size-4" aria-hidden />
-						)}
-					</Button>
-					<Button
-						variant="ghost"
-						size="icon"
-						className="size-7 text-zinc-400"
 						onClick={() => setSectionEnabled(false)}
 						aria-label="Close cross-section"
 					>
 						<X className="size-4" aria-hidden />
 					</Button>
 				</div>
-			</div>
+			</DockBar>
 
 			{!collapsed && (
 				<div className="relative min-h-0 flex-1">

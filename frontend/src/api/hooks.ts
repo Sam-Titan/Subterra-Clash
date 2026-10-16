@@ -4,6 +4,7 @@ import {
 	getClash,
 	getClashes,
 	getGroups,
+	getHealth,
 	getPermitSamples,
 	getReport,
 	getScene,
@@ -28,6 +29,7 @@ export const queryKeys = {
 	clash: (id: string) => ["clash", id] as const,
 	groups: ["groups"] as const,
 	summary: ["summary"] as const,
+	health: ["health"] as const,
 	permitSamples: ["permit-samples"] as const,
 	/** The draft being worked on in /intake (client-held, never fetched). */
 	intake: ["intake-session"] as const,
@@ -54,6 +56,15 @@ export function useClash(id: string | null) {
 
 export function useGroups() {
 	return useQuery({ queryKey: queryKeys.groups, queryFn: getGroups });
+}
+
+/** Backend health; `demo_date` is the engine's "today". Null in mock mode. */
+export function useHealth() {
+	return useQuery({
+		queryKey: queryKeys.health,
+		queryFn: getHealth,
+		staleTime: Number.POSITIVE_INFINITY,
+	});
 }
 
 export function useSummary() {

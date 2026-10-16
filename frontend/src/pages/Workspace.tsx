@@ -1,6 +1,7 @@
 import { Loader2 } from "lucide-react";
 import { lazy, Suspense, useMemo } from "react";
 import { useClashes, useScene } from "@/api/hooks";
+import { BottomDock } from "@/components/BottomDock";
 import { ErrorBlock, LoadingBlock } from "@/components/QueryState";
 import { Badge } from "@/components/ui/badge";
 import { ClashPanel } from "@/features/clashes/ClashPanel";
@@ -13,6 +14,7 @@ import {
 	useSectionCut,
 	useSectionFollowsSelection,
 } from "@/features/section/useSection";
+import { ScheduleStrip } from "@/features/timeline/ScheduleStrip";
 import { useAppStore } from "@/store/useAppStore";
 
 // three.js is heavy; keep it out of the main bundle until the workspace opens.
@@ -94,14 +96,43 @@ export default function Workspace() {
 						)}
 					</div>
 				</div>
-				{sectionEnabled && scene.data && section && cut && (
-					<CrossSection
-						scene={scene.data}
-						clashes={items}
-						section={section}
-						cut={cut}
-					/>
-				)}
+				{/* One dock for cross-section + schedule keeps the canvas usable
+				    at 1366×768 (two stacked panels left it ~140 px tall). */}
+				<BottomDock
+					tabs={[
+						{
+							id: "section",
+							label: "Cross-section",
+							available: Boolean(
+								sectionEnabled && scene.data && section && cut,
+							),
+							render: (chrome) =>
+								scene.data && section && cut ? (
+									<CrossSection
+										scene={scene.data}
+										clashes={items}
+										section={section}
+										cut={cut}
+										chrome={chrome}
+									/>
+								) : null,
+						},
+						{
+							id: "schedule",
+							label: "Schedule",
+							available: true,
+							render: (chrome) => (
+								<ScheduleStrip
+									scene={scene.data}
+									sceneError={scene.isError ? scene.error : null}
+									onRetry={() => scene.refetch()}
+									clashes={items}
+									chrome={chrome}
+								/>
+							),
+						},
+					]}
+				/>
 			</div>
 
 			{/* Absolute inner box: the column scrolls on its own and never

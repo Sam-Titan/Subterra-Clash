@@ -79,6 +79,7 @@ export interface ClashQuery {
 
 /** `counts` cover unresolved clashes only (review status OPEN or ESCALATED). */
 export type Summary = Schemas["Summary"];
+export type Health = Schemas["HealthResponse"];
 export type EvaluationScore = Schemas["EvalScore"];
 /**
  * `expected` / `ours`: a ClashKind or NO_CLASH; `baseline`: FLAGGED / NOT_FLAGGED.

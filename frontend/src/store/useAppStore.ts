@@ -10,6 +10,9 @@ import type { SectionState } from "@/features/section/sectionGeometry";
 
 export type LayerId = Utility | "WORKS";
 
+/** Tabs of the workspace bottom dock. */
+export type DockTab = "section" | "schedule";
+
 const ALL_LAYERS: Record<LayerId, boolean> = {
 	WATER: true,
 	SEWER: true,
@@ -25,7 +28,7 @@ interface AppState {
 	xray: boolean;
 	halos: boolean;
 	certaintyFilter: Certainty[];
-	/** ISO date; null = no date filter. */
+	/** ISO date (YYYY-MM-DD) from the schedule scrubber; null = no date filter. */
 	dateFilter: string | null;
 	/** Name recorded on review decisions (no auth in this tool). */
 	reviewerName: string;
@@ -33,7 +36,10 @@ interface AppState {
 	sectionEnabled: boolean;
 	/** The user has used the section switch; stop auto-enabling it. */
 	sectionTouched: boolean;
-	sectionCollapsed: boolean;
+	/** Bottom dock (cross-section + schedule tabs) shrunk to its bar. */
+	dockCollapsed: boolean;
+	/** Requested dock tab; "section" falls back to schedule while the section is off. */
+	dockTab: DockTab;
 	/** null = default (first street at its midpoint). */
 	section: SectionState | null;
 	/** Latest permit added to the plan; its clashes are highlighted in the workspace. */
@@ -56,7 +62,8 @@ interface AppState {
 	setSectionEnabled: (on: boolean) => void;
 	/** First clash selection: turn the section on unless the user decided already. */
 	autoEnableSection: () => void;
-	setSectionCollapsed: (collapsed: boolean) => void;
+	setDockCollapsed: (collapsed: boolean) => void;
+	setDockTab: (tab: DockTab) => void;
 	setSection: (section: SectionState) => void;
 	setIntakeResult: (result: IntakeResult | null) => void;
 	toggleQueueStatus: (status: ReviewStatus) => void;
@@ -104,14 +111,16 @@ export const useAppStore = create<AppState>()((set) => ({
 	setReviewerName: (name) => set({ reviewerName: name }),
 	sectionEnabled: false,
 	sectionTouched: false,
-	sectionCollapsed: false,
+	dockCollapsed: false,
+	dockTab: "schedule",
 	section: null,
 	setSectionEnabled: (on) => set({ sectionEnabled: on, sectionTouched: true }),
 	autoEnableSection: () =>
 		set((s) =>
 			s.sectionTouched ? {} : { sectionEnabled: true, sectionTouched: true },
 		),
-	setSectionCollapsed: (collapsed) => set({ sectionCollapsed: collapsed }),
+	setDockCollapsed: (collapsed) => set({ dockCollapsed: collapsed }),
+	setDockTab: (tab) => set({ dockTab: tab }),
 	setSection: (section) => set({ section }),
 	intakeResult: null,
 	setIntakeResult: (result) => set({ intakeResult: result }),

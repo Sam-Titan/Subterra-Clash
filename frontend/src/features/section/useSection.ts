@@ -39,7 +39,8 @@ export function useSectionCut(
 /**
  * Snaps the section to the selected clash whenever the selected id changes
  * (not on refetch). The first selection also turns the section on, unless the
- * user has already used the switch.
+ * user has already used the switch. Each new selection brings the
+ * cross-section tab of the bottom dock to the front.
  */
 export function useSectionFollowsSelection(
 	scene: Scene | undefined,
@@ -48,6 +49,7 @@ export function useSectionFollowsSelection(
 	const selectedClashId = useAppStore((s) => s.selectedClashId);
 	const setSection = useAppStore((s) => s.setSection);
 	const autoEnableSection = useAppStore((s) => s.autoEnableSection);
+	const setDockTab = useAppStore((s) => s.setDockTab);
 	const snappedFor = useRef<string | null>(null);
 
 	useEffect(() => {
@@ -62,5 +64,13 @@ export function useSectionFollowsSelection(
 		const snapped = snapSectionToClash(scene, clash);
 		if (snapped) setSection(snapped);
 		autoEnableSection();
-	}, [selectedClashId, scene, clashes, setSection, autoEnableSection]);
+		setDockTab("section");
+	}, [
+		selectedClashId,
+		scene,
+		clashes,
+		setSection,
+		autoEnableSection,
+		setDockTab,
+	]);
 }

@@ -116,3 +116,39 @@ export const SECTION_COLORS = {
 	envelope: "#C9CBD3",
 	labelBg: "#09090B",
 } as const;
+
+/**
+ * Dashboard bars (SPEC §10.5): one series per chart, each bar coloured by its
+ * entity, so these are the utility and certainty colours above; text stays zinc.
+ */
+export const CHART_COLORS = {
+	grid: "#27272A",
+	axisLabel: "#A1A1AA",
+	valueLabel: "#E4E4E7",
+	cursor: "#FFFFFF0F",
+} as const;
+
+/** Schedule strip (mini Gantt). Bars use WORK_COLOR; the rest stays neutral. */
+export const SCHEDULE_COLORS = {
+	grid: "#27272A",
+	axisLabel: "#71717A",
+	rowLabel: "#A1A1AA",
+	/** Shaded window where two nearby works overlap in time. */
+	overlap: "#FFFFFF",
+	/** Dashed link across the gap between two dig-once works. */
+	digOnce: "#8B8D98",
+	/** Outline of the link whose clash is selected. */
+	selected: "#FFFFFF",
+	/** Demo "today" line. */
+	today: "#5EB1EF",
+	scrubber: "#F5F5F5",
+	scrubberLabelBg: "#09090B",
+} as const;
+
+/** Ours-vs-baseline verdicts; always shown with an icon and a word too. */
+export const VERDICT_COLORS = {
+	pass: "#E4E4E7",
+	fail: "#FF5F7E",
+	na: "#71717A",
+	unknown: "#FF9F5A",
+} as const;

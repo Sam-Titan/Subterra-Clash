@@ -4,6 +4,7 @@ import { type ReactNode, useMemo } from "react";
 import type { Clash, Scene } from "@/api/types";
 import { SectionPlane } from "@/features/section/SectionPlane";
 import type { SectionState } from "@/features/section/sectionGeometry";
+import { useDateFilteredScene } from "@/features/timeline/useDateFilter";
 import { SCENE_COLORS } from "@/lib/colors";
 import { boundsCenter, type Vec3 } from "@/lib/coords";
 import { useAppStore } from "@/store/useAppStore";
@@ -27,7 +28,8 @@ export interface SceneCanvasProps {
 /**
  * The "X-ray street": translucent ground, pipes at true depth, pink works,
  * uncertainty halos and clash markers. Layer, x-ray and halo state comes from
- * the app store; clicking empty space clears the selection.
+ * the app store; clicking empty space clears the selection. The schedule
+ * scrubber's date hides inactive works and their markers (never pipes).
  */
 export default function SceneCanvas({
 	scene,
@@ -39,6 +41,7 @@ export default function SceneCanvas({
 	const xray = useAppStore((s) => s.xray);
 	const halos = useAppStore((s) => s.halos);
 	const selectClash = useAppStore((s) => s.selectClash);
+	const dated = useDateFilteredScene(scene, clashes);
 
 	const { bounds } = scene.area;
 	const camera = useMemo(() => cameraSettings(bounds), [bounds]);
@@ -82,8 +85,8 @@ export default function SceneCanvas({
 			<Ground scene={scene} xray={xray} />
 			<Pipes assets={scene.assets} layers={layers} />
 			{halos && <UncertaintyHalos assets={scene.assets} layers={layers} />}
-			{layers.WORKS && <WorkVolumes works={scene.works} />}
-			<ClashMarkers clashes={clashes} />
+			{layers.WORKS && <WorkVolumes works={dated.works} />}
+			<ClashMarkers clashes={dated.clashes} />
 			{section && (
 				<SectionPlane
 					section={section.state}
