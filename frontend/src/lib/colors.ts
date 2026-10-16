@@ -73,6 +73,35 @@ export const FACTOR_COLORS = {
 	confidence: "#52525B",
 } as const;
 
+/**
+ * Permit intake (SPEC §10.4). Confidence chips are a neutral ramp so they never
+ * read as utility colours; missing and assumed values use dashed outlines.
+ */
+export const CONFIDENCE_COLORS = {
+	high: "#E4E4E7",
+	medium: "#A1A1AA",
+	low: "#71717A",
+	edited: "#5EB1EF",
+} as const;
+
+export const INTAKE_COLORS = {
+	/** Faint underline on every quoted span of the source text. */
+	quoteUnderline: "#52525B",
+	/** Background of the quote(s) for the hovered / focused field. */
+	quoteActive: "#D6409F55",
+	/** Visible warning for PARTIAL geocodes and assumed values. */
+	warning: "#FF9F5A",
+	previewGround: "#111114",
+	previewStreet: "#27272A",
+	previewCentreline: "#3F3F46",
+	previewLabel: "#A1A1AA",
+	previewNode: "#71717A",
+	/** Junction / landmark named by the draft's from_ref / to_ref. */
+	previewRef: "#FFFFFF",
+	/** Ring around clash markers added by the latest permit commit. */
+	newClashRing: "#D6409F",
+} as const;
+
 /** Section plane (3D) and cross-section drawing (SVG). Neutral on purpose. */
 export const SECTION_COLORS = {
 	plane: "#A1A1AA",

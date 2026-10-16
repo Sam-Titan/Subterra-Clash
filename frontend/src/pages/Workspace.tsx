@@ -5,6 +5,7 @@ import { ErrorBlock, LoadingBlock } from "@/components/QueryState";
 import { Badge } from "@/components/ui/badge";
 import { ClashPanel } from "@/features/clashes/ClashPanel";
 import { ConflictList } from "@/features/clashes/ConflictList";
+import { IntakeBanner } from "@/features/permits/IntakeBanner";
 import { LeftRail } from "@/features/scene3d/LeftRail";
 import { CrossSection } from "@/features/section/CrossSection";
 import {
@@ -71,7 +72,8 @@ export default function Workspace() {
 						</Suspense>
 					)}
 
-					<div className="pointer-events-none absolute top-3 left-3 flex flex-col items-start gap-2">
+					<div className="pointer-events-none absolute top-3 right-3 left-3 flex flex-col items-start gap-2">
+						<IntakeBanner clashes={items} />
 						{clashes.isPending && (
 							<Badge
 								variant="outline"

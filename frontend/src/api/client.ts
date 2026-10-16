@@ -4,9 +4,14 @@ import type {
 	ClashDetail,
 	ClashGroup,
 	ClashQuery,
+	CommitRequest,
+	CommitResponse,
 	ListResponse,
+	PatchDraftRequest,
+	PermitDraft,
 	ReviewRequest,
 	ReviewResponse,
+	SamplePermit,
 	Scene,
 	Summary,
 } from "./types";
@@ -51,20 +56,29 @@ function buildUrl(path: string, params?: QueryParams): string {
 }
 
 async function request<T>(
-	method: "GET" | "POST",
+	method: "GET" | "POST" | "PATCH",
 	path: string,
 	{ params, body: payload }: { params?: QueryParams; body?: unknown } = {},
 ): Promise<T> {
 	const url = buildUrl(path, params);
 	const headers: Record<string, string> = { Accept: "application/json" };
-	if (payload !== undefined) headers["Content-Type"] = "application/json";
+	// FormData sets its own multipart Content-Type (with the boundary).
+	const isForm = payload instanceof FormData;
+	if (payload !== undefined && !isForm) {
+		headers["Content-Type"] = "application/json";
+	}
 
 	let response: Response;
 	try {
 		response = await fetch(url, {
 			method,
 			headers,
-			body: payload === undefined ? undefined : JSON.stringify(payload),
+			body:
+				payload === undefined
+					? undefined
+					: isForm
+						? payload
+						: JSON.stringify(payload),
 		});
 	} catch {
 		throw new ApiError(0, "NETWORK", `Could not reach the server for ${url}.`);
@@ -131,6 +145,10 @@ export function apiPost<T>(path: string, body: unknown): Promise<T> {
 	return request<T>("POST", path, { body });
 }
 
+export function apiPatch<T>(path: string, body: unknown): Promise<T> {
+	return request<T>("PATCH", path, { body });
+}
+
 export async function getScene(): Promise<Scene> {
 	if (USE_MOCKS) return (await import("./mocks")).mockScene();
 	return apiGet<Scene>("/scene");
@@ -167,4 +185,45 @@ export async function reviewClash(
 export async function getSummary(): Promise<Summary> {
 	if (USE_MOCKS) return (await import("./mocks")).mockSummary();
 	return apiGet<Summary>("/summary");
+}
+
+export async function getPermitSamples(): Promise<ListResponse<SamplePermit>> {
+	if (USE_MOCKS) return (await import("./mocks")).mockPermitSamples();
+	return apiGet<ListResponse<SamplePermit>>("/permits/samples");
+}
+
+/** Pasted text → a draft. Nothing enters the plan until commit. */
+export async function parsePermitText(text: string): Promise<PermitDraft> {
+	if (USE_MOCKS) return (await import("./mocks")).mockParsePermit(text);
+	return apiPost<PermitDraft>("/permits/parse", { text });
+}
+
+/** PDF upload (multipart `file`) → a draft. */
+export async function parsePermitPdf(file: File): Promise<PermitDraft> {
+	if (USE_MOCKS) return (await import("./mocks")).mockParsePermit(file.name);
+	const form = new FormData();
+	form.append("file", file);
+	return apiPost<PermitDraft>("/permits/parse", form);
+}
+
+export async function patchPermit(
+	draftId: string,
+	fields: PatchDraftRequest["fields"],
+): Promise<PermitDraft> {
+	if (USE_MOCKS) return (await import("./mocks")).mockPatchPermit(fields);
+	return apiPatch<PermitDraft>(`/permits/${encodeURIComponent(draftId)}`, {
+		fields,
+	});
+}
+
+/** Adds the work to the coordination plan. This is not a permit approval. */
+export async function commitPermit(
+	draftId: string,
+	body: CommitRequest,
+): Promise<CommitResponse> {
+	if (USE_MOCKS) return (await import("./mocks")).mockCommitPermit();
+	return apiPost<CommitResponse>(
+		`/permits/${encodeURIComponent(draftId)}/commit`,
+		body,
+	);
 }

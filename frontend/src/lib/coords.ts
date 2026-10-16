@@ -39,6 +39,14 @@ export function headingToThreeYaw(dx: number, dy: number): number {
 	return Math.atan2(dy, dx);
 }
 
+/**
+ * Scene [x, y] → SVG [x, y] for a north-up plan whose viewBox is
+ * `0 0 width height` of the bounds (SVG y grows downwards, scene y north).
+ */
+export function planToSvg(point: Point2, bounds: Bounds): Point2 {
+	return [point[0] - bounds.min_x, bounds.max_y - point[1]];
+}
+
 /** Centre of the area at road level, in Three.js coordinates. */
 export function boundsCenter(bounds: Bounds): Vec3 {
 	return toThree([

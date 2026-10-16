@@ -1,5 +1,6 @@
 import { Billboard, Html, Line } from "@react-three/drei";
 import { type ThreeEvent, useFrame } from "@react-three/fiber";
+import { useReducedMotion } from "motion/react";
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import {
 	type Group,
@@ -12,6 +13,7 @@ import type { Clash } from "@/api/types";
 import {
 	CERTAINTY_COLORS,
 	CERTAINTY_STYLE,
+	INTAKE_COLORS,
 	SCENE_COLORS,
 	SEVERITY_BAND_COLORS,
 } from "@/lib/colors";
@@ -25,9 +27,14 @@ const LEADER_TOP_Z = 1.5;
 const PULSE_MAX_OPACITY = 0.8;
 const PULSE_GROWTH = 1.5;
 
+/** Scale-in time (s) for clashes added by the latest permit commit. */
+const SPAWN_SECONDS = 0.8;
+
 interface MarkerEntry {
 	group: Group;
 	pulse: Mesh | null;
+	/** Scale-in still running; `start` < 0 until its first frame. */
+	spawn: { start: number } | null;
 }
 
 interface SharedGeometry {
@@ -35,6 +42,13 @@ interface SharedGeometry {
 	hit: SphereGeometry;
 	pulse: RingGeometry;
 	selected: RingGeometry;
+	fresh: RingGeometry;
+}
+
+/** Overshoots slightly, then settles at 1. */
+function easeOutBack(t: number): number {
+	const c = 1.7;
+	return 1 + (c + 1) * (t - 1) ** 3 + c * (t - 1) ** 2;
 }
 
 function circlePoints(radius: number, steps = 40): Vec3[] {
@@ -63,6 +77,12 @@ export function ClashMarkers({ clashes }: { clashes: Clash[] }) {
 	const certaintyFilter = useAppStore((s) => s.certaintyFilter);
 	const selectedClashId = useAppStore((s) => s.selectedClashId);
 	const selectClash = useAppStore((s) => s.selectClash);
+	const intakeResult = useAppStore((s) => s.intakeResult);
+	const reduceMotion = useReducedMotion();
+	const fresh = useMemo(
+		() => new Set(intakeResult?.clashIds ?? []),
+		[intakeResult],
+	);
 
 	const visible = useMemo(
 		() => clashes.filter((c) => certaintyFilter.includes(c.certainty)),
@@ -75,6 +95,7 @@ export function ClashMarkers({ clashes }: { clashes: Clash[] }) {
 			hit: new SphereGeometry(MARKER.hitRadius, 8, 6),
 			pulse: new RingGeometry(MARKER.radius * 1.2, MARKER.radius * 1.5, 32),
 			selected: new RingGeometry(MARKER.radius * 2, MARKER.radius * 2.4, 40),
+			fresh: new RingGeometry(MARKER.radius * 2.7, MARKER.radius * 3, 40),
 		}),
 		[],
 	);
@@ -105,14 +126,23 @@ export function ClashMarkers({ clashes }: { clashes: Clash[] }) {
 
 	useFrame(({ camera, clock }) => {
 		const phase = (clock.elapsedTime * MARKER.pulseHz) % 1;
-		for (const { group, pulse } of entries.current.values()) {
+		for (const entry of entries.current.values()) {
+			const { group, pulse, spawn } = entry;
 			const d = group.position.distanceTo(camera.position);
-			group.scale.setScalar(
-				Math.min(
-					MARKER.maxScale,
-					Math.max(MARKER.minScale, d * MARKER.scalePerMetre),
-				),
+			let scale = Math.min(
+				MARKER.maxScale,
+				Math.max(MARKER.minScale, d * MARKER.scalePerMetre),
 			);
+			if (spawn) {
+				if (spawn.start < 0) spawn.start = clock.elapsedTime;
+				const t = Math.min(
+					1,
+					(clock.elapsedTime - spawn.start) / SPAWN_SECONDS,
+				);
+				scale *= Math.max(0.001, easeOutBack(t));
+				if (t >= 1) entry.spawn = null;
+			}
+			group.scale.setScalar(scale);
 			if (pulse) {
 				pulse.scale.setScalar(1 + phase * PULSE_GROWTH);
 				(pulse.material as MeshBasicMaterial).opacity =
@@ -140,6 +170,8 @@ export function ClashMarkers({ clashes }: { clashes: Clash[] }) {
 					key={clash.id}
 					clash={clash}
 					selected={clash.id === selectedClashId}
+					fresh={fresh.has(clash.id)}
+					animateIn={fresh.has(clash.id) && !reduceMotion}
 					geometry={geometry}
 					onSelect={selectClash}
 					register={register}
@@ -152,12 +184,18 @@ export function ClashMarkers({ clashes }: { clashes: Clash[] }) {
 function Marker({
 	clash,
 	selected,
+	fresh,
+	animateIn,
 	geometry,
 	onSelect,
 	register,
 }: {
 	clash: Clash;
 	selected: boolean;
+	/** Added by the latest permit commit: extra ring until the banner closes. */
+	fresh: boolean;
+	/** Scale in on mount (off with prefers-reduced-motion). */
+	animateIn: boolean;
 	geometry: SharedGeometry;
 	onSelect: (id: string) => void;
 	register: (id: string, entry: MarkerEntry | null) => void;
@@ -171,12 +209,17 @@ function Marker({
 		[clash.location],
 	);
 
+	// animateIn is read once at mount: a marker that already exists never
+	// re-plays its scale-in.
+	const spawnAtMount = useRef(animateIn);
 	useEffect(() => {
 		if (!groupRef.current) return;
 		register(clash.id, {
 			group: groupRef.current,
 			pulse: pulseRef.current,
+			spawn: spawnAtMount.current ? { start: -1 } : null,
 		});
+		spawnAtMount.current = false;
 		return () => register(clash.id, null);
 	}, [clash.id, register]);
 
@@ -265,6 +308,19 @@ function Marker({
 							</span>
 						</Html>
 					</>
+				)}
+
+				{fresh && (
+					<mesh
+						geometry={geometry.fresh}
+						renderOrder={RENDER_ORDER.markers}
+						raycast={noRaycast}
+					>
+						<meshBasicMaterial
+							color={INTAKE_COLORS.newClashRing}
+							depthWrite={false}
+						/>
+					</mesh>
 				)}
 
 				{selected && (

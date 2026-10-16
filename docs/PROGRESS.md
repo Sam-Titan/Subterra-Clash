@@ -7,7 +7,7 @@
 **Current phase:** 2 — Features
 **Kickoff (H0):** 16 Oct 2026, 01:00 IST
 **Last gate passed:** Gate 1
-**Pending for frontend:** none (gen:api run after 2C; review/audit aliases in `src/api/types.ts` still hand-written, see Blockers)
+**Pending for frontend:** none (gen:api run after 2C; review/audit and permit types are generated aliases since 2F)
 
 ---
 
@@ -31,7 +31,7 @@
 - [x] 2C — review + audit routes, OpenAPI re-exported — Sam — `POST /api/clashes/{id}/review` (`Store.review_clash` sets review + audit atomically; ACKNOWLEDGE/ESCALATE/DISMISS/REOPEN → ACKNOWLEDGED/ESCALATED/DISMISSED/OPEN) and `GET /api/audit` (newest first). Errors: 404 CLASH_NOT_FOUND, 422 REVIEWER_REQUIRED (new), 422 NOTE_REQUIRED (DISMISS), 422 VALIDATION_ERROR; failures change/log nothing. REOPEN keeps reviewer, replaces note with request note. Contract updated; `shared/openapi.json` re-exported (mocks unchanged)
 - [x] 2D — clash panel + fly-to + conflict list — Friend — `features/clashes/` (ClashPanel, ConflictList, CertaintyGlyph, factors.ts) + `scene3d/CameraRig.tsx`; factor bar = weighted terms rounded (largest remainder) to sum to the score; review works in mock mode, live API shows "not available yet" until 2C; reviewer name in Zustand; fly-to without new deps (stops on drag)
 - [x] 2E — section plane + cross-section SVG — Friend — `features/section/` (sectionGeometry pure cut, SectionPlane drag handle, CrossSection SVG panel); plane = vertical cut along any horizontal normal; selecting a clash snaps it (square to the work unless a line element would lie in the plane, then square to the asset; kept 0.5 m inside pipe ends); label = engine numbers, note only if drawn gap differs > 5 cm (seed: all 13 match); unknown-depth assets drawn with the 0.5–3.0 m band; first selection auto-enables, rail switch wins after that; follows layer toggles
-- [ ] 2F — permit intake page — Friend
+- [x] 2F — permit intake page — Friend — `features/permits/` (InputPanel, SourceText, FieldList, PathPreview, CommitBar, IntakeBanner, pure `permitFields.ts`); draft kept in the query cache (`useIntakeSession`); quotes highlighted at first occurrence, overlaps split flat; numbers/dates not literal in their quote tagged "Assumed"; geocode notes shown in full + per field; PARTIAL = orange warning + dashed centreline path; edits batched into one PATCH (ids from scene dropdowns), commit blocked while edits unsaved; server error detail+code shown as sent; workspace banner + "New" tags + marker scale-in (off with prefers-reduced-motion), preview vs actual count shown if they differ; mock mode: commit "needs the live API"; review types now generated aliases
 - [ ] **Gate 2 passed**
 
 ## Phase 3 — Depth
@@ -53,7 +53,6 @@
 ## Blockers
 - frontend: switch to generated schema.d.ts types at Gate 1 (`ClashDetail.rule` is nullable: null for SCHEDULE_OVERLAP clashes)
 - frontend: `Summary` in `src/api/types.ts` is still hand-written; alias it to the generated type after backend 3A adds `/api/summary` to openapi.json — Friend
-- frontend: review types hand-written in `src/api/types.ts`; 2C has exported `/api/clashes/{id}/review` and `/api/audit` — run pnpm gen:api and alias them; `AuditEntry.target_id` is `string | null` — Friend
 
 ## Notes for 2B / 2C
 - Permit commit: add the work to `store.scene.works`, call `store.reanalyze()` (ids stay stable), log audit via `store.log_audit`. Reviews: `store.set_review(clash_id, Review)` then audit; the review model/route is 2C.

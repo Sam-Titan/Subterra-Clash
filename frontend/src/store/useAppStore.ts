@@ -30,6 +30,8 @@ interface AppState {
 	sectionCollapsed: boolean;
 	/** null = default (first street at its midpoint). */
 	section: SectionState | null;
+	/** Latest permit added to the plan; its clashes are highlighted in the workspace. */
+	intakeResult: IntakeResult | null;
 
 	selectClash: (id: string | null) => void;
 	toggleLayer: (layer: LayerId) => void;
@@ -46,6 +48,15 @@ interface AppState {
 	autoEnableSection: () => void;
 	setSectionCollapsed: (collapsed: boolean) => void;
 	setSection: (section: SectionState) => void;
+	setIntakeResult: (result: IntakeResult | null) => void;
+}
+
+export interface IntakeResult {
+	workId: string;
+	permitNo: string;
+	clashIds: string[];
+	/** The draft's `preview_clash_count` just before commit. */
+	previewCount: number;
 }
 
 export const useAppStore = create<AppState>()((set) => ({
@@ -89,4 +100,6 @@ export const useAppStore = create<AppState>()((set) => ({
 		),
 	setSectionCollapsed: (collapsed) => set({ sectionCollapsed: collapsed }),
 	setSection: (section) => set({ section }),
+	intakeResult: null,
+	setIntakeResult: (result) => set({ intakeResult: result }),
 }));

@@ -107,28 +107,49 @@ export interface Summary {
 	};
 }
 
-// Review types are hand-written from docs/API_CONTRACT.md because
-// POST /api/clashes/{id}/review (backend 2C) is not in shared/openapi.json yet.
-// Switch these to generated aliases after 2C exports it.
-export type ReviewAction = "ACKNOWLEDGE" | "ESCALATE" | "DISMISS" | "REOPEN";
+export type ReviewAction = Schemas["ReviewAction"];
+/** `note` is required (non-empty) for DISMISS only. */
+export type ReviewRequest = Schemas["ReviewRequest"];
+/** `target_id` is null for entries with no target (RESET). */
+export type AuditEntry = Schemas["AuditEntry"];
+export type ReviewResponse = Schemas["ReviewResponse"];
 
-export interface ReviewRequest {
-	action: ReviewAction;
-	reviewer: string;
-	/** Required (non-empty) for DISMISS only. */
-	note: string | null;
-}
+// Permit intake (API_CONTRACT "Permit intake").
+export type PermitDraft = Schemas["PermitDraft"];
+export type ExtractedField = Schemas["ExtractedField"];
+export type FieldValue = ExtractedField["value"];
+export type GeocodeResult = Schemas["GeocodeResult"];
+export type GeocodeStatus = GeocodeResult["status"];
+export type SamplePermit = Schemas["SamplePermit"];
+export type CommitRequest = Schemas["CommitRequest"];
+export type CommitResponse = Schemas["CommitResponse"];
+export type PatchDraftRequest = Schemas["PatchDraftRequest"];
 
-export interface AuditEntry {
-	id: string;
-	at: string;
-	actor: string;
-	action: string;
-	target_id: string;
-	detail: string;
-}
+/** The 15 extracted fields, in SPEC §9 order (the draft's `fields` keys). */
+export const PERMIT_FIELDS = [
+	"agency",
+	"permit_no",
+	"work_type",
+	"utility",
+	"street",
+	"from_ref",
+	"to_ref",
+	"side",
+	"offset_m",
+	"depth_from_m",
+	"depth_to_m",
+	"width_m",
+	"diameter_m",
+	"start_date",
+	"end_date",
+] as const;
+export type PermitFieldName = (typeof PERMIT_FIELDS)[number];
 
-export interface ReviewResponse {
-	clash: Clash;
-	audit: AuditEntry;
-}
+export const WORK_TYPES: readonly WorkType[] = [
+	"TRENCH",
+	"PIT",
+	"HDD",
+	"PIPE_LAY",
+];
+/** Values the backend accepts for `side` (PATCH → 422 INVALID_FIELD_VALUE otherwise). */
+export const SIDES = ["NORTH", "SOUTH", "EAST", "WEST"] as const;

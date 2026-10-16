@@ -14,12 +14,16 @@ import type {
 	ClashDetail,
 	ClashGroup,
 	ClashQuery,
+	CommitResponse,
 	ListResponse,
+	PatchDraftRequest,
+	PermitDraft,
 	Review,
 	ReviewAction,
 	ReviewRequest,
 	ReviewResponse,
 	ReviewStatus,
+	SamplePermit,
 	Scene,
 	Summary,
 } from "./types";
@@ -169,4 +173,63 @@ export async function mockGroups(): Promise<ListResponse<ClashGroup>> {
 export async function mockSummary(): Promise<Summary> {
 	const mod = await import("../../../shared/mocks/summary.json");
 	return delay(mod.default as unknown as Summary);
+}
+
+// Permit intake. shared/mocks has one parse response (sample 1), so every
+// parse returns it; PATCH edits it locally without re-geocoding. Commit needs
+// the real engine and is not available in mock mode.
+
+async function loadPermitParse(): Promise<PermitDraft> {
+	const mod = await import("../../../shared/mocks/permit_parse.json");
+	return structuredClone(mod.default as unknown as PermitDraft);
+}
+
+let mockDraft: PermitDraft | null = null;
+
+export async function mockPermitSamples(): Promise<ListResponse<SamplePermit>> {
+	const draft = await loadPermitParse();
+	return delay({
+		items: [
+			{
+				id: "sample-1",
+				title: "Sample permit (mock)",
+				text: draft.source_text,
+			},
+		],
+		total: 1,
+	});
+}
+
+export async function mockParsePermit(input: string): Promise<PermitDraft> {
+	if (!input.trim()) {
+		throw new ApiError(400, "EMPTY_INPUT", "Provide permit text or a PDF file");
+	}
+	mockDraft = await loadPermitParse();
+	return delay(structuredClone(mockDraft));
+}
+
+export async function mockPatchPermit(
+	fields: PatchDraftRequest["fields"],
+): Promise<PermitDraft> {
+	if (!mockDraft) {
+		throw new ApiError(404, "DRAFT_NOT_FOUND", "No permit draft in mock mode");
+	}
+	for (const [name, value] of Object.entries(fields)) {
+		mockDraft.fields[name] =
+			value === null
+				? { value: null, confidence: 0, source_quote: null }
+				: { value, confidence: 1, source_quote: "edited by reviewer" };
+	}
+	mockDraft.missing_fields = Object.entries(mockDraft.fields)
+		.filter(([, f]) => f.value === null)
+		.map(([name]) => name);
+	return delay(structuredClone(mockDraft));
+}
+
+export async function mockCommitPermit(): Promise<CommitResponse> {
+	throw new ApiError(
+		0,
+		"NOT_AVAILABLE",
+		"Adding to the coordination plan needs the live API (set VITE_USE_MOCKS=false).",
+	);
 }

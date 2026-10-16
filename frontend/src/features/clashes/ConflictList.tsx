@@ -2,7 +2,11 @@ import { useMemo } from "react";
 import { useClashes, useGroups } from "@/api/hooks";
 import type { Clash, ClashGroup } from "@/api/types";
 import { ErrorBlock, LoadingBlock } from "@/components/QueryState";
-import { REVIEW_STATUS_COLORS, SEVERITY_BAND_COLORS } from "@/lib/colors";
+import {
+	INTAKE_COLORS,
+	REVIEW_STATUS_COLORS,
+	SEVERITY_BAND_COLORS,
+} from "@/lib/colors";
 import { formatScore, humanizeEnum } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { useAppStore } from "@/store/useAppStore";
@@ -42,6 +46,11 @@ export function ConflictList() {
 	const certaintyFilter = useAppStore((s) => s.certaintyFilter);
 	const selectedClashId = useAppStore((s) => s.selectedClashId);
 	const selectClash = useAppStore((s) => s.selectClash);
+	const intakeResult = useAppStore((s) => s.intakeResult);
+	const fresh = useMemo(
+		() => new Set(intakeResult?.clashIds ?? []),
+		[intakeResult],
+	);
 
 	const all = clashes.data?.items;
 	const visible = useMemo(
@@ -139,6 +148,17 @@ export function ConflictList() {
 									<CertaintyGlyph certainty={clash.certainty} />
 									<span className="flex min-w-0 items-baseline gap-2">
 										<span className="font-mono text-xs">{clash.id}</span>
+										{fresh.has(clash.id) && (
+											<span
+												className="rounded-full border px-1.5 text-[10px] leading-4"
+												style={{
+													borderColor: INTAKE_COLORS.newClashRing,
+													color: INTAKE_COLORS.newClashRing,
+												}}
+											>
+												New
+											</span>
+										)}
 										<span className="truncate text-xs text-zinc-400">
 											{humanizeEnum(clash.kind)}
 										</span>
