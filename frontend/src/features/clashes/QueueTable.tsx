@@ -34,6 +34,7 @@ import {
 import { formatScore, humanizeEnum } from "@/lib/format";
 import { CertaintyGlyph } from "./CertaintyGlyph";
 import { compactClearance } from "./clearance";
+import { OpportunityChip } from "./opportunity";
 import { type QueueSection, sectionRows } from "./queueRows";
 
 const features = tableFeatures({
@@ -65,6 +66,7 @@ export function QueueTable({
 	assetUtility,
 	freshIds,
 	groupTotals,
+	opportunityGroups,
 	onOpen,
 	onEscalate,
 }: {
@@ -76,6 +78,8 @@ export function QueueTable({
 	freshIds: ReadonlySet<string>;
 	/** Clash count per group before filtering. */
 	groupTotals: ReadonlyMap<string, number>;
+	/** Groups whose clashes are all DIG_ONCE (see opportunityGroupIds). */
+	opportunityGroups: ReadonlySet<string>;
 	onOpen: (clash: Clash) => void;
 	onEscalate: (clash: Clash) => void;
 }) {
@@ -134,6 +138,18 @@ export function QueueTable({
 					sortDescFirst: true,
 					cell: (info) => {
 						const { band, score } = info.row.original.clash.severity;
+						// INFO (dig-once) is an opportunity: no alarming score.
+						if (band === "INFO") {
+							return (
+								<span
+									className="text-xs"
+									style={{ color: SEVERITY_BAND_COLORS.INFO }}
+									title={`Severity score ${formatScore(score)}`}
+								>
+									Info
+								</span>
+							);
+						}
 						return (
 							<span
 								className="font-mono text-xs font-semibold tabular-nums"
@@ -360,6 +376,7 @@ export function QueueTable({
 						grouped={grouped}
 						columnCount={columnCount}
 						groupTotal={groupTotals.get(section.key)}
+						opportunity={opportunityGroups.has(section.key)}
 					>
 						{section.rows.map((row) => (
 							<TableRow
@@ -388,12 +405,14 @@ function SectionRows({
 	grouped,
 	columnCount,
 	groupTotal,
+	opportunity,
 	children,
 }: {
 	section: QueueSection<unknown>;
 	grouped: boolean;
 	columnCount: number;
 	groupTotal: number | undefined;
+	opportunity: boolean;
 	children: ReactNode;
 }) {
 	if (!grouped) return children;
@@ -412,12 +431,21 @@ function SectionRows({
 						<span className="font-semibold text-zinc-100">
 							{group?.title ?? section.key}
 						</span>
-						<span className="text-zinc-500">
-							{groupTotal !== undefined && groupTotal !== shown
-								? `${shown} of ${groupTotal} shown`
-								: `${shown} ${shown === 1 ? "clash" : "clashes"}`}
-						</span>
-						{group && (
+						{/* Group titles already state the clash count. */}
+						{group === null ? (
+							<span className="text-zinc-500">
+								{shown} {shown === 1 ? "clash" : "clashes"}
+							</span>
+						) : (
+							groupTotal !== undefined &&
+							groupTotal !== shown && (
+								<span className="text-zinc-500">
+									{shown} of {groupTotal} shown
+								</span>
+							)
+						)}
+						{opportunity && <OpportunityChip />}
+						{group && !opportunity && (
 							<span className="text-zinc-500">
 								max severity{" "}
 								<span className="font-mono tabular-nums text-zinc-300">

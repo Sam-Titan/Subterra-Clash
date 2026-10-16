@@ -231,6 +231,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/summary": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Summary */
+        get: operations["get_summary_api_summary_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -308,6 +325,12 @@ export interface components {
          * @enum {string}
          */
         Certainty: "LIKELY" | "POSSIBLE" | "NEEDS_DATA";
+        /** CertaintyCount */
+        CertaintyCount: {
+            certainty: components["schemas"]["Certainty"];
+            /** Count */
+            count: number;
+        };
         /** Clash */
         Clash: {
             /** Asset Ids */
@@ -388,6 +411,45 @@ export interface components {
             code: string;
             /** Detail */
             detail: string;
+        };
+        /**
+         * EvalCase
+         * @description `expected` / `ours` are a ClashKind name or NO_CLASH; `baseline` is FLAGGED / NOT_FLAGGED.
+         *     Certainty fields are null when the outcome is NO_CLASH (or not specified by the truth).
+         */
+        EvalCase: {
+            /** Baseline */
+            baseline: string;
+            /** Case Id */
+            case_id: string;
+            /** Description */
+            description: string;
+            /** Expected */
+            expected: string;
+            expected_certainty: components["schemas"]["Certainty"] | null;
+            /** Ours */
+            ours: string;
+            ours_certainty: components["schemas"]["Certainty"] | null;
+        };
+        /** EvalScore */
+        EvalScore: {
+            /** False Alarms */
+            false_alarms: number;
+            /** Misses */
+            misses: number;
+            /** Precision */
+            precision: number;
+            /** Recall */
+            recall: number;
+            /** True Positives */
+            true_positives: number;
+        };
+        /** Evaluation */
+        Evaluation: {
+            baseline: components["schemas"]["EvalScore"];
+            /** Cases */
+            cases: components["schemas"]["EvalCase"][];
+            ours: components["schemas"]["EvalScore"];
         };
         /**
          * Evidence
@@ -723,11 +785,44 @@ export interface components {
             /** Width M */
             width_m: number;
         };
+        /** Summary */
+        Summary: {
+            /** By Certainty */
+            by_certainty: components["schemas"]["CertaintyCount"][];
+            /** By Utility */
+            by_utility: components["schemas"]["UtilityCount"][];
+            counts: components["schemas"]["SummaryCounts"];
+            evaluation: components["schemas"]["Evaluation"];
+        };
+        /**
+         * SummaryCounts
+         * @description Unresolved clashes only: review status OPEN or ESCALATED (see API_CONTRACT).
+         */
+        SummaryCounts: {
+            /** Critical */
+            critical: number;
+            /** Dig Once */
+            dig_once: number;
+            /** High */
+            high: number;
+            /** Needs Data */
+            needs_data: number;
+            /** Open */
+            open: number;
+            /** Schedule Overlap */
+            schedule_overlap: number;
+        };
         /**
          * Utility
          * @enum {string}
          */
         Utility: "WATER" | "SEWER" | "POWER" | "TELECOM" | "GAS";
+        /** UtilityCount */
+        UtilityCount: {
+            /** Count */
+            count: number;
+            utility: components["schemas"]["Utility"];
+        };
         /** ValidationError */
         ValidationError: {
             /** Context */
@@ -1233,6 +1328,26 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["Scene"];
+                };
+            };
+        };
+    };
+    get_summary_api_summary_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Summary"];
                 };
             };
         };

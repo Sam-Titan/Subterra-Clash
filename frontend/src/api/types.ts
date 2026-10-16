@@ -77,42 +77,14 @@ export interface ClashQuery {
 	sort?: "review_rank" | "severity" | "id";
 }
 
-// Summary is hand-written (SPEC §7 / API_CONTRACT) because GET /api/summary is
-// not in shared/openapi.json yet. Switch these to generated aliases after
-// backend 3A exports it.
-export interface EvaluationScore {
-	true_positives: number;
-	false_alarms: number;
-	misses: number;
-	precision: number;
-	recall: number;
-}
-
-export interface EvaluationCase {
-	case_id: string;
-	description: string;
-	expected: string;
-	ours: string;
-	baseline: string;
-}
-
-export interface Summary {
-	counts: {
-		open: number;
-		critical: number;
-		high: number;
-		needs_data: number;
-		dig_once: number;
-		schedule_overlap: number;
-	};
-	by_utility: { utility: Utility; count: number }[];
-	by_certainty: { certainty: Certainty; count: number }[];
-	evaluation: {
-		ours: EvaluationScore;
-		baseline: EvaluationScore;
-		cases: EvaluationCase[];
-	};
-}
+/** `counts` cover unresolved clashes only (review status OPEN or ESCALATED). */
+export type Summary = Schemas["Summary"];
+export type EvaluationScore = Schemas["EvalScore"];
+/**
+ * `expected` / `ours`: a ClashKind or NO_CLASH; `baseline`: FLAGGED / NOT_FLAGGED.
+ * The certainty fields are null when the outcome is NO_CLASH.
+ */
+export type EvaluationCase = Schemas["EvalCase"];
 
 export type ReviewAction = Schemas["ReviewAction"];
 /** `note` is required (non-empty) for DISMISS only. */

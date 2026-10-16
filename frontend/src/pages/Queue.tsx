@@ -11,6 +11,7 @@ import {
 import { ErrorBlock, LoadingBlock } from "@/components/QueryState";
 import { Switch } from "@/components/ui/switch";
 import { EscalateDialog } from "@/features/clashes/EscalateDialog";
+import { opportunityGroupIds } from "@/features/clashes/opportunity";
 import { type QueueRow, QueueTable } from "@/features/clashes/QueueTable";
 import { ReportExport } from "@/features/clashes/ReportExport";
 import { REVIEW_STATUS_COLORS } from "@/lib/colors";
@@ -79,6 +80,11 @@ export default function Queue() {
 		}
 		return totals;
 	}, [allRows]);
+
+	const opportunityGroups = useMemo(
+		() => opportunityGroupIds(all ?? []),
+		[all],
+	);
 
 	const assetUtility = useMemo(
 		() =>
@@ -246,6 +252,7 @@ export default function Queue() {
 						assetUtility={assetUtility}
 						freshIds={freshIds}
 						groupTotals={groupTotals}
+						opportunityGroups={opportunityGroups}
 						onOpen={openInWorkspace}
 						onEscalate={startEscalate}
 					/>

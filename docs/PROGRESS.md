@@ -7,7 +7,7 @@
 **Current phase:** 3 — Depth
 **Kickoff (H0):** 16 Oct 2026, 01:00 IST
 **Last gate passed:** Gate 2
-**Pending for frontend:** run `pnpm gen:api` (new `/api/summary` and `Summary` types). `cases[]` has two new fields, `expected_certainty` and `ours_certainty`, so the 3D table can show "CLEARANCE · NEEDS_DATA". Group titles changed format (`<work> — <n> clashes, highest <BAND>`). `shared/mocks/groups.json`, `clashes.json` and `summary.json` were regenerated — Rishit: pull first
+**Pending for frontend:** none (gen:api run after 3A; `Summary` is a generated alias; new group titles wrap, dig-once groups shown as opportunities). For 3D: show `cases[]` outcomes as kind · certainty, e.g. "CLEARANCE · NEEDS_DATA" (T6)
 
 ---
 
@@ -52,7 +52,6 @@
 
 ## Blockers
 - frontend: switch to generated schema.d.ts types at Gate 1 (`ClashDetail.rule` is nullable: null for SCHEDULE_OVERLAP and DIG_ONCE clashes)
-- frontend: `Summary` in `src/api/types.ts` is still hand-written; alias it to the generated type after backend 3A adds `/api/summary` to openapi.json — Friend
 
 ## Notes for 2B / 2C
 - Permit commit: add the work to `store.scene.works`, call `store.reanalyze()` (ids stay stable), log audit via `store.log_audit`. Reviews: `store.set_review(clash_id, Review)` then audit; the review model/route is 2C.

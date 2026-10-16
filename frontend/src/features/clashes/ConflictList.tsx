@@ -12,12 +12,15 @@ import { cn } from "@/lib/utils";
 import { useAppStore } from "@/store/useAppStore";
 import { CertaintyGlyph } from "./CertaintyGlyph";
 import { compactClearance } from "./clearance";
+import { OpportunityChip, opportunityGroupIds } from "./opportunity";
 
 interface Section {
 	key: string;
 	rank: number | null;
 	title: string;
 	clashes: Clash[];
+	/** Every clash in the group is DIG_ONCE: a coordination chance, not a conflict. */
+	opportunity: boolean;
 }
 
 /** Compact workspace list, grouped by clash group in review order. */
@@ -46,6 +49,7 @@ export function ConflictList() {
 			list.push(c);
 			byGroup.set(c.group_id, list);
 		}
+		const opportunities = opportunityGroupIds(all ?? []);
 		const ordered: ClashGroup[] = [...(groups.data?.items ?? [])].sort(
 			(a, b) => a.review_rank - b.review_rank,
 		);
@@ -58,15 +62,22 @@ export function ConflictList() {
 				rank: g.review_rank,
 				title: g.title,
 				clashes: list,
+				opportunity: opportunities.has(g.id),
 			});
 			byGroup.delete(g.id);
 		}
 		// Clashes whose group is not (yet) in /groups still get listed.
 		for (const [id, list] of byGroup) {
-			result.push({ key: id, rank: null, title: id, clashes: list });
+			result.push({
+				key: id,
+				rank: null,
+				title: id,
+				clashes: list,
+				opportunity: opportunities.has(id),
+			});
 		}
 		return result;
-	}, [visible, groups.data]);
+	}, [all, visible, groups.data]);
 
 	if (clashes.isPending) return <LoadingBlock label="Loading conflicts…" />;
 	if (clashes.isError) {
@@ -106,13 +117,19 @@ export function ConflictList() {
 
 			{sections.map((section) => (
 				<section key={section.key} className="flex flex-col gap-1">
-					<h3 className="flex gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-zinc-500">
-						{section.rank !== null && (
-							<span className="font-mono">#{section.rank}</span>
-						)}
-						<span className="truncate normal-case tracking-normal">
-							{section.title}
+					<h3 className="flex flex-col gap-1 text-[11px] font-semibold text-zinc-500">
+						<span className="flex gap-1.5">
+							{section.rank !== null && (
+								<span className="font-mono">#{section.rank}</span>
+							)}
+							{/* Titles carry the count and band now; let them wrap. */}
+							<span className="min-w-0 break-words">{section.title}</span>
 						</span>
+						{section.opportunity && (
+							<span>
+								<OpportunityChip />
+							</span>
+						)}
 					</h3>
 					<ul className="flex flex-col">
 						{section.clashes.map((clash) => (
@@ -145,13 +162,21 @@ export function ConflictList() {
 										</span>
 									</span>
 									<span
-										className="font-mono text-xs font-semibold tabular-nums"
+										className={cn(
+											"text-xs tabular-nums",
+											clash.severity.band === "INFO"
+												? "font-normal"
+												: "font-mono font-semibold",
+										)}
 										style={{
 											color: SEVERITY_BAND_COLORS[clash.severity.band],
 										}}
 										title={`Severity ${humanizeEnum(clash.severity.band)}`}
 									>
-										{formatScore(clash.severity.score)}
+										{/* INFO (dig-once) is an opportunity: no alarming score. */}
+										{clash.severity.band === "INFO"
+											? "Info"
+											: formatScore(clash.severity.score)}
 									</span>
 									<span />
 									<span className="font-mono text-[11px] tabular-nums text-zinc-500">
