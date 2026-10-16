@@ -16,7 +16,7 @@ Toggle **uncertainty halos**: "Some records are surveyed to 10 cm. Some were dig
 
 **0:55 — A critical clash (T1)**
 Click the pulsing red marker → camera flies in → panel opens.
-"A trench cuts straight through a gas main. Measured gap −0.4 m, required 1.0 m. Here's the source record, the rule, and the severity breakdown. Certainty: LIKELY."
+"A trench cuts straight through a gas main. Measured gap −0.6 m, required 1.0 m. Here's the source record, the rule, and the severity breakdown. Certainty: LIKELY."
 Drag the **section plane** across → cross-section shows the dimension line.
 
 **1:25 — What a normal GIS overlay gets wrong (T4, T5)**
@@ -31,16 +31,17 @@ Click the grey "?" marker: "This cable's depth is unknown. We don't guess — NE
 Go to **Intake** → drop the Hinglish sample PDF (or click sample 2).
 Fields fill in one by one with confidence chips; hover a field to show the highlighted source quote.
 "The LLM reads a messy permit, but it never invents geometry — every value points to the exact words it came from, and missing depth is flagged, not guessed. A deterministic geocoder places it on our street map."
-Click **Add to coordination plan** → workspace → new pink trench appears, 2–3 new markers animate in.
+Click **Add to coordination plan** → workspace → toast → new pink trench appears, 3 new markers animate in (2 LIKELY, 1 POSSIBLE).
 
 **3:00 — Review queue & coordination**
 Go to **Queue**: "Clashes are grouped and ranked — review the gas line first."
 Escalate one with a note → toast. Point at the schedule strip: "Two works on Vikas Marg 45 days apart — we suggest digging once."
-Click **Export report** → printable inspection report.
+Click **Export report** → printable inspection report (with the review log at the end).
 "Notice what's not here: an approve button. The tool never approves or rejects a permit. It tells engineers where to look."
 
 **3:30 — Proof (Dashboard)**
 "On our planted test cases, a plain 2D overlay catches 2 of 5 real conflicts and raises a false alarm. Ours catches all 5 with no false alarms, and flags uncertain ones honestly."
+Point at the T6 row: "CLEARANCE · NEEDS DATA — we say what we don't know."
 (Read the real numbers from the screen — do not memorise these.)
 
 **3:45 — Close**
@@ -51,6 +52,6 @@ Click **Export report** → printable inspection report.
 ## Likely judge questions
 - **Where does real data come from?** Utility GIS exports (shapefiles/GeoJSON) and permit portals; our model already handles mixed precision, so ingestion is an adapter, not a redesign.
 - **Why not let the LLM do the geometry?** Hallucinated coordinates are dangerous; extraction is LLM, placement is deterministic and auditable.
-- **What if the LLM is down?** Cached mode; the demo is running offline right now (if true).
+- **What if the LLM is down?** Fixtures for known permits, and an offline rules extractor for anything new; the demo runs offline.
 - **Are the clearance values real?** Illustrative for the exercise, declared in one rules file, replaceable with IS / CPWD / utility-specific values.
 - **How do you avoid alarm fatigue?** Certainty classes + severity ranking + grouping; the baseline comparison shows fewer false alarms.
