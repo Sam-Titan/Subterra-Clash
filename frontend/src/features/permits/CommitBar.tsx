@@ -78,7 +78,7 @@ export function CommitBar({
 		<section className="flex flex-col gap-2 rounded-lg border border-zinc-800 p-3">
 			<label
 				htmlFor={reviewerId}
-				className="flex flex-col gap-1 text-[11px] text-zinc-500"
+				className="flex flex-col gap-1 text-xs text-zinc-400"
 			>
 				Reviewer
 				<Input
@@ -88,7 +88,7 @@ export function CommitBar({
 					className="h-8 border-zinc-700 bg-zinc-900 text-sm text-zinc-100"
 				/>
 			</label>
-			<p className="text-xs text-zinc-500">
+			<p className="text-xs text-zinc-400">
 				Adds this work to the coordination plan so the engine checks it against
 				existing utilities and works. It does not approve or reject the permit.
 			</p>
@@ -110,7 +110,7 @@ export function CommitBar({
 			{err && (
 				<p role="alert" className="text-xs text-zinc-300">
 					{err.detail}{" "}
-					<code className="font-mono text-zinc-500">{err.code}</code>
+					<code className="font-mono text-zinc-400">{err.code}</code>
 				</p>
 			)}
 		</section>

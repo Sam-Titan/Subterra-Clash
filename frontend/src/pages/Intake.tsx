@@ -102,7 +102,7 @@ export default function Intake() {
 					{parse.isPending ? (
 						<LoadingBlock label="Extracting fields…" />
 					) : !draft ? (
-						<div className="flex min-h-48 flex-col items-center justify-center gap-1 rounded-lg border border-dashed border-zinc-800 p-6 text-center text-sm text-zinc-500">
+						<div className="flex min-h-48 flex-col items-center justify-center gap-1 rounded-lg border border-dashed border-zinc-800 p-6 text-center text-sm text-zinc-400">
 							<p>No permit loaded.</p>
 							<p className="text-xs">
 								Pick a demo permit, paste text or drop a PDF to start.

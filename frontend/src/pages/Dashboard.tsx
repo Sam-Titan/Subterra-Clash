@@ -26,7 +26,7 @@ export default function Dashboard() {
 		<section className="mx-auto flex w-full max-w-6xl flex-col gap-6 p-6">
 			<header>
 				<h1 className="text-xl font-semibold">Dashboard</h1>
-				<p className="mt-1 text-sm text-zinc-500">
+				<p className="mt-1 text-sm text-zinc-400">
 					Counts cover unresolved clashes: review status Open or Escalated.
 					Acknowledged and dismissed clashes drop out.
 				</p>
@@ -77,7 +77,7 @@ function DashboardBody({ summary }: { summary: Summary }) {
 				<Stat label="Needs data" value={counts.needs_data} />
 				<Stat label="Dig-once opportunities" value={counts.dig_once} />
 			</div>
-			<p className="-mt-3 text-xs text-zinc-500">
+			<p className="-mt-3 text-xs text-zinc-400">
 				Also unresolved: {counts.high} high severity · {counts.schedule_overlap}{" "}
 				schedule overlap
 				{counts.schedule_overlap === 1 ? "" : "s"}
@@ -119,9 +119,7 @@ function DashboardBody({ summary }: { summary: Summary }) {
 function Stat({ label, value }: { label: string; value: number }) {
 	return (
 		<div className="rounded-lg border border-zinc-800 bg-zinc-900/40 p-4">
-			<p className="text-xs font-medium uppercase tracking-wider text-zinc-500">
-				{label}
-			</p>
+			<p className="text-xs font-medium text-zinc-400">{label}</p>
 			<NumberTicker
 				value={value}
 				className="mt-1 block text-3xl font-semibold tabular-nums text-zinc-100"
@@ -143,7 +141,7 @@ function Panel({
 		<div className="flex min-w-0 flex-col gap-3 rounded-lg border border-zinc-800 bg-zinc-900/20 p-4">
 			<div>
 				<h2 className="text-sm font-semibold text-zinc-200">{title}</h2>
-				{note && <p className="mt-0.5 text-xs text-zinc-500">{note}</p>}
+				{note && <p className="mt-0.5 text-xs text-zinc-400">{note}</p>}
 			</div>
 			{children}
 		</div>

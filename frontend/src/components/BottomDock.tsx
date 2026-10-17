@@ -74,10 +74,10 @@ export function BottomDock({ tabs }: { tabs: DockTabSpec[] }) {
 						if (collapsed) setCollapsed(false);
 					}}
 					className={cn(
-						"rounded px-2 py-1 text-[11px] font-semibold uppercase tracking-wider transition-colors focus-visible:outline-2 focus-visible:outline-zinc-300",
+						"rounded px-2 py-1 text-xs font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-zinc-300",
 						t.id === active.id
 							? "bg-zinc-800 text-zinc-100"
-							: "text-zinc-500 hover:text-zinc-300",
+							: "text-zinc-400 hover:text-zinc-300",
 					)}
 				>
 					{t.label}

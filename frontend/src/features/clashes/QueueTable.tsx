@@ -118,7 +118,7 @@ export function QueueTable({
 								</button>
 								{freshIds.has(clash.id) && (
 									<span
-										className="rounded-full border px-1.5 text-[10px] leading-4"
+										className="rounded-full border px-1.5 text-xs leading-4"
 										style={{
 											borderColor: INTAKE_COLORS.newClashRing,
 											color: INTAKE_COLORS.newClashRing,
@@ -157,7 +157,7 @@ export function QueueTable({
 								title={`Severity ${humanizeEnum(band)}`}
 							>
 								{formatScore(score)}{" "}
-								<span className="font-sans font-normal text-zinc-500">
+								<span className="font-sans font-normal text-zinc-400">
 									{humanizeEnum(band)}
 								</span>
 							</span>
@@ -194,7 +194,7 @@ export function QueueTable({
 					cell: (info) => {
 						const ids = info.row.original.clash.asset_ids;
 						if (ids.length === 0) {
-							return <span className="text-xs text-zinc-500">—</span>;
+							return <span className="text-xs text-zinc-400">—</span>;
 						}
 						return (
 							<span className="flex flex-wrap gap-x-2 gap-y-0.5">
@@ -242,7 +242,7 @@ export function QueueTable({
 									{compactClearance(clash)}
 								</span>
 								{clash.missing_data.length > 0 && (
-									<span className="text-[11px] text-zinc-500">
+									<span className="text-xs text-zinc-400">
 										Missing: {clash.missing_data.join(", ")}
 									</span>
 								)}
@@ -267,9 +267,7 @@ export function QueueTable({
 									{humanizeEnum(status)}
 								</span>
 								{reviewer && status !== "OPEN" && (
-									<span className="text-[11px] text-zinc-500">
-										by {reviewer}
-									</span>
+									<span className="text-xs text-zinc-400">by {reviewer}</span>
 								)}
 							</span>
 						);
@@ -354,7 +352,7 @@ export function QueueTable({
 												<ArrowDown className="size-3" aria-hidden />
 											) : (
 												<ArrowUpDown
-													className="size-3 text-zinc-600"
+													className="size-3 text-zinc-500"
 													aria-hidden
 												/>
 											)}
@@ -433,20 +431,20 @@ function SectionRows({
 						</span>
 						{/* Group titles already state the clash count. */}
 						{group === null ? (
-							<span className="text-zinc-500">
+							<span className="text-zinc-400">
 								{shown} {shown === 1 ? "clash" : "clashes"}
 							</span>
 						) : (
 							groupTotal !== undefined &&
 							groupTotal !== shown && (
-								<span className="text-zinc-500">
+								<span className="text-zinc-400">
 									{shown} of {groupTotal} shown
 								</span>
 							)
 						)}
 						{opportunity && <OpportunityChip />}
 						{group && !opportunity && (
-							<span className="text-zinc-500">
+							<span className="text-zinc-400">
 								max severity{" "}
 								<span className="font-mono tabular-nums text-zinc-300">
 									{formatScore(group.max_severity_score)}

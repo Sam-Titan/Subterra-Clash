@@ -117,7 +117,7 @@ function ConfidenceChip({
 	return (
 		<span
 			className={cn(
-				"inline-flex shrink-0 items-center gap-1 rounded-full border px-1.5 py-px font-mono text-[10px] tabular-nums",
+				"inline-flex shrink-0 items-center gap-1 rounded-full border px-1.5 py-px font-mono text-xs tabular-nums",
 				tier === "missing"
 					? "border-dashed border-zinc-600 italic text-zinc-400"
 					: "border-zinc-700 text-zinc-300",
@@ -208,7 +208,7 @@ function FieldRow({
 				</label>
 				{assumed && (
 					<span
-						className="inline-flex shrink-0 items-center rounded-full border border-dashed px-1.5 py-px text-[10px]"
+						className="inline-flex shrink-0 items-center rounded-full border border-dashed px-1.5 py-px text-xs"
 						style={{
 							borderColor: INTAKE_COLORS.warning,
 							color: INTAKE_COLORS.warning,
@@ -225,7 +225,7 @@ function FieldRow({
 				<Button
 					variant="ghost"
 					size="icon"
-					className="size-7 shrink-0 text-zinc-500 hover:bg-zinc-800 hover:text-zinc-100"
+					className="size-7 shrink-0 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-100"
 					disabled={disabled || input === ""}
 					onClick={() => onChange("")}
 					aria-label={`Clear ${meta.label}`}
@@ -236,25 +236,23 @@ function FieldRow({
 			</div>
 			{field.source_quote && (
 				<p
-					className="truncate text-[11px] text-zinc-500"
+					className="truncate text-xs text-zinc-400"
 					title={field.source_quote}
 				>
 					Quote: <span className="text-zinc-300">“{field.source_quote}”</span>
 				</p>
 			)}
 			{assumed && (
-				<p className="text-[11px]" style={{ color: INTAKE_COLORS.warning }}>
+				<p className="text-xs" style={{ color: INTAKE_COLORS.warning }}>
 					Value {String(field.value)} is not written in the quote; it was
 					inferred. Check it.
 				</p>
 			)}
-			{missingText && (
-				<p className="text-[11px] text-zinc-400">{missingText}</p>
-			)}
+			{missingText && <p className="text-xs text-zinc-400">{missingText}</p>}
 			{notes.map((n) => (
 				<p
 					key={n}
-					className="flex items-start gap-1 text-[11px]"
+					className="flex items-start gap-1 text-xs"
 					style={{ color: INTAKE_COLORS.warning }}
 				>
 					<AlertTriangle className="mt-px size-3 shrink-0" aria-hidden />
@@ -304,7 +302,7 @@ function FieldEditor({
 					{groups.map((g) => (
 						<SelectGroup key={g.group ?? "all"}>
 							{g.group && (
-								<SelectLabel className="text-xs text-zinc-500">
+								<SelectLabel className="text-xs text-zinc-400">
 									{g.group}
 								</SelectLabel>
 							)}
@@ -312,7 +310,7 @@ function FieldEditor({
 								<SelectItem key={o.value} value={o.value}>
 									{o.label}
 									{(kind === "street" || kind === "ref") && (
-										<span className="ml-2 font-mono text-[11px] text-zinc-500">
+										<span className="ml-2 font-mono text-xs text-zinc-400">
 											{o.value}
 										</span>
 									)}
@@ -381,10 +379,8 @@ export function FieldList({
 	return (
 		<section className="flex flex-col gap-3">
 			<div className="flex items-baseline justify-between">
-				<h2 className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500">
-					Extracted fields
-				</h2>
-				<span className="text-[11px] text-zinc-500">
+				<h2 className="text-xs font-medium text-zinc-400">Extracted fields</h2>
+				<span className="text-xs text-zinc-400">
 					hover a field to see its source words
 				</span>
 			</div>
@@ -394,13 +390,13 @@ export function FieldList({
 					Missing in the permit ({draft.missing_fields.length}):
 				</span>
 				{draft.missing_fields.length === 0 ? (
-					<span className="text-xs text-zinc-500">None.</span>
+					<span className="text-xs text-zinc-400">None.</span>
 				) : (
 					<ul className="flex flex-wrap gap-1.5">
 						{draft.missing_fields.map((m) => (
 							<li
 								key={m}
-								className="rounded border border-dashed border-zinc-600 px-1 font-mono text-[11px] italic text-zinc-400"
+								className="rounded border border-dashed border-zinc-600 px-1 font-mono text-xs italic text-zinc-400"
 							>
 								{m}
 							</li>
@@ -412,7 +408,7 @@ export function FieldList({
 			<div className="grid gap-x-3 gap-y-3 md:grid-cols-2">
 				{FIELD_GROUPS.map((group) => (
 					<div key={group.title} className="flex flex-col gap-0.5">
-						<h3 className="px-2 text-[11px] font-semibold text-zinc-500">
+						<h3 className="px-2 text-xs font-medium text-zinc-400">
 							{group.title}
 						</h3>
 						{group.fields.map((name) => {
@@ -465,7 +461,7 @@ export function FieldList({
 					>
 						Discard
 					</Button>
-					<span className="text-xs text-zinc-500">
+					<span className="text-xs text-zinc-400">
 						Saving re-places the path and re-counts the preview.
 					</span>
 				</div>
@@ -473,7 +469,7 @@ export function FieldList({
 			{error && (
 				<p role="alert" className="text-xs text-zinc-300">
 					{error.detail}{" "}
-					<code className="font-mono text-zinc-500">{error.code}</code>
+					<code className="font-mono text-zinc-400">{error.code}</code>
 				</p>
 			)}
 		</section>

@@ -4,13 +4,6 @@ import { expect, PAGES, test, waitForPage } from "./helpers";
 // The one dev-only React warning we accept (StrictMode + R3F unmount).
 const ALLOWED_CONSOLE = /synchronously unmount a root/;
 
-// Known failures that belong to the 4B declutter (see PROGRESS.md Blockers).
-// Remove an entry when the page is fixed; the check itself stays strict.
-const DISCLAIMER_FIXME: Record<string, string[]> = {
-	laptop: ["workspace", "queue", "dashboard"],
-	desktop: ["queue", "dashboard"],
-};
-
 for (const { name, path } of PAGES) {
 	test.describe(name, () => {
 		test.beforeEach(() => {
@@ -40,11 +33,7 @@ for (const { name, path } of PAGES) {
 			expect(overflow).toBeLessThanOrEqual(0);
 		});
 
-		test("disclaimer is visible in the viewport", async ({ page }, info) => {
-			test.fixme(
-				DISCLAIMER_FIXME[info.project.name]?.includes(name) ?? false,
-				"Footer disclaimer is below the fold (domain rule 7), tracked for 4B",
-			);
+		test("disclaimer is visible in the viewport", async ({ page }) => {
 			await waitForPage(page, path);
 			await expect(page.getByRole("contentinfo")).toContainText(
 				"No permit has been approved or rejected by this tool",
@@ -68,10 +57,6 @@ for (const { name, path } of PAGES) {
 		});
 
 		test("no colour-contrast violations", async ({ page }) => {
-			test.fixme(
-				true,
-				"color-contrast (serious) fails on every page, tracked for 4B",
-			);
 			await waitForPage(page, path);
 			const { violations } = await new AxeBuilder({ page })
 				.withRules(["color-contrast"])

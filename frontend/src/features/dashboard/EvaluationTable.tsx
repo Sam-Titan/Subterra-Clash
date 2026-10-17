@@ -63,11 +63,11 @@ export function ScoreTable({
 		<Table>
 			<TableHeader>
 				<TableRow className="border-zinc-800 hover:bg-transparent">
-					<TableHead className="text-zinc-500">Spatial cases</TableHead>
+					<TableHead className="text-zinc-400">Spatial cases</TableHead>
 					<TableHead className="text-right text-zinc-200">
 						Subterra Clash
 					</TableHead>
-					<TableHead className="text-right text-zinc-500">
+					<TableHead className="text-right text-zinc-400">
 						Naive 2D overlay
 					</TableHead>
 				</TableRow>
@@ -95,16 +95,16 @@ export function ScoreTable({
 /** Planted T-cases: expected vs ours (kind · certainty) vs the baseline. */
 export function CasesTable({ cases }: { cases: EvaluationCase[] }) {
 	if (cases.length === 0)
-		return <p className="text-sm text-zinc-500">No planted cases reported.</p>;
+		return <p className="text-sm text-zinc-400">No planted cases reported.</p>;
 	return (
 		<Table>
 			<TableHeader>
 				<TableRow className="border-zinc-800 hover:bg-transparent">
-					<TableHead className="w-12 text-zinc-500">Case</TableHead>
-					<TableHead className="text-zinc-500">Setup</TableHead>
-					<TableHead className="text-zinc-500">Expected</TableHead>
-					<TableHead className="text-zinc-500">Ours</TableHead>
-					<TableHead className="text-zinc-500">Baseline</TableHead>
+					<TableHead className="w-12 text-zinc-400">Case</TableHead>
+					<TableHead className="text-zinc-400">Setup</TableHead>
+					<TableHead className="text-zinc-400">Expected</TableHead>
+					<TableHead className="text-zinc-400">Ours</TableHead>
+					<TableHead className="text-zinc-400">Baseline</TableHead>
 				</TableRow>
 			</TableHeader>
 			<TableBody>

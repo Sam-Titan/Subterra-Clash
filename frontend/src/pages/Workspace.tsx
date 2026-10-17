@@ -41,7 +41,7 @@ export default function Workspace() {
 	);
 
 	return (
-		<section className="flex min-h-[560px] flex-1">
+		<section className="flex min-h-[480px] flex-1">
 			<LeftRail />
 
 			<div className="flex min-w-0 flex-1 flex-col">
@@ -148,7 +148,7 @@ export default function Workspace() {
 			{/* Absolute inner box: the column scrolls on its own and never
 			    stretches the row, so the canvas keeps the viewport height. */}
 			<aside className="relative w-[340px] shrink-0 border-l border-zinc-800 bg-zinc-950 xl:w-[380px]">
-				<div className="absolute inset-0 overflow-y-auto p-4">
+				<div data-shot-expand className="absolute inset-0 overflow-y-auto p-4">
 					{selectedClashId ? (
 						<ClashPanel clashId={selectedClashId} />
 					) : (

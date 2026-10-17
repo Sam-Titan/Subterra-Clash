@@ -208,7 +208,7 @@ export function CrossSection({
 					onValueChange={([v]) => setSection({ ...section, offset: v })}
 					aria-label="Move section plane"
 				/>
-				<span className="hidden min-w-0 truncate font-mono text-[11px] text-zinc-500 lg:inline">
+				<span className="hidden min-w-0 truncate font-mono text-xs text-zinc-400 lg:inline">
 					x {origin[0].toFixed(1)} · y {origin[1].toFixed(1)} m · looking{" "}
 					{compassName(section.normal)}
 				</span>
@@ -322,14 +322,14 @@ function Notes({
 
 	if (notes.length === 0 && !notInCut) return null;
 	return (
-		<div className="pointer-events-none absolute top-2 right-3 flex max-w-xs flex-col items-end gap-1 text-right text-[11px] text-zinc-400">
+		<div className="pointer-events-none absolute top-2 right-3 flex max-w-xs flex-col items-end gap-1 text-right text-xs text-zinc-400">
 			{notInCut && clash && (
 				<div className="pointer-events-auto flex items-center gap-2 rounded border border-zinc-800 bg-zinc-950/90 px-2 py-1">
 					<span>{clash.id} is not in this cut.</span>
 					<Button
 						variant="outline"
 						size="sm"
-						className="h-6 border-zinc-700 bg-transparent px-2 text-[11px]"
+						className="h-6 border-zinc-700 bg-transparent px-2 text-xs"
 						onClick={onMoveToClash}
 					>
 						<Crosshair className="size-3" aria-hidden />

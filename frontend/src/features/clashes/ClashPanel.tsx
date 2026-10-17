@@ -43,11 +43,7 @@ import { FACTOR_LABELS, factorSegments } from "./factors";
 import { toastReviewed } from "./reviewToast";
 
 function SectionTitle({ children }: { children: ReactNode }) {
-	return (
-		<h3 className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500">
-			{children}
-		</h3>
-	);
+	return <h3 className="text-xs font-medium text-zinc-400">{children}</h3>;
 }
 
 /** A value that is `unknown` is shown as missing, never as 0. */
@@ -69,7 +65,7 @@ function Value({ text }: { text: string }) {
 function Field({ label, value }: { label: string; value: string }) {
 	return (
 		<div className="flex flex-col gap-0.5">
-			<span className="text-[11px] text-zinc-500">{label}</span>
+			<span className="text-xs text-zinc-400">{label}</span>
 			<Value text={value} />
 		</div>
 	);
@@ -106,7 +102,7 @@ function SeverityBlock({ clash }: { clash: Clash }) {
 				</span>
 			</div>
 			{clash.kind === "DIG_ONCE" && (
-				<p className="text-xs text-zinc-500">
+				<p className="text-xs text-zinc-400">
 					Dig-once opportunities are always banded Info; the score still shows
 					how the factors combine.
 				</p>
@@ -137,7 +133,7 @@ function SeverityBlock({ clash }: { clash: Clash }) {
 							style={{ backgroundColor: FACTOR_COLORS[s.key] }}
 						/>
 						<span className="text-zinc-300">{FACTOR_LABELS[s.key]}</span>
-						<span className="ml-auto font-mono tabular-nums text-zinc-500">
+						<span className="ml-auto font-mono tabular-nums text-zinc-400">
 							{s.raw.toFixed(2)} × {s.weight.toFixed(2)} ={" "}
 							<span className="text-zinc-200">{s.points}</span>
 						</span>
@@ -187,11 +183,11 @@ function ClearanceBlock({ detail }: { detail: ClashDetail }) {
 				</div>
 			)}
 			<p className="text-xs text-zinc-400">
-				<span className="text-zinc-500">Rule: </span>
+				<span className="text-zinc-400">Rule: </span>
 				{ruleText}
 			</p>
 			<p className="text-xs text-zinc-400">
-				<span className="text-zinc-500">Location: </span>
+				<span className="text-zinc-400">Location: </span>
 				<span className="font-mono">
 					x {x.toFixed(1)}, y {y.toFixed(1)} · depth{" "}
 					{formatMetres(Math.max(0, -z))}
@@ -212,7 +208,7 @@ function AssetCard({ asset }: { asset: Asset }) {
 					style={{ backgroundColor: UTILITY_COLORS[asset.utility] }}
 				/>
 				<span className="font-medium text-zinc-100">{asset.label}</span>
-				<span className="ml-auto font-mono text-zinc-500">{asset.id}</span>
+				<span className="ml-auto font-mono text-zinc-400">{asset.id}</span>
 			</div>
 			<div className="text-zinc-400">
 				{utilityLabel(asset.utility)} · {asset.owner} · ⌀{" "}
@@ -232,7 +228,7 @@ function AssetCard({ asset }: { asset: Asset }) {
 					<Value text={formatUncertainty(asset.horiz_precision_m)} />
 				</span>
 			</div>
-			<div className="text-zinc-500">
+			<div className="text-zinc-400">
 				Source: {record.source} ·{" "}
 				<span className="font-mono">{record.record_id}</span> ·{" "}
 				{humanizeEnum(record.method)} · {formatDate(record.captured_on)}
@@ -246,7 +242,7 @@ function WorkCard({ work }: { work: Work }) {
 		<li className="flex flex-col gap-1 rounded-md border border-zinc-800 p-2 text-xs">
 			<div className="flex items-center gap-2">
 				<span className="font-medium text-zinc-100">{work.title}</span>
-				<span className="ml-auto font-mono text-zinc-500">{work.id}</span>
+				<span className="ml-auto font-mono text-zinc-400">{work.id}</span>
 			</div>
 			<div className="text-zinc-400">
 				{humanizeEnum(work.work_type)} · {work.agency}
@@ -327,14 +323,14 @@ function ReviewBlock({ clash }: { clash: Clash }) {
 					“{clash.review.note}”
 				</p>
 			)}
-			<p className="text-xs text-zinc-500">
+			<p className="text-xs text-zinc-400">
 				Review actions record an engineer's decision about this finding. They do
 				not approve or reject any permit.
 			</p>
 
 			<label
 				htmlFor={reviewerId}
-				className="flex flex-col gap-1 text-[11px] text-zinc-500"
+				className="flex flex-col gap-1 text-xs text-zinc-400"
 			>
 				Reviewer
 				<Input
@@ -346,7 +342,7 @@ function ReviewBlock({ clash }: { clash: Clash }) {
 			</label>
 			<label
 				htmlFor={noteId}
-				className="flex flex-col gap-1 text-[11px] text-zinc-500"
+				className="flex flex-col gap-1 text-xs text-zinc-400"
 			>
 				Note (required to dismiss)
 				<Textarea
@@ -389,13 +385,13 @@ function ReviewBlock({ clash }: { clash: Clash }) {
 				)}
 			</div>
 			{!reviewer && (
-				<p className="text-xs text-zinc-500">Enter a reviewer name.</p>
+				<p className="text-xs text-zinc-400">Enter a reviewer name.</p>
 			)}
-			{review.isPending && <p className="text-xs text-zinc-500">Saving…</p>}
+			{review.isPending && <p className="text-xs text-zinc-400">Saving…</p>}
 			{error && (
 				<p role="alert" className="text-xs text-zinc-300">
 					{error.detail}{" "}
-					<code className="font-mono text-zinc-500">{error.code}</code>
+					<code className="font-mono text-zinc-400">{error.code}</code>
 				</p>
 			)}
 		</section>
@@ -480,7 +476,7 @@ function PanelBody({ detail }: { detail: ClashDetail }) {
 				<ul className="flex flex-col gap-1 text-xs">
 					{clash.evidence.map((e) => (
 						<li key={`${e.type}-${e.ref}`} className="text-zinc-400">
-							<span className="font-mono text-zinc-500">
+							<span className="font-mono text-zinc-400">
 								{humanizeEnum(e.type)} · {e.ref}
 							</span>
 							<br />
@@ -488,7 +484,7 @@ function PanelBody({ detail }: { detail: ClashDetail }) {
 						</li>
 					))}
 				</ul>
-				<p className="text-xs text-zinc-500">
+				<p className="text-xs text-zinc-400">
 					2D baseline:{" "}
 					{clash.baseline_flagged
 						? "also flagged by the naive 2D overlay."
@@ -512,7 +508,7 @@ export function ClashPanel({ clashId }: { clashId: string }) {
 		<div className="flex flex-col gap-4">
 			<header className="flex items-start gap-2">
 				<div className="flex flex-1 flex-col gap-2">
-					<h2 className="font-mono text-base font-semibold">{clashId}</h2>
+					<h2 className="font-mono text-sm font-semibold">{clashId}</h2>
 					{clash && (
 						<div className="flex flex-wrap gap-1.5">
 							<span className="inline-flex items-center rounded-full border border-zinc-700 px-2 py-0.5 text-xs font-medium text-zinc-200">

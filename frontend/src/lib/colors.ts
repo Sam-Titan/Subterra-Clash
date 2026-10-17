@@ -27,7 +27,7 @@ export type CertaintyMarkerStyle = "solid-pulse" | "dashed-ring" | "question";
 export const CERTAINTY_COLORS: Record<Certainty, string> = {
 	LIKELY: "#FFFFFF",
 	POSSIBLE: "#C9CBD3",
-	NEEDS_DATA: "#7C7F8A",
+	NEEDS_DATA: "#8A8D99",
 };
 
 export const CERTAINTY_STYLE: Record<Certainty, CertaintyMarkerStyle> = {
@@ -48,7 +48,7 @@ export const REVIEW_STATUS_COLORS: Record<ReviewStatus, string> = {
 	OPEN: "#EDEEF0",
 	ACKNOWLEDGED: "#5EB1EF",
 	ESCALATED: "#FF9F5A",
-	DISMISSED: "#6F6E77",
+	DISMISSED: "#8E8D97",
 };
 
 export const SCENE_COLORS = {

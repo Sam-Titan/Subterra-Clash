@@ -126,7 +126,7 @@ export function ReportExport({
 				</Button>
 			</div>
 			{USE_MOCKS && (
-				<p className="text-xs text-zinc-500">
+				<p className="text-xs text-zinc-400">
 					The inspection report needs the live API (mock mode is on).
 				</p>
 			)}
@@ -147,7 +147,7 @@ export function ReportExport({
 			{error && (
 				<p role="alert" className="text-xs text-zinc-300">
 					{error.detail}{" "}
-					<code className="font-mono text-zinc-500">{error.code}</code>
+					<code className="font-mono text-zinc-400">{error.code}</code>
 				</p>
 			)}
 		</div>

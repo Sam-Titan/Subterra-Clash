@@ -157,7 +157,7 @@ function LiveCounters() {
 		);
 	if (summary.isError)
 		return (
-			<p role="alert" className="text-xs text-zinc-500">
+			<p role="alert" className="text-xs text-zinc-400">
 				Live counts unavailable: {describeError(summary.error).detail}{" "}
 				<button
 					type="button"
@@ -181,9 +181,7 @@ function LiveCounters() {
 					key={s.label}
 					className="rounded-lg border border-zinc-800 bg-zinc-950/80 p-3 backdrop-blur"
 				>
-					<dt className="text-[11px] font-medium uppercase tracking-wider text-zinc-500">
-						{s.label}
-					</dt>
+					<dt className="text-xs font-medium text-zinc-400">{s.label}</dt>
 					<dd>
 						<NumberTicker
 							value={s.value}
@@ -290,7 +288,7 @@ export default function Landing() {
 					</Link>
 				</Button>
 				<LiveCounters />
-				<p className="text-xs text-zinc-500">
+				<p className="text-xs text-zinc-400">
 					Move the pointer to look underground.
 				</p>
 			</div>

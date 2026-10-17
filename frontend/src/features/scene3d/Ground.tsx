@@ -105,8 +105,8 @@ export function Ground({ scene, xray }: { scene: Scene; xray: boolean }) {
 					<span
 						className={
 							label.kind === "street"
-								? "whitespace-nowrap rounded bg-zinc-950/70 px-1.5 py-0.5 text-[11px] font-medium"
-								: "whitespace-nowrap text-[10px] italic opacity-80"
+								? "whitespace-nowrap rounded bg-zinc-950/70 px-1.5 py-0.5 text-xs font-medium"
+								: "whitespace-nowrap text-xs italic opacity-80"
 						}
 						style={{ color: SCENE_COLORS.label }}
 					>

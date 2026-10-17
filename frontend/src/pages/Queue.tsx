@@ -19,10 +19,6 @@ import { humanizeEnum } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { useAppStore } from "@/store/useAppStore";
 
-/** SPEC §11, exact. */
-const DISCLAIMER =
-	"Decision-support output from synthetic data. Clearance values are illustrative. No permit has been approved or rejected by this tool; all findings require engineering review and field verification.";
-
 const EMPTY_GROUPS: never[] = [];
 
 export default function Queue() {
@@ -142,7 +138,7 @@ export default function Queue() {
 									"flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500",
 									on
 										? "border-zinc-600 bg-zinc-800 text-zinc-100"
-										: "border-zinc-800 text-zinc-500 hover:text-zinc-300",
+										: "border-zinc-800 text-zinc-400 hover:text-zinc-300",
 								)}
 							>
 								<span
@@ -154,7 +150,7 @@ export default function Queue() {
 									}}
 								/>
 								{humanizeEnum(status)}
-								<span className="font-mono tabular-nums text-zinc-500">
+								<span className="font-mono tabular-nums text-zinc-400">
 									{statusCounts.get(status) ?? 0}
 								</span>
 							</button>
@@ -170,7 +166,7 @@ export default function Queue() {
 					<label htmlFor={groupedId}>Group by clash group</label>
 				</div>
 				{clashes.isSuccess && (
-					<span className="ml-auto text-xs text-zinc-500">
+					<span className="ml-auto text-xs text-zinc-400">
 						<span className="font-mono tabular-nums">{rows.length}</span> of{" "}
 						<span className="font-mono tabular-nums">{total}</span> shown
 						{filterOff && (
@@ -205,7 +201,7 @@ export default function Queue() {
 					<button
 						type="button"
 						onClick={() => setEscalated(null)}
-						className="ml-auto rounded p-0.5 text-zinc-500 hover:text-zinc-200"
+						className="ml-auto rounded p-0.5 text-zinc-400 hover:text-zinc-200"
 						aria-label="Dismiss message"
 					>
 						<X className="size-3.5" aria-hidden />
@@ -214,7 +210,7 @@ export default function Queue() {
 			)}
 
 			{groups.isError && (
-				<p className="flex flex-wrap items-center gap-1 text-xs text-zinc-500">
+				<p className="flex flex-wrap items-center gap-1 text-xs text-zinc-400">
 					Groups could not be loaded; ranks are missing and rows are listed by
 					group id.
 					<button
@@ -265,8 +261,6 @@ export default function Queue() {
 					/>
 				</div>
 			)}
-
-			<p className="text-xs text-zinc-500">{DISCLAIMER}</p>
 
 			<EscalateDialog
 				clash={escalating}

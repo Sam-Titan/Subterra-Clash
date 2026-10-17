@@ -45,5 +45,6 @@ export async function waitForPage(page: Page, path: string) {
 		// Let the camera settle and the first frames render.
 		await page.waitForTimeout(1500);
 	}
-	if (path === "/") await page.waitForTimeout(1200); // counters tick up
+	// NumberTicker counts up over ~0.9 s; shooting earlier freezes it mid-count.
+	if (path === "/" || path === "/dashboard") await page.waitForTimeout(1500);
 }

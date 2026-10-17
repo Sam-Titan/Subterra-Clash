@@ -31,7 +31,7 @@ export function BreakdownChart({
 }) {
 	if (rows.length === 0)
 		return (
-			<p className="flex h-32 items-center justify-center rounded-md border border-dashed border-zinc-800 text-sm text-zinc-500">
+			<p className="flex h-32 items-center justify-center rounded-md border border-dashed border-zinc-800 text-sm text-zinc-400">
 				No unresolved clashes
 			</p>
 		);

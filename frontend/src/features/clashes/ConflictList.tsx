@@ -98,20 +98,20 @@ export function ConflictList() {
 		<div className="flex flex-col gap-3">
 			<div className="flex items-baseline justify-between">
 				<h2 className="text-sm font-semibold">Conflicts</h2>
-				<span className="font-mono text-xs tabular-nums text-zinc-500">
+				<span className="font-mono text-xs tabular-nums text-zinc-400">
 					{visible.length} of {total}
 				</span>
 			</div>
 			{hidden > 0 && (
-				<p className="text-xs text-zinc-500">
+				<p className="text-xs text-zinc-400">
 					{hidden} hidden by the certainty filter in the left rail.
 				</p>
 			)}
 			{groups.isPending && (
-				<p className="text-xs text-zinc-500">Loading clash groups…</p>
+				<p className="text-xs text-zinc-400">Loading clash groups…</p>
 			)}
 			{groups.isError && (
-				<p className="flex flex-wrap items-center gap-1 text-xs text-zinc-500">
+				<p className="flex flex-wrap items-center gap-1 text-xs text-zinc-400">
 					Groups could not be loaded; showing clashes by group id.
 					<button
 						type="button"
@@ -128,7 +128,7 @@ export function ConflictList() {
 
 			{sections.map((section) => (
 				<section key={section.key} className="flex flex-col gap-1">
-					<h3 className="flex flex-col gap-1 text-[11px] font-semibold text-zinc-500">
+					<h3 className="flex flex-col gap-1 text-xs font-medium text-zinc-400">
 						<span className="flex gap-1.5">
 							{section.rank !== null && (
 								<span className="font-mono">#{section.rank}</span>
@@ -159,7 +159,7 @@ export function ConflictList() {
 										<span className="font-mono text-xs">{clash.id}</span>
 										{fresh.has(clash.id) && (
 											<span
-												className="rounded-full border px-1.5 text-[10px] leading-4"
+												className="rounded-full border px-1.5 text-xs leading-4"
 												style={{
 													borderColor: INTAKE_COLORS.newClashRing,
 													color: INTAKE_COLORS.newClashRing,
@@ -190,11 +190,11 @@ export function ConflictList() {
 											: formatScore(clash.severity.score)}
 									</span>
 									<span />
-									<span className="font-mono text-[11px] tabular-nums text-zinc-500">
+									<span className="font-mono text-xs tabular-nums text-zinc-400">
 										{compactClearance(clash)}
 									</span>
 									<span
-										className="flex items-center gap-1 text-[11px] text-zinc-500"
+										className="flex items-center gap-1 text-xs text-zinc-400"
 										title={`Review: ${humanizeEnum(clash.review.status)}`}
 									>
 										<span

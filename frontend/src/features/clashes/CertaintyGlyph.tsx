@@ -18,7 +18,7 @@ export function CertaintyGlyph({
 			role="img"
 			aria-label={humanizeEnum(certainty)}
 			className={cn(
-				"inline-flex size-3 shrink-0 items-center justify-center rounded-full text-[9px] font-bold leading-none text-zinc-950",
+				"inline-flex size-3 shrink-0 items-center justify-center rounded-full text-xs font-bold leading-none text-zinc-950",
 				style === "dashed-ring" && "border border-dashed",
 				className,
 			)}

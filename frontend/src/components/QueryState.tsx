@@ -122,7 +122,7 @@ export function ErrorBlock({
 				{title}
 			</div>
 			<p className="text-zinc-400">{detail}</p>
-			<code className="font-mono text-xs text-zinc-500">{code}</code>
+			<code className="font-mono text-xs text-zinc-400">{code}</code>
 			{onRetry && (
 				<Button
 					variant="outline"

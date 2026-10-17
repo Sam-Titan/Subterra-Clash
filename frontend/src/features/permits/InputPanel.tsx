@@ -59,11 +59,9 @@ export function InputPanel({
 	return (
 		<section className="flex flex-col gap-3">
 			<div className="flex flex-col gap-1.5">
-				<h2 className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500">
-					Demo permits
-				</h2>
+				<h2 className="text-xs font-medium text-zinc-400">Demo permits</h2>
 				{samples.isPending ? (
-					<p className="flex items-center gap-2 text-xs text-zinc-500">
+					<p className="flex items-center gap-2 text-xs text-zinc-400">
 						<Loader2 className="size-3 animate-spin" aria-hidden />
 						Loading samples…
 					</p>
@@ -102,7 +100,7 @@ export function InputPanel({
 
 			<label
 				htmlFor={textId}
-				className="flex flex-col gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-zinc-500"
+				className="flex flex-col gap-1.5 text-xs font-semibold text-zinc-400"
 			>
 				Paste permit text
 				<Textarea
@@ -124,7 +122,7 @@ export function InputPanel({
 					Extract fields
 				</Button>
 				{pending && (
-					<span className="text-xs text-zinc-500">Reading the permit…</span>
+					<span className="text-xs text-zinc-400">Reading the permit…</span>
 				)}
 			</div>
 
@@ -159,9 +157,7 @@ export function InputPanel({
 				{dragOver
 					? "Drop the PDF to read it"
 					: "Drop a permit PDF or click to choose"}
-				<span className="text-[11px] text-zinc-500">
-					PDF with text, up to 5 MB
-				</span>
+				<span className="text-xs text-zinc-400">PDF with text, up to 5 MB</span>
 			</button>
 
 			{fileError && (
@@ -172,7 +168,7 @@ export function InputPanel({
 			{serverError && (
 				<p role="alert" className="text-xs text-zinc-300">
 					{serverError.detail}{" "}
-					<code className="font-mono text-zinc-500">{serverError.code}</code>
+					<code className="font-mono text-zinc-400">{serverError.code}</code>
 				</p>
 			)}
 		</section>

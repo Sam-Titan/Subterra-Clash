@@ -40,14 +40,12 @@ export function SourceText({
 	return (
 		<section className="flex flex-col gap-2">
 			<div className="flex items-baseline justify-between gap-2">
-				<h2 className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500">
-					Source text
-				</h2>
-				<span className="font-mono text-[11px] text-zinc-500">
+				<h2 className="text-xs font-medium text-zinc-400">Source text</h2>
+				<span className="font-mono text-xs text-zinc-400">
 					{draft.draft_id} · {draft.llm_mode_used}
 				</span>
 			</div>
-			<p className="text-xs text-zinc-500">{MODE_TEXT[draft.llm_mode_used]}</p>
+			<p className="text-xs text-zinc-400">{MODE_TEXT[draft.llm_mode_used]}</p>
 			<p className="whitespace-pre-wrap break-words rounded-md border border-zinc-800 bg-zinc-900/60 p-3 text-sm leading-relaxed text-zinc-200">
 				{segments.map((seg) => {
 					if (seg.fields.length === 0) {

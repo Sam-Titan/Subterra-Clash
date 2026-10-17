@@ -20,7 +20,7 @@ export function OpportunityChip() {
 	const color = SEVERITY_BAND_COLORS.INFO;
 	return (
 		<span
-			className="inline-flex items-center gap-1 rounded-full border px-1.5 text-[10px] font-normal normal-case leading-4 tracking-normal"
+			className="inline-flex items-center gap-1 rounded-full border px-1.5 text-xs font-normal normal-case leading-4 tracking-normal"
 			style={{ borderColor: color, color }}
 		>
 			<CalendarCheck className="size-3" aria-hidden />

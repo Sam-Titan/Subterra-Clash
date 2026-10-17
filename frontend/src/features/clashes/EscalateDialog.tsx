@@ -100,7 +100,7 @@ function EscalateForm({
 
 			<label
 				htmlFor={reviewerId}
-				className="flex flex-col gap-1 text-[11px] text-zinc-500"
+				className="flex flex-col gap-1 text-xs text-zinc-400"
 			>
 				Reviewer
 				<Input
@@ -112,7 +112,7 @@ function EscalateForm({
 			</label>
 			<label
 				htmlFor={noteId}
-				className="flex flex-col gap-1 text-[11px] text-zinc-500"
+				className="flex flex-col gap-1 text-xs text-zinc-400"
 			>
 				Note (optional)
 				<Textarea
@@ -125,12 +125,12 @@ function EscalateForm({
 			</label>
 
 			{!reviewer && (
-				<p className="text-xs text-zinc-500">Enter a reviewer name.</p>
+				<p className="text-xs text-zinc-400">Enter a reviewer name.</p>
 			)}
 			{error && (
 				<p role="alert" className="text-xs text-zinc-300">
 					{error.detail}{" "}
-					<code className="font-mono text-zinc-500">{error.code}</code>
+					<code className="font-mono text-zinc-400">{error.code}</code>
 				</p>
 			)}
 

@@ -19,11 +19,7 @@ import { cn } from "@/lib/utils";
 import { type LayerId, useAppStore } from "@/store/useAppStore";
 
 function SectionTitle({ children }: { children: string }) {
-	return (
-		<h2 className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500">
-			{children}
-		</h2>
-	);
+	return <h2 className="text-xs font-medium text-zinc-400">{children}</h2>;
 }
 
 function SwitchRow({
@@ -54,15 +50,13 @@ function SwitchRow({
 			)}
 			<label htmlFor={id} className="flex-1 cursor-pointer text-sm">
 				{label}
-				{hint && (
-					<span className="block text-[11px] text-zinc-500">{hint}</span>
-				)}
+				{hint && <span className="block text-xs text-zinc-400">{hint}</span>}
 			</label>
 			{count === "loading" ? (
 				<Skeleton className="h-3 w-4 bg-zinc-800" />
 			) : (
 				count !== undefined && (
-					<span className="font-mono text-xs tabular-nums text-zinc-500">
+					<span className="font-mono text-xs tabular-nums text-zinc-400">
 						{count}
 					</span>
 				)
@@ -98,7 +92,7 @@ function MarkerGlyph({ certainty }: { certainty: Certainty }) {
 		return (
 			<span
 				aria-hidden
-				className="flex size-3.5 items-center justify-center rounded-full text-[9px] font-bold text-zinc-950"
+				className="flex size-3.5 items-center justify-center rounded-full text-xs font-bold text-zinc-950"
 				style={{ backgroundColor: color }}
 			>
 				?
@@ -185,7 +179,7 @@ export function LeftRail() {
 					onChange={(on) => setLayer("CITY", on)}
 				/>
 				{unknownDepth > 0 && (
-					<p className="text-[11px] text-zinc-500">
+					<p className="text-xs text-zinc-400">
 						{unknownDepth} asset{unknownDepth === 1 ? "" : "s"} with unknown
 						depth, drawn faded at a placeholder depth.
 					</p>
@@ -209,14 +203,14 @@ export function LeftRail() {
 									"flex items-center gap-2 rounded-md border px-2 py-1.5 text-left text-sm transition-colors",
 									on
 										? "border-zinc-700 bg-zinc-900 text-zinc-100"
-										: "border-zinc-900 text-zinc-500 hover:border-zinc-800",
+										: "border-zinc-900 text-zinc-400 hover:border-zinc-800",
 								)}
 							>
 								<span className={on ? "" : "opacity-40"}>
 									<MarkerGlyph certainty={c} />
 								</span>
 								<span className="flex-1">{humanizeEnum(c)}</span>
-								<span className="font-mono text-xs tabular-nums text-zinc-500">
+								<span className="font-mono text-xs tabular-nums text-zinc-400">
 									{clashes.isSuccess ? (
 										(certaintyCounts.get(c) ?? 0)
 									) : clashes.isError ? (
@@ -229,7 +223,7 @@ export function LeftRail() {
 						);
 					})}
 				</div>
-				<p className="text-[11px] text-zinc-500">
+				<p className="text-xs text-zinc-400">
 					Hiding a layer never hides its clashes; only this filter does.
 				</p>
 			</section>

@@ -52,8 +52,7 @@
 ---
 
 ## Blockers
-- **4B — disclaimer below the fold (domain rule 7).** `quality.spec.ts` "disclaimer is visible in the viewport" is `test.fixme` (in `DISCLAIMER_FIXME`) for exactly: laptop 1366×768 → workspace, queue, dashboard; desktop 1920×1080 → queue, dashboard. Landing and intake pass on both; desktop workspace passes. Remove each entry when the footer is in view; the check is not weakened.
-- **4B — colour contrast (axe `color-contrast`, serious).** One `test.fixme` "no colour-contrast violations" per page. Failing nodes (laptop / desktop): landing 2 / 2, workspace 72 / 76, queue 27 / 27, intake 7 / 7, dashboard 20 / 20. The other serious/critical axe rules are active and green on every page.
+- None. (4B blockers on disclaimer-below-the-fold and colour contrast cleared in 4B commit (a): shell pins the footer, axe contrast 0 on all pages, both `test.fixme` groups removed.)
 
 ## Notes for 2B / 2C
 - Permit commit: add the work to `store.scene.works`, call `store.reanalyze()` (ids stay stable), log audit via `store.log_audit`. Reviews: `store.set_review(clash_id, Review)` then audit; the review model/route is 2C.

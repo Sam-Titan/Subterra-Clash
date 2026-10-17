@@ -143,7 +143,7 @@ export function ScheduleStrip({
 						</Button>
 					</>
 				) : (
-					<span className="hidden min-w-0 truncate text-xs text-zinc-500 md:inline">
+					<span className="hidden min-w-0 truncate text-xs text-zinc-400 md:inline">
 						Drag along the date axis to show only works active that day in 3D
 					</span>
 				)}
@@ -175,7 +175,7 @@ export function ScheduleStrip({
 
 function Legend() {
 	return (
-		<div className="ml-auto hidden shrink-0 items-center gap-3 text-[11px] text-zinc-500 xl:flex">
+		<div className="ml-auto hidden shrink-0 items-center gap-3 text-xs text-zinc-400 xl:flex">
 			<span className="flex items-center gap-1.5">
 				<span
 					className="inline-block h-2.5 w-3 rounded-sm border"
@@ -244,11 +244,11 @@ function Gantt({ scene, clashes }: { scene: Scene; clashes: Clash[] }) {
 	const height = AXIS_H + rows.length * ROW_H + 4;
 
 	if (rows.length === 0)
-		return <p className="p-3 text-sm text-zinc-500">No works in the plan.</p>;
+		return <p className="p-3 text-sm text-zinc-400">No works in the plan.</p>;
 
 	if (!range)
 		return (
-			<p className="p-3 text-sm text-zinc-500">
+			<p className="p-3 text-sm text-zinc-400">
 				No work has both dates, so there is nothing to place on a timeline.
 			</p>
 		);
@@ -305,7 +305,7 @@ function Gantt({ scene, clashes }: { scene: Scene; clashes: Clash[] }) {
 					<button
 						type="button"
 						onClick={() => health.refetch()}
-						className="absolute top-0 right-2 z-10 text-[10px] text-zinc-500 underline-offset-2 hover:text-zinc-200 hover:underline"
+						className="absolute top-0 right-2 z-10 text-xs text-zinc-400 underline-offset-2 hover:text-zinc-200 hover:underline"
 					>
 						Demo date unavailable (no "today" line) · Retry
 					</button>
@@ -315,13 +315,13 @@ function Gantt({ scene, clashes }: { scene: Scene; clashes: Clash[] }) {
 					<div
 						key={r.work.id}
 						className={cn(
-							"absolute left-0 flex items-center gap-1.5 pr-2 pl-3 text-[11px]",
+							"absolute left-0 flex items-center gap-1.5 pr-2 pl-3 text-xs",
 							day !== null && !isSpanActive(r, day) && "opacity-40",
 						)}
 						style={{ top: AXIS_H + i * ROW_H, height: ROW_H, width: LABEL_W }}
 						title={workLine(r.work)}
 					>
-						<span className="shrink-0 font-mono text-zinc-500">
+						<span className="shrink-0 font-mono text-zinc-400">
 							{r.work.id}
 						</span>
 						<span
@@ -332,7 +332,7 @@ function Gantt({ scene, clashes }: { scene: Scene; clashes: Clash[] }) {
 						</span>
 						{(r.work.origin === "INTAKE" || r.work.id === fresh) && (
 							<span
-								className="shrink-0 rounded px-1 text-[9px] font-semibold uppercase"
+								className="shrink-0 rounded px-1 text-xs font-semibold"
 								style={{ color: WORK_COLOR, border: `1px solid ${WORK_COLOR}` }}
 							>
 								New

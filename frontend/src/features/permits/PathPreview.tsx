@@ -64,7 +64,7 @@ export function PathPreview({
 
 	const header = (
 		<div className="flex flex-wrap items-baseline justify-between gap-2">
-			<h2 className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500">
+			<h2 className="text-xs font-medium text-zinc-400">
 				Placed path (geocoder)
 			</h2>
 			<span className="flex items-center gap-2 text-xs">
@@ -128,11 +128,9 @@ export function PathPreview({
 				</div>
 			)}
 			<ul className="flex flex-col gap-1 rounded-md bg-zinc-900/60 p-2 text-xs text-zinc-300">
-				<li className="text-[11px] font-semibold text-zinc-500">
-					Geocoder notes
-				</li>
+				<li className="text-xs font-medium text-zinc-400">Geocoder notes</li>
 				{geocode.notes.length === 0 ? (
-					<li className="text-zinc-500">None.</li>
+					<li className="text-zinc-400">None.</li>
 				) : (
 					geocode.notes.map((n) => <li key={n}>• {n}</li>)
 				)}
@@ -296,7 +294,7 @@ export function PathPreview({
 					/>
 				)}
 			</svg>
-			<p className="text-[11px] text-zinc-500">
+			<p className="text-xs text-zinc-400">
 				{`North up. Pink line = this permit${
 					geocode.status === "PARTIAL" ? " (dashed: centreline placement)" : ""
 				}; faint pink = works already in the plan; white = the permit's from / to references.`}
