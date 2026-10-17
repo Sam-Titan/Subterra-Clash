@@ -78,11 +78,11 @@ export function ScoreTable({
 						key={m.key}
 						className="border-zinc-800 hover:bg-zinc-900/40"
 					>
-						<TableCell className="text-zinc-400">{m.label}</TableCell>
-						<TableCell className="text-right font-medium tabular-nums text-zinc-100">
+						<TableCell className="py-2 text-zinc-400">{m.label}</TableCell>
+						<TableCell className="py-2 text-right font-medium tabular-nums text-zinc-100">
 							{m.format(ours[m.key])}
 						</TableCell>
-						<TableCell className="text-right tabular-nums text-zinc-400">
+						<TableCell className="py-2 text-right tabular-nums text-zinc-400">
 							{m.format(baseline[m.key])}
 						</TableCell>
 					</TableRow>
@@ -92,7 +92,10 @@ export function ScoreTable({
 	);
 }
 
-/** Planted T-cases: expected vs ours (kind · certainty) vs the baseline. */
+/**
+ * Planted T-cases: our result (verdict, outcome and certainty) against the
+ * baseline. The expectation is only spelled out when ours differs from it.
+ */
 export function CasesTable({ cases }: { cases: EvaluationCase[] }) {
 	if (cases.length === 0)
 		return <p className="text-sm text-zinc-400">No planted cases reported.</p>;
@@ -102,39 +105,50 @@ export function CasesTable({ cases }: { cases: EvaluationCase[] }) {
 				<TableRow className="border-zinc-800 hover:bg-transparent">
 					<TableHead className="w-12 text-zinc-400">Case</TableHead>
 					<TableHead className="text-zinc-400">Setup</TableHead>
-					<TableHead className="text-zinc-400">Expected</TableHead>
-					<TableHead className="text-zinc-400">Ours</TableHead>
+					<TableHead className="text-zinc-400">Result</TableHead>
 					<TableHead className="text-zinc-400">Baseline</TableHead>
 				</TableRow>
 			</TableHeader>
 			<TableBody>
-				{cases.map((c) => (
-					<TableRow
-						key={c.case_id}
-						className="border-zinc-800 hover:bg-zinc-900/40"
-					>
-						<TableCell className="font-mono text-zinc-300">
-							{c.case_id}
-						</TableCell>
-						<TableCell className="min-w-56 whitespace-normal text-zinc-400">
-							{c.description}
-						</TableCell>
-						<TableCell className="font-mono text-xs whitespace-nowrap text-zinc-400">
-							{formatOutcome(c.expected, c.expected_certainty)}
-						</TableCell>
-						<TableCell className="text-xs">
-							<div className="flex flex-col gap-0.5">
-								<span className="font-mono whitespace-nowrap text-zinc-100">
-									{formatOutcome(c.ours, c.ours_certainty)}
-								</span>
-								<VerdictMark verdict={caseVerdict(c)} />
-							</div>
-						</TableCell>
-						<TableCell className="text-xs">
-							<VerdictMark verdict={baselineVerdict(c)} />
-						</TableCell>
-					</TableRow>
-				))}
+				{cases.map((c) => {
+					const verdict = caseVerdict(c);
+					const Icon = VERDICT_ICON[verdict.status];
+					return (
+						<TableRow
+							key={c.case_id}
+							className="border-zinc-800 hover:bg-zinc-900/40"
+						>
+							<TableCell className="py-2 font-mono text-zinc-300">
+								{c.case_id}
+							</TableCell>
+							<TableCell className="min-w-56 whitespace-normal py-2 text-zinc-400">
+								{c.description}
+							</TableCell>
+							<TableCell className="py-2 text-xs">
+								<div className="flex flex-col gap-0.5">
+									<span
+										className="inline-flex items-center gap-1.5 whitespace-nowrap"
+										style={{ color: VERDICT_COLORS[verdict.status] }}
+									>
+										<Icon className="size-3.5 shrink-0" aria-hidden />
+										<span>{verdict.label}</span>
+										<span className="font-mono text-zinc-100">
+											· {formatOutcome(c.ours, c.ours_certainty)}
+										</span>
+									</span>
+									{verdict.status !== "pass" && (
+										<span className="font-mono whitespace-nowrap text-zinc-400">
+											Expected {formatOutcome(c.expected, c.expected_certainty)}
+										</span>
+									)}
+								</div>
+							</TableCell>
+							<TableCell className="py-2 text-xs">
+								<VerdictMark verdict={baselineVerdict(c)} />
+							</TableCell>
+						</TableRow>
+					);
+				})}
 			</TableBody>
 		</Table>
 	);

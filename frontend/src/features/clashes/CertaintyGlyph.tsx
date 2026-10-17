@@ -1,4 +1,5 @@
 import type { Certainty } from "@/api/types";
+import { CERTAINTIES } from "@/api/types";
 import { CERTAINTY_COLORS, CERTAINTY_STYLE } from "@/lib/colors";
 import { humanizeEnum } from "@/lib/format";
 import { cn } from "@/lib/utils";
@@ -39,5 +40,27 @@ export function CertaintyBadge({ certainty }: { certainty: Certainty }) {
 			<CertaintyGlyph certainty={certainty} />
 			{humanizeEnum(certainty)}
 		</span>
+	);
+}
+
+/**
+ * The three certainty classes, always on screen (domain rule 3), so a marker
+ * or glyph never needs a click to be decoded.
+ */
+export function CertaintyLegend({ className }: { className?: string }) {
+	return (
+		<ul
+			aria-label="Certainty legend"
+			className={cn("flex flex-wrap items-center gap-x-4 gap-y-1", className)}
+		>
+			{CERTAINTIES.map((c) => (
+				<li key={c} className="flex items-center gap-1.5 text-xs text-zinc-300">
+					<span aria-hidden>
+						<CertaintyGlyph certainty={c} />
+					</span>
+					{humanizeEnum(c)}
+				</li>
+			))}
+		</ul>
 	);
 }

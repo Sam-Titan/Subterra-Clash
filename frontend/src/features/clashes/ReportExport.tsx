@@ -13,8 +13,8 @@ const REPORT_CSV_NAME = "subterra-clash-report.csv";
 const QUEUE_CSV_NAME = "subterra-clash-queue.csv";
 const REPORT_HTML_NAME = "subterra-clash-report.html";
 
-const outline =
-	"border-zinc-700 bg-transparent text-zinc-100 hover:bg-zinc-800";
+// "Export inspection report" is the one primary action; the CSVs are quiet.
+const quiet = "text-zinc-300 hover:bg-zinc-800 hover:text-zinc-100";
 
 /**
  * Export bar: the server inspection report (HTML / CSV, GET /api/report) and a
@@ -102,8 +102,8 @@ export function ReportExport({
 				</Button>
 				<Button
 					size="sm"
-					variant="outline"
-					className={outline}
+					variant="ghost"
+					className={quiet}
 					onClick={downloadCsv}
 					disabled={USE_MOCKS || report.isPending}
 				>
@@ -116,8 +116,8 @@ export function ReportExport({
 				</Button>
 				<Button
 					size="sm"
-					variant="outline"
-					className={outline}
+					variant="ghost"
+					className={quiet}
 					onClick={downloadShown}
 					disabled={shown.length === 0}
 				>

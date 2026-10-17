@@ -77,14 +77,14 @@ export function InputPanel({
 						</button>
 					</p>
 				) : (
-					<div className="flex flex-wrap gap-2">
+					<div className="flex flex-col items-start gap-0.5">
 						{samples.data.items.map((s) => (
 							<Button
 								key={s.id}
 								size="sm"
-								variant="outline"
+								variant="ghost"
 								disabled={pending}
-								className="h-auto max-w-full justify-start whitespace-normal border-zinc-700 bg-transparent py-1.5 text-left text-xs text-zinc-200 hover:bg-zinc-800"
+								className="-ml-2 h-auto max-w-full justify-start whitespace-normal py-1.5 text-left text-sm text-zinc-200 hover:bg-zinc-800 hover:text-zinc-50"
 								onClick={() => {
 									setText(s.text);
 									onParse({ text: s.text });
@@ -100,7 +100,7 @@ export function InputPanel({
 
 			<label
 				htmlFor={textId}
-				className="flex flex-col gap-1.5 text-xs font-semibold text-zinc-400"
+				className="flex flex-col gap-1.5 text-xs font-medium text-zinc-400"
 			>
 				Paste permit text
 				<Textarea
@@ -108,7 +108,7 @@ export function InputPanel({
 					value={text}
 					onChange={(e) => setText(e.target.value)}
 					placeholder="e.g. NVVN Discom — permit 2026/STN/114. Lay 11kV cable by open trench along north side of Station Road…"
-					className="min-h-24 border-zinc-700 bg-zinc-900 text-sm font-normal normal-case tracking-normal text-zinc-100"
+					className="min-h-24 border-zinc-700 bg-zinc-900 text-sm font-normal text-zinc-100"
 				/>
 			</label>
 			<div className="flex flex-wrap items-center gap-2">

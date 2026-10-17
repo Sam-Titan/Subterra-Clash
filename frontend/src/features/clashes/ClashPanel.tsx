@@ -235,7 +235,7 @@ function ClearanceBlock({ detail }: { detail: ClashDetail }) {
 function AssetCard({ asset }: { asset: Asset }) {
 	const record = asset.source_record;
 	return (
-		<li className="flex flex-col gap-1 rounded-md border border-zinc-800 p-2 text-xs">
+		<li className="flex flex-col gap-1 border-t border-zinc-800 py-2 text-xs first:border-t-0 first:pt-0">
 			<div className="flex items-center gap-2">
 				<span
 					aria-hidden
@@ -274,7 +274,7 @@ function AssetCard({ asset }: { asset: Asset }) {
 
 function WorkCard({ work }: { work: Work }) {
 	return (
-		<li className="flex flex-col gap-1 rounded-md border border-zinc-800 p-2 text-xs">
+		<li className="flex flex-col gap-1 border-t border-zinc-800 py-2 text-xs first:border-t-0 first:pt-0">
 			<div className="flex items-center gap-2">
 				<span className="font-medium text-zinc-100">{work.title}</span>
 				<span className="ml-auto font-mono text-zinc-400">{work.id}</span>
@@ -498,7 +498,7 @@ function PanelBody({ detail }: { detail: ClashDetail }) {
 							None — this is a work-to-work finding.
 						</p>
 					) : (
-						<ul className="flex flex-col gap-2">
+						<ul className="flex flex-col">
 							{detail.assets.map((a) => (
 								<AssetCard key={a.id} asset={a} />
 							))}
@@ -506,7 +506,7 @@ function PanelBody({ detail }: { detail: ClashDetail }) {
 					)}
 				</Disclosure>
 				<Disclosure title="Proposed works" hint={`${detail.works.length}`}>
-					<ul className="flex flex-col gap-2">
+					<ul className="flex flex-col">
 						{detail.works.map((w) => (
 							<WorkCard key={w.id} work={w} />
 						))}

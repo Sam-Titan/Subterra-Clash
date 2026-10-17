@@ -175,17 +175,14 @@ function LiveCounters() {
 		{ label: "Dig-once opportunities", value: counts.dig_once },
 	];
 	return (
-		<dl className="grid w-full max-w-xl grid-cols-3 gap-3">
+		<dl className="flex flex-wrap justify-center gap-x-10 gap-y-3">
 			{stats.map((s) => (
-				<div
-					key={s.label}
-					className="rounded-lg border border-zinc-800 bg-zinc-950/80 p-3 backdrop-blur"
-				>
-					<dt className="text-xs font-medium text-zinc-400">{s.label}</dt>
+				<div key={s.label} className="flex flex-col items-center gap-0.5">
+					<dt className="text-xs text-zinc-400">{s.label}</dt>
 					<dd>
 						<NumberTicker
 							value={s.value}
-							className="mt-1 block text-2xl font-semibold tabular-nums text-zinc-100"
+							className="block text-2xl font-semibold tabular-nums text-zinc-100"
 						/>
 					</dd>
 				</div>
@@ -267,16 +264,17 @@ export default function Landing() {
 					transform: "translate(-50%, -50%)",
 					boxShadow: `inset 0 0 0 1px ${LANDING_COLORS.spotlightRim}`,
 				}}
-			/>
+			>
+				<span className="absolute inset-x-0 bottom-6 text-center text-xs text-zinc-300">
+					Move the pointer to look underground
+				</span>
+			</div>
 
 			<div className="relative flex max-w-3xl flex-col items-center gap-6">
-				<p className="rounded-full border border-zinc-800 bg-zinc-950/80 px-3 py-1 text-xs text-zinc-400 backdrop-blur">
-					Navgarh — Sector 7 · synthetic data
-				</p>
 				<h1 className="text-5xl font-bold tracking-tight drop-shadow-lg sm:text-6xl">
 					Subterra Clash
 				</h1>
-				<p className="max-w-2xl rounded-lg bg-zinc-950/70 px-4 py-2 text-zinc-300 backdrop-blur">
+				<p className="max-w-xl text-zinc-200 [text-shadow:0_1px_12px_rgb(0_0_0/0.9)]">
 					See what is under the road before anyone digs — in 3D. Every probable
 					clash between planned works and existing utilities, with the evidence,
 					the uncertainty, and a review queue.
@@ -288,9 +286,6 @@ export default function Landing() {
 					</Link>
 				</Button>
 				<LiveCounters />
-				<p className="text-xs text-zinc-400">
-					Move the pointer to look underground.
-				</p>
 			</div>
 		</section>
 	);

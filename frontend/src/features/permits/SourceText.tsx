@@ -4,7 +4,9 @@ import {
 	type PermitDraft,
 	type PermitFieldName,
 } from "@/api/types";
+import { cardClass } from "@/components/ui/card";
 import { INTAKE_COLORS } from "@/lib/colors";
+import { cn } from "@/lib/utils";
 import { FIELD_META, findQuoteSpans, segmentText } from "./permitFields";
 
 const MODE_TEXT: Record<PermitDraft["llm_mode_used"], string> = {
@@ -46,7 +48,12 @@ export function SourceText({
 				</span>
 			</div>
 			<p className="text-xs text-zinc-400">{MODE_TEXT[draft.llm_mode_used]}</p>
-			<p className="whitespace-pre-wrap break-words rounded-md border border-zinc-800 bg-zinc-900/60 p-3 text-sm leading-relaxed text-zinc-200">
+			<p
+				className={cn(
+					cardClass,
+					"whitespace-pre-wrap break-words p-4 text-sm leading-relaxed text-zinc-200",
+				)}
+			>
 				{segments.map((seg) => {
 					if (seg.fields.length === 0) {
 						return <span key={seg.start}>{seg.text}</span>;

@@ -5,6 +5,7 @@ import { BottomDock } from "@/components/BottomDock";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { ErrorBlock, SceneSkeleton } from "@/components/QueryState";
 import { Badge } from "@/components/ui/badge";
+import { CertaintyLegend } from "@/features/clashes/CertaintyGlyph";
 import { ClashPanel } from "@/features/clashes/ClashPanel";
 import { ConflictList } from "@/features/clashes/ConflictList";
 import { IntakeBanner } from "@/features/permits/IntakeBanner";
@@ -145,15 +146,19 @@ export default function Workspace() {
 				/>
 			</div>
 
-			{/* Absolute inner box: the column scrolls on its own and never
-			    stretches the row, so the canvas keeps the viewport height. */}
+			{/* Absolute inner box: the list or panel scrolls inside the column and
+			    never stretches the row, so the canvas keeps its height. The legend
+			    stays below the scroll area. */}
 			<aside className="relative w-[340px] shrink-0 border-l border-zinc-800 bg-zinc-950 xl:w-[380px]">
-				<div data-shot-expand className="absolute inset-0 overflow-y-auto p-4">
-					{selectedClashId ? (
-						<ClashPanel clashId={selectedClashId} />
-					) : (
-						<ConflictList />
-					)}
+				<div className="absolute inset-0 flex flex-col">
+					<div data-shot-expand className="min-h-0 flex-1 overflow-y-auto p-4">
+						{selectedClashId ? (
+							<ClashPanel clashId={selectedClashId} />
+						) : (
+							<ConflictList />
+						)}
+					</div>
+					<CertaintyLegend className="shrink-0 border-t border-zinc-800 px-4 py-2" />
 				</div>
 			</aside>
 		</section>

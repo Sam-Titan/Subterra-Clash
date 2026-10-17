@@ -3,7 +3,9 @@ import { useId } from "react";
 import type { CommitResponse, PermitDraft } from "@/api/types";
 import { describeError } from "@/components/QueryState";
 import { Button } from "@/components/ui/button";
+import { cardClass } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 import { useAppStore } from "@/store/useAppStore";
 
 /**
@@ -38,7 +40,7 @@ export function CommitBar({
 
 	if (committed) {
 		return (
-			<section className="flex flex-col gap-2 rounded-lg border border-zinc-700 bg-zinc-900/60 p-3 text-sm">
+			<section className={cn(cardClass, "flex flex-col gap-2 p-4 text-sm")}>
 				<p className="text-zinc-200">
 					Added to the coordination plan as{" "}
 					<span className="font-mono">{committed.work.id}</span> with{" "}
@@ -75,7 +77,7 @@ export function CommitBar({
 				: null;
 
 	return (
-		<section className="flex flex-col gap-2 rounded-lg border border-zinc-800 p-3">
+		<section className={cn(cardClass, "flex flex-col gap-2 p-4")}>
 			<label
 				htmlFor={reviewerId}
 				className="flex flex-col gap-1 text-xs text-zinc-400"

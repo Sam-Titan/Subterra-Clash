@@ -9,6 +9,7 @@ import {
 	type Utility,
 } from "@/api/types";
 import { ErrorBlock, SkeletonRows } from "@/components/QueryState";
+import { cardClass } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { EscalateDialog } from "@/features/clashes/EscalateDialog";
 import { opportunityGroupIds } from "@/features/clashes/opportunity";
@@ -116,8 +117,8 @@ export default function Queue() {
 				<div className="flex flex-col gap-1">
 					<h1 className="text-xl font-semibold">Review queue</h1>
 					<p className="text-sm text-zinc-400">
-						Probable conflicts grouped by clash group, highest review rank
-						first. Open a clash to see its evidence in 3D.
+						Clashes grouped and ranked for review. Open one to see its evidence
+						in 3D.
 					</p>
 				</div>
 				<ReportExport shown={shownClashes} groups={groupList} />
@@ -138,7 +139,7 @@ export default function Queue() {
 									"flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500",
 									on
 										? "border-zinc-600 bg-zinc-800 text-zinc-100"
-										: "border-zinc-800 text-zinc-400 hover:text-zinc-300",
+										: "border-transparent text-zinc-400 hover:text-zinc-100",
 								)}
 							>
 								<span
@@ -189,7 +190,10 @@ export default function Queue() {
 			{escalated && (
 				<p
 					role="status"
-					className="flex items-center gap-2 rounded-md border border-zinc-800 bg-zinc-900/60 px-3 py-2 text-sm text-zinc-200"
+					className={cn(
+						cardClass,
+						"flex items-center gap-2 px-3 py-2 text-sm text-zinc-200",
+					)}
 				>
 					<Check className="size-4 text-zinc-300" aria-hidden />
 					<span>
@@ -232,11 +236,11 @@ export default function Queue() {
 					onRetry={() => clashes.refetch()}
 				/>
 			) : total === 0 ? (
-				<p className="rounded-lg border border-zinc-800 p-6 text-sm text-zinc-400">
+				<p className={cn(cardClass, "p-6 text-sm text-zinc-400")}>
 					No conflicts found in the current plan.
 				</p>
 			) : rows.length === 0 ? (
-				<p className="rounded-lg border border-zinc-800 p-6 text-sm text-zinc-400">
+				<p className={cn(cardClass, "p-6 text-sm text-zinc-400")}>
 					No clashes match these filters.{" "}
 					<button
 						type="button"
@@ -247,7 +251,7 @@ export default function Queue() {
 					</button>
 				</p>
 			) : (
-				<div className="overflow-x-auto rounded-lg border border-zinc-800">
+				<div className={cn(cardClass, "overflow-x-auto")}>
 					<QueueTable
 						rows={rows}
 						groups={groupList}

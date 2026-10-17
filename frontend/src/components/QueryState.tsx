@@ -1,6 +1,7 @@
 import { AlertTriangle, Loader2, RotateCw } from "lucide-react";
 import { ApiError } from "@/api/client";
 import { Button } from "@/components/ui/button";
+import { cardClass } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 
@@ -46,7 +47,7 @@ export function SkeletonTiles({
 				<div
 					// biome-ignore lint/suspicious/noArrayIndexKey: static placeholders
 					key={i}
-					className="flex flex-col gap-2 rounded-lg border border-zinc-800 bg-zinc-900/40 p-4"
+					className={cn(cardClass, "flex flex-col gap-2 p-4")}
 				>
 					<Skeleton className="h-3 w-24 bg-zinc-800/80" />
 					<Skeleton className="h-8 w-14 bg-zinc-800/80" />
@@ -65,7 +66,10 @@ export function SceneSkeleton({
 	return (
 		<div
 			role="status"
-			className="relative flex size-full items-center justify-center overflow-hidden rounded-lg border border-zinc-800 bg-zinc-900/30"
+			className={cn(
+				cardClass,
+				"relative flex size-full items-center justify-center overflow-hidden",
+			)}
 		>
 			<Skeleton className="absolute inset-x-8 top-1/2 h-px -translate-y-8 bg-zinc-800" />
 			<Skeleton className="absolute inset-x-8 top-1/2 h-px bg-zinc-800" />
@@ -83,7 +87,10 @@ export function LoadingBlock({ label = "Loading…" }: { label?: string }) {
 	return (
 		<div
 			role="status"
-			className="flex min-h-32 items-center justify-center gap-2 rounded-lg border border-zinc-800 bg-zinc-900/40 p-6 text-sm text-zinc-400"
+			className={cn(
+				cardClass,
+				"flex min-h-32 items-center justify-center gap-2 p-6 text-sm text-zinc-400",
+			)}
 		>
 			<Loader2 className="size-4 animate-spin" aria-hidden />
 			{label}
@@ -115,7 +122,7 @@ export function ErrorBlock({
 	return (
 		<div
 			role="alert"
-			className="flex flex-col gap-3 rounded-lg border border-zinc-700 bg-zinc-900/60 p-6 text-sm"
+			className={cn(cardClass, "flex flex-col gap-3 p-6 text-sm")}
 		>
 			<div className="flex items-center gap-2 font-medium text-zinc-100">
 				<AlertTriangle className="size-4 text-zinc-300" aria-hidden />

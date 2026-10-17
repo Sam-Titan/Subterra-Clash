@@ -80,9 +80,9 @@ export default function Intake() {
 			<header className="flex flex-col gap-1">
 				<h1 className="text-xl font-semibold">Permit intake</h1>
 				<p className="text-sm text-zinc-400">
-					Read a permit, check every value against the words it came from, then
-					add the work to the coordination plan. The language model only reads
-					text; the path is placed by a deterministic geocoder.
+					Read a permit, check each value against its source words, then add the
+					work to the coordination plan. The path is placed by a deterministic
+					geocoder, not the language model.
 				</p>
 			</header>
 
@@ -103,9 +103,9 @@ export default function Intake() {
 						<LoadingBlock label="Extracting fields…" />
 					) : !draft ? (
 						<div className="flex min-h-48 flex-col items-center justify-center gap-1 rounded-lg border border-dashed border-zinc-800 p-6 text-center text-sm text-zinc-400">
-							<p>No permit loaded.</p>
+							<p className="text-zinc-200">Extracted fields appear here.</p>
 							<p className="text-xs">
-								Pick a demo permit, paste text or drop a PDF to start.
+								Pick a demo permit, paste permit text or drop a PDF.
 							</p>
 						</div>
 					) : (

@@ -7,6 +7,7 @@ import {
 	SkeletonRows,
 	SkeletonTiles,
 } from "@/components/QueryState";
+import { cardClass } from "@/components/ui/card";
 import {
 	BreakdownChart,
 	type BreakdownRow,
@@ -14,6 +15,7 @@ import {
 import { CasesTable, ScoreTable } from "@/features/dashboard/EvaluationTable";
 import { CERTAINTY_COLORS, UTILITY_COLORS } from "@/lib/colors";
 import { humanizeEnum, utilityLabel } from "@/lib/format";
+import { cn } from "@/lib/utils";
 
 /**
  * SPEC §10.5. Every number is the API's (`GET /api/summary`): counts follow
@@ -83,6 +85,15 @@ function DashboardBody({ summary }: { summary: Summary }) {
 				{counts.schedule_overlap === 1 ? "" : "s"}
 			</p>
 
+			{/* The result judges look for comes first: ours against the naive 2D
+			    baseline, then where the unresolved clashes sit, then each case. */}
+			<Panel
+				title="Ours vs baseline"
+				note="Precision and recall cover the planted spatial cases only, computed on all engine output whatever its review status."
+			>
+				<ScoreTable ours={evaluation.ours} baseline={evaluation.baseline} />
+			</Panel>
+
 			<div className="grid gap-4 lg:grid-cols-2">
 				<Panel
 					title="Unresolved by utility"
@@ -98,27 +109,19 @@ function DashboardBody({ summary }: { summary: Summary }) {
 				</Panel>
 			</div>
 
-			<div className="grid gap-4">
-				<Panel
-					title="Ours vs baseline"
-					note="Precision and recall cover the planted spatial cases only, computed on all engine output whatever its review status."
-				>
-					<ScoreTable ours={evaluation.ours} baseline={evaluation.baseline} />
-				</Panel>
-				<Panel
-					title="Planted cases"
-					note="The baseline is a naive 2D overlay: footprint touches the asset line, no depth, clearance, uncertainty or schedule."
-				>
-					<CasesTable cases={evaluation.cases} />
-				</Panel>
-			</div>
+			<Panel
+				title="Planted cases"
+				note="The baseline is a naive 2D overlay: footprint touches the asset line, no depth, clearance, uncertainty or schedule."
+			>
+				<CasesTable cases={evaluation.cases} />
+			</Panel>
 		</>
 	);
 }
 
 function Stat({ label, value }: { label: string; value: number }) {
 	return (
-		<div className="rounded-lg border border-zinc-800 bg-zinc-900/40 p-4">
+		<div className={cn(cardClass, "p-4")}>
 			<p className="text-xs font-medium text-zinc-400">{label}</p>
 			<NumberTicker
 				value={value}
@@ -138,7 +141,7 @@ function Panel({
 	children: ReactNode;
 }) {
 	return (
-		<div className="flex min-w-0 flex-col gap-3 rounded-lg border border-zinc-800 bg-zinc-900/20 p-4">
+		<div className={cn(cardClass, "flex min-w-0 flex-col gap-3 p-4")}>
 			<div>
 				<h2 className="text-sm font-semibold text-zinc-200">{title}</h2>
 				{note && <p className="mt-0.5 text-xs text-zinc-400">{note}</p>}

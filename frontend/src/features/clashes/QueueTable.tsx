@@ -7,7 +7,7 @@ import {
 	tableFeatures,
 	useTable,
 } from "@tanstack/react-table";
-import { ArrowDown, ArrowUp, ArrowUpDown, Siren } from "lucide-react";
+import { ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react";
 import { type MouseEvent, type ReactNode, useMemo } from "react";
 import {
 	CERTAINTIES,
@@ -288,7 +288,6 @@ export function QueueTable({
 								onClick={() => onEscalate(clash)}
 								aria-label={`Escalate ${clash.id}`}
 							>
-								<Siren className="size-3.5" aria-hidden />
 								{escalated ? "Escalated" : "Escalate…"}
 							</Button>
 						);
@@ -314,55 +313,58 @@ export function QueueTable({
 				: [{ key: "all", group: null, rows: sortedRows }],
 		[grouped, sortedRows, groups],
 	);
-	const columnCount = columns.length;
+	const columnCount = grouped ? columns.length - 1 : columns.length;
 
 	return (
 		<Table className="text-zinc-200">
 			<TableHeader>
 				{table.getHeaderGroups().map((headerGroup) => (
 					<TableRow key={headerGroup.id} className="border-zinc-800">
-						{headerGroup.headers.map((header) => {
-							const column = header.column;
-							const sorted = column.getIsSorted();
-							const canSort = column.getCanSort();
-							return (
-								<TableHead
-									key={header.id}
-									aria-sort={
-										!canSort
-											? undefined
-											: sorted === "asc"
-												? "ascending"
-												: sorted === "desc"
-													? "descending"
-													: "none"
-									}
-									className="h-9 whitespace-nowrap text-xs text-zinc-400"
-								>
-									{canSort ? (
-										<button
-											type="button"
-											onClick={column.getToggleSortingHandler()}
-											className="-ml-1 inline-flex items-center gap-1 rounded px-1 py-0.5 hover:text-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500"
-										>
+						{headerGroup.headers
+							// The group header row already carries the rank.
+							.filter((h) => !(grouped && h.column.id === "rank"))
+							.map((header) => {
+								const column = header.column;
+								const sorted = column.getIsSorted();
+								const canSort = column.getCanSort();
+								return (
+									<TableHead
+										key={header.id}
+										aria-sort={
+											!canSort
+												? undefined
+												: sorted === "asc"
+													? "ascending"
+													: sorted === "desc"
+														? "descending"
+														: "none"
+										}
+										className="h-9 whitespace-nowrap text-xs text-zinc-400"
+									>
+										{canSort ? (
+											<button
+												type="button"
+												onClick={column.getToggleSortingHandler()}
+												className="-ml-1 inline-flex items-center gap-1 rounded px-1 py-0.5 hover:text-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500"
+											>
+												<table.FlexRender header={header} />
+												{sorted === "asc" ? (
+													<ArrowUp className="size-3" aria-hidden />
+												) : sorted === "desc" ? (
+													<ArrowDown className="size-3" aria-hidden />
+												) : (
+													<ArrowUpDown
+														className="size-3 text-zinc-500"
+														aria-hidden
+													/>
+												)}
+											</button>
+										) : (
 											<table.FlexRender header={header} />
-											{sorted === "asc" ? (
-												<ArrowUp className="size-3" aria-hidden />
-											) : sorted === "desc" ? (
-												<ArrowDown className="size-3" aria-hidden />
-											) : (
-												<ArrowUpDown
-													className="size-3 text-zinc-500"
-													aria-hidden
-												/>
-											)}
-										</button>
-									) : (
-										<table.FlexRender header={header} />
-									)}
-								</TableHead>
-							);
-						})}
+										)}
+									</TableHead>
+								);
+							})}
 					</TableRow>
 				))}
 			</TableHeader>
@@ -384,11 +386,14 @@ export function QueueTable({
 								}}
 								className="cursor-pointer border-zinc-800/70 hover:bg-zinc-900"
 							>
-								{row.getAllCells().map((cell) => (
-									<TableCell key={cell.id} className="py-2 align-top">
-										<table.FlexRender cell={cell} />
-									</TableCell>
-								))}
+								{row
+									.getAllCells()
+									.filter((c) => !(grouped && c.column.id === "rank"))
+									.map((cell) => (
+										<TableCell key={cell.id} className="py-2 align-top">
+											<table.FlexRender cell={cell} />
+										</TableCell>
+									))}
 							</TableRow>
 						))}
 					</SectionRows>

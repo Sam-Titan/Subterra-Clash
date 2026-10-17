@@ -3,8 +3,10 @@ import { motion, useReducedMotion } from "motion/react";
 import { useMemo } from "react";
 import type { PermitDraft, Point2, Scene } from "@/api/types";
 import { ErrorBlock, LoadingBlock } from "@/components/QueryState";
+import { cardClass } from "@/components/ui/card";
 import { INTAKE_COLORS, WORK_COLOR } from "@/lib/colors";
 import { planToSvg } from "@/lib/coords";
+import { cn } from "@/lib/utils";
 import { fieldOf } from "./permitFields";
 
 function svgPath(points: Point2[], scene: Scene): string {
@@ -176,7 +178,7 @@ export function PathPreview({
 			{header}
 			<svg
 				viewBox={`-10 -10 ${width + 20} ${height + 20}`}
-				className="w-full rounded-md border border-zinc-800"
+				className={cn(cardClass, "w-full")}
 				style={{ backgroundColor: INTAKE_COLORS.previewGround }}
 				role="img"
 				aria-label={
