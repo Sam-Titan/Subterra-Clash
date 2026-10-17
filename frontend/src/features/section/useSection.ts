@@ -50,6 +50,7 @@ export function useSectionFollowsSelection(
 	const setSection = useAppStore((s) => s.setSection);
 	const autoEnableSection = useAppStore((s) => s.autoEnableSection);
 	const setDockTab = useAppStore((s) => s.setDockTab);
+	const setDockCollapsed = useAppStore((s) => s.setDockCollapsed);
 	const snappedFor = useRef<string | null>(null);
 
 	useEffect(() => {
@@ -65,6 +66,8 @@ export function useSectionFollowsSelection(
 		if (snapped) setSection(snapped);
 		autoEnableSection();
 		setDockTab("section");
+		// The dock rests collapsed; a selection opens it when the section is on.
+		if (useAppStore.getState().sectionEnabled) setDockCollapsed(false);
 	}, [
 		selectedClashId,
 		scene,
@@ -72,5 +75,6 @@ export function useSectionFollowsSelection(
 		setSection,
 		autoEnableSection,
 		setDockTab,
+		setDockCollapsed,
 	]);
 }

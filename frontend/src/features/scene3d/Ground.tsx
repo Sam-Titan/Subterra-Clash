@@ -9,6 +9,7 @@ import {
 	toThree,
 	type Vec3,
 } from "@/lib/coords";
+import { useAppStore } from "@/store/useAppStore";
 import { noRaycast } from "./noRaycast";
 import { LINE_WIDTH, MAX_LABELS, OPACITY, RENDER_ORDER } from "./sceneConfig";
 import {
@@ -30,6 +31,8 @@ interface Label {
 }
 
 export function Ground({ scene, xray }: { scene: Scene; xray: boolean }) {
+	// Landmark names are noise from above; they are shown at street level only.
+	const streetLevel = useAppStore((s) => s.viewMode === "street");
 	const { bounds } = scene.area;
 	const width = bounds.max_x - bounds.min_x + GROUND_MARGIN_M * 2;
 	const depth = bounds.max_y - bounds.min_y + GROUND_MARGIN_M * 2;
@@ -57,14 +60,16 @@ export function Ground({ scene, xray }: { scene: Scene; xray: boolean }) {
 			position: toThree([...polylineMidpoint(s.centerline), LABEL_Z]),
 			kind: "street",
 		}));
-		const landmarkLabels: Label[] = scene.landmarks.map((l) => ({
-			id: l.id,
-			text: l.name,
-			position: toThree([l.x, l.y, LABEL_Z]),
-			kind: "landmark",
-		}));
+		const landmarkLabels: Label[] = (streetLevel ? scene.landmarks : []).map(
+			(l) => ({
+				id: l.id,
+				text: l.name,
+				position: toThree([l.x, l.y, LABEL_Z]),
+				kind: "landmark",
+			}),
+		);
 		return [...streetLabels, ...landmarkLabels].slice(0, MAX_LABELS);
-	}, [scene.streets, scene.landmarks]);
+	}, [scene.streets, scene.landmarks, streetLevel]);
 
 	return (
 		<group>

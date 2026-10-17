@@ -24,7 +24,10 @@ export function AppShell() {
 	const landing = pathname === "/";
 	return (
 		<MotionConfig reducedMotion="user">
-			<div className="flex h-dvh flex-col bg-zinc-950 text-zinc-100">
+			<div
+				data-shot-expand
+				className="flex h-dvh flex-col bg-zinc-950 text-zinc-100"
+			>
 				<header className="z-20 shrink-0 border-b border-zinc-800 bg-zinc-950/90 backdrop-blur">
 					<div className="flex h-14 items-center gap-6 px-4">
 						<Link

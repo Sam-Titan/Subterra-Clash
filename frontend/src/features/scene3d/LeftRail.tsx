@@ -1,9 +1,13 @@
-import { RotateCcw } from "lucide-react";
-import { useId, useMemo } from "react";
+import { Layers, ListFilter, RotateCcw } from "lucide-react";
+import { type ReactNode, useId, useMemo } from "react";
 import { useClashes, useScene } from "@/api/hooks";
 import { CERTAINTIES, type Certainty, UTILITIES } from "@/api/types";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from "@/components/ui/popover";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Switch } from "@/components/ui/switch";
 import {
@@ -17,10 +21,6 @@ import {
 import { humanizeEnum, utilityLabel } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { type LayerId, useAppStore } from "@/store/useAppStore";
-
-function SectionTitle({ children }: { children: string }) {
-	return <h2 className="text-xs font-medium text-zinc-400">{children}</h2>;
-}
 
 function SwitchRow({
 	label,
@@ -41,13 +41,11 @@ function SwitchRow({
 	const id = useId();
 	return (
 		<div className="flex items-center gap-2 py-1">
-			{swatch && (
-				<span
-					aria-hidden
-					className="size-2.5 shrink-0 rounded-full"
-					style={{ backgroundColor: swatch }}
-				/>
-			)}
+			<span
+				aria-hidden
+				className="size-2.5 shrink-0 rounded-full"
+				style={swatch ? { backgroundColor: swatch } : undefined}
+			/>
 			<label htmlFor={id} className="flex-1 cursor-pointer text-sm">
 				{label}
 				{hint && <span className="block text-xs text-zinc-400">{hint}</span>}
@@ -92,7 +90,7 @@ function MarkerGlyph({ certainty }: { certainty: Certainty }) {
 		return (
 			<span
 				aria-hidden
-				className="flex size-3.5 items-center justify-center rounded-full text-xs font-bold text-zinc-950"
+				className="flex size-3.5 items-center justify-center rounded-full text-xs font-bold leading-none text-zinc-950"
 				style={{ backgroundColor: color }}
 			>
 				?
@@ -110,22 +108,67 @@ function MarkerGlyph({ certainty }: { certainty: Certainty }) {
 	);
 }
 
-/** Layer toggles, certainty filter, x-ray and halo switches (SPEC §10.2). */
+/** One icon in the toolbar that opens its controls in a popover. */
+function RailPopover({
+	label,
+	icon,
+	active,
+	children,
+}: {
+	label: string;
+	icon: ReactNode;
+	/** Something inside differs from the default: show a dot on the icon. */
+	active: boolean;
+	children: ReactNode;
+}) {
+	return (
+		<Popover>
+			<PopoverTrigger asChild>
+				<Button
+					variant="ghost"
+					size="icon"
+					aria-label={active ? `${label} (changed)` : label}
+					title={label}
+					className="relative size-9 text-zinc-300 hover:bg-zinc-800 hover:text-zinc-50 data-[state=open]:bg-zinc-800 data-[state=open]:text-zinc-50"
+				>
+					{icon}
+					{active && (
+						<span
+							aria-hidden
+							className="absolute top-1.5 right-1.5 size-2 rounded-full bg-zinc-50 ring-2 ring-zinc-950"
+						/>
+					)}
+				</Button>
+			</PopoverTrigger>
+			<PopoverContent
+				side="right"
+				align="start"
+				sideOffset={8}
+				className="w-72 border-zinc-800 bg-zinc-900 p-3 text-zinc-100"
+			>
+				<h2 className="mb-1 text-sm font-semibold">{label}</h2>
+				{children}
+			</PopoverContent>
+		</Popover>
+	);
+}
+
+/**
+ * Icon toolbar for what the 3D view shows: layers (and halos) and the
+ * certainty filter. X-ray, Section and camera presets live in the view toolbar
+ * over the canvas.
+ */
 export function LeftRail() {
 	const scene = useScene();
 	const clashes = useClashes();
 
 	const layers = useAppStore((s) => s.layers);
 	const setLayer = useAppStore((s) => s.setLayer);
-	const xray = useAppStore((s) => s.xray);
-	const setXray = useAppStore((s) => s.setXray);
 	const halos = useAppStore((s) => s.halos);
 	const setHalos = useAppStore((s) => s.setHalos);
 	const certaintyFilter = useAppStore((s) => s.certaintyFilter);
 	const toggleCertainty = useAppStore((s) => s.toggleCertainty);
 	const resetFilters = useAppStore((s) => s.resetFilters);
-	const sectionEnabled = useAppStore((s) => s.sectionEnabled);
-	const setSectionEnabled = useAppStore((s) => s.setSectionEnabled);
 
 	const assetCounts = useMemo(() => {
 		const counts = new Map<LayerId, number>();
@@ -149,47 +192,64 @@ export function LeftRail() {
 
 	const loaded = scene.isSuccess;
 	const pendingCount = scene.isPending ? ("loading" as const) : undefined;
+	const layersChanged = Object.values(layers).some((on) => !on) || !halos;
+	const filterChanged = certaintyFilter.length !== CERTAINTIES.length;
 
 	return (
-		<aside className="flex w-64 shrink-0 flex-col gap-4 overflow-y-auto border-r border-zinc-800 bg-zinc-950 p-4">
-			<section className="flex flex-col gap-1">
-				<SectionTitle>Layers</SectionTitle>
-				{UTILITIES.map((u) => (
+		<aside
+			aria-label="Scene controls"
+			className="flex w-12 shrink-0 flex-col items-center gap-1 border-r border-zinc-800 bg-zinc-950 py-2"
+		>
+			<RailPopover
+				label="Layers"
+				icon={<Layers className="size-5" aria-hidden />}
+				active={layersChanged}
+			>
+				<div className="flex flex-col">
+					{UTILITIES.map((u) => (
+						<SwitchRow
+							key={u}
+							label={utilityLabel(u)}
+							swatch={UTILITY_COLORS[u]}
+							count={loaded ? (assetCounts.get(u) ?? 0) : pendingCount}
+							checked={layers[u]}
+							onChange={(on) => setLayer(u, on)}
+						/>
+					))}
 					<SwitchRow
-						key={u}
-						label={utilityLabel(u)}
-						swatch={UTILITY_COLORS[u]}
-						count={loaded ? (assetCounts.get(u) ?? 0) : pendingCount}
-						checked={layers[u]}
-						onChange={(on) => setLayer(u, on)}
+						label="Proposed works"
+						swatch={WORK_COLOR}
+						count={loaded ? (assetCounts.get("WORKS") ?? 0) : pendingCount}
+						checked={layers.WORKS}
+						onChange={(on) => setLayer("WORKS", on)}
 					/>
-				))}
-				<SwitchRow
-					label="Proposed works"
-					swatch={WORK_COLOR}
-					count={loaded ? (assetCounts.get("WORKS") ?? 0) : pendingCount}
-					checked={layers.WORKS}
-					onChange={(on) => setLayer("WORKS", on)}
-				/>
-				<SwitchRow
-					label="City context"
-					hint="Roads, buildings, street furniture"
-					swatch={CITY_COLORS.footpath}
-					checked={layers.CITY}
-					onChange={(on) => setLayer("CITY", on)}
-				/>
+					<SwitchRow
+						label="City context"
+						hint="Roads, buildings, street furniture"
+						swatch={CITY_COLORS.footpath}
+						checked={layers.CITY}
+						onChange={(on) => setLayer("CITY", on)}
+					/>
+					<SwitchRow
+						label="Uncertainty halos"
+						hint="Diameter / 2 + horizontal precision"
+						checked={halos}
+						onChange={setHalos}
+					/>
+				</div>
 				{unknownDepth > 0 && (
-					<p className="text-xs text-zinc-400">
+					<p className="mt-2 text-xs text-zinc-400">
 						{unknownDepth} asset{unknownDepth === 1 ? "" : "s"} with unknown
 						depth, drawn faded at a placeholder depth.
 					</p>
 				)}
-			</section>
+			</RailPopover>
 
-			<Separator className="bg-zinc-800" />
-
-			<section className="flex flex-col gap-2">
-				<SectionTitle>Certainty</SectionTitle>
+			<RailPopover
+				label="Certainty"
+				icon={<ListFilter className="size-5" aria-hidden />}
+				active={filterChanged}
+			>
 				<div className="flex flex-col gap-1">
 					{CERTAINTIES.map((c) => {
 						const on = certaintyFilter.includes(c);
@@ -202,8 +262,8 @@ export function LeftRail() {
 								className={cn(
 									"flex items-center gap-2 rounded-md border px-2 py-1.5 text-left text-sm transition-colors",
 									on
-										? "border-zinc-700 bg-zinc-900 text-zinc-100"
-										: "border-zinc-900 text-zinc-400 hover:border-zinc-800",
+										? "border-zinc-700 bg-zinc-800 text-zinc-100"
+										: "border-zinc-800 text-zinc-400 hover:border-zinc-700",
 								)}
 							>
 								<span className={on ? "" : "opacity-40"}>
@@ -223,43 +283,20 @@ export function LeftRail() {
 						);
 					})}
 				</div>
-				<p className="text-xs text-zinc-400">
+				<p className="mt-2 text-xs text-zinc-400">
 					Hiding a layer never hides its clashes; only this filter does.
 				</p>
-			</section>
-
-			<Separator className="bg-zinc-800" />
-
-			<section className="flex flex-col gap-1">
-				<SectionTitle>View</SectionTitle>
-				<SwitchRow
-					label="X-ray"
-					hint="See-through ground, road and buildings"
-					checked={xray}
-					onChange={setXray}
-				/>
-				<SwitchRow
-					label="Uncertainty halos"
-					hint="Diameter / 2 + horizontal precision"
-					checked={halos}
-					onChange={setHalos}
-				/>
-				<SwitchRow
-					label="Cross-section"
-					hint="Drag the plane's handle bar to move the cut"
-					checked={sectionEnabled}
-					onChange={setSectionEnabled}
-				/>
-			</section>
+			</RailPopover>
 
 			<Button
-				variant="outline"
-				size="sm"
+				variant="ghost"
+				size="icon"
 				onClick={resetFilters}
-				className="mt-auto border-zinc-700 bg-transparent text-zinc-300 hover:bg-zinc-800"
+				aria-label="Reset filters"
+				title="Reset filters"
+				className="mt-auto size-9 text-zinc-300 hover:bg-zinc-800 hover:text-zinc-50"
 			>
-				<RotateCcw className="size-3.5" aria-hidden />
-				Reset filters
+				<RotateCcw className="size-5" aria-hidden />
 			</Button>
 		</aside>
 	);

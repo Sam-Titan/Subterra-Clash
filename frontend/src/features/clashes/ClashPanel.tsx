@@ -1,4 +1,4 @@
-import { EyeOff, X } from "lucide-react";
+import { ChevronRight, EyeOff, X } from "lucide-react";
 import { type ReactNode, useId, useState } from "react";
 import { USE_MOCKS } from "@/api/client";
 import { useClash, useReviewClash } from "@/api/hooks";
@@ -16,7 +16,6 @@ import {
 } from "@/components/QueryState";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import {
 	FACTOR_COLORS,
@@ -44,6 +43,36 @@ import { toastReviewed } from "./reviewToast";
 
 function SectionTitle({ children }: { children: ReactNode }) {
 	return <h3 className="text-xs font-medium text-zinc-400">{children}</h3>;
+}
+
+/**
+ * Native <details>: the summary is always visible, the rest is one click
+ * away. Callers key it by clash so each clash starts from its own default.
+ */
+function Disclosure({
+	title,
+	hint,
+	defaultOpen = false,
+	children,
+}: {
+	title: string;
+	hint?: string;
+	defaultOpen?: boolean;
+	children: ReactNode;
+}) {
+	return (
+		<details open={defaultOpen} className="group border-t border-zinc-800">
+			<summary className="flex cursor-pointer list-none items-center gap-2 py-2 text-sm text-zinc-200 hover:text-zinc-50 focus-visible:outline-2 focus-visible:outline-zinc-400 [&::-webkit-details-marker]:hidden">
+				<ChevronRight
+					className="size-4 text-zinc-400 transition-transform group-open:rotate-90"
+					aria-hidden
+				/>
+				{title}
+				{hint && <span className="ml-auto text-xs text-zinc-400">{hint}</span>}
+			</summary>
+			<div className="pb-3 pl-6">{children}</div>
+		</details>
+	);
 }
 
 /** A value that is `unknown` is shown as missing, never as 0. */
@@ -124,23 +153,29 @@ function SeverityBlock({ clash }: { clash: Clash }) {
 					/>
 				))}
 			</div>
-			<ul className="grid grid-cols-2 gap-x-3 gap-y-1 text-xs">
-				{segments.map((s) => (
-					<li key={s.key} className="flex items-center gap-1.5">
-						<span
-							aria-hidden
-							className="size-2 shrink-0 rounded-sm"
-							style={{ backgroundColor: FACTOR_COLORS[s.key] }}
-						/>
-						<span className="text-zinc-300">{FACTOR_LABELS[s.key]}</span>
-						<span className="ml-auto font-mono tabular-nums text-zinc-400">
-							{s.raw.toFixed(2)} × {s.weight.toFixed(2)} ={" "}
-							<span className="text-zinc-200">{s.points}</span>
-						</span>
-					</li>
-				))}
-			</ul>
 		</section>
+	);
+}
+
+function FactorList({ clash }: { clash: Clash }) {
+	const segments = factorSegments(clash.severity);
+	return (
+		<ul className="grid grid-cols-1 gap-y-1 text-xs">
+			{segments.map((s) => (
+				<li key={s.key} className="flex items-center gap-1.5">
+					<span
+						aria-hidden
+						className="size-2 shrink-0 rounded-sm"
+						style={{ backgroundColor: FACTOR_COLORS[s.key] }}
+					/>
+					<span className="text-zinc-300">{FACTOR_LABELS[s.key]}</span>
+					<span className="ml-auto font-mono tabular-nums text-zinc-400">
+						{s.raw.toFixed(2)} × {s.weight.toFixed(2)} ={" "}
+						<span className="text-zinc-200">{s.points}</span>
+					</span>
+				</li>
+			))}
+		</ul>
 	);
 }
 
@@ -309,15 +344,12 @@ function ReviewBlock({ clash }: { clash: Clash }) {
 	return (
 		<section className="flex flex-col gap-2">
 			<SectionTitle>Engineering review</SectionTitle>
-			<div className="flex flex-wrap items-center gap-2 text-xs text-zinc-400">
-				<StatusBadge status={status} />
-				{clash.review.reviewer && (
-					<span>
-						by {clash.review.reviewer} ·{" "}
-						{formatDateTime(clash.review.updated_at)}
-					</span>
-				)}
-			</div>
+			{clash.review.reviewer && (
+				<p className="text-xs text-zinc-400">
+					{humanizeEnum(status)} by {clash.review.reviewer} ·{" "}
+					{formatDateTime(clash.review.updated_at)}
+				</p>
+			)}
 			{clash.review.note && (
 				<p className="rounded-md bg-zinc-900 p-2 text-xs text-zinc-300">
 					“{clash.review.note}”
@@ -426,64 +458,11 @@ function PanelBody({ detail }: { detail: ClashDetail }) {
 		<div className="flex flex-col gap-4">
 			<HiddenNotice clash={clash} />
 			<SeverityBlock clash={clash} />
-			<Separator className="bg-zinc-800" />
 			<ClearanceBlock detail={detail} />
-			<Separator className="bg-zinc-800" />
 
-			<section className="flex flex-col gap-2">
-				<SectionTitle>Affected assets</SectionTitle>
-				{detail.assets.length === 0 ? (
-					<p className="text-xs text-zinc-400">
-						None — this is a work-to-work finding.
-					</p>
-				) : (
-					<ul className="flex flex-col gap-2">
-						{detail.assets.map((a) => (
-							<AssetCard key={a.id} asset={a} />
-						))}
-					</ul>
-				)}
-			</section>
-
-			<section className="flex flex-col gap-2">
-				<SectionTitle>Proposed works</SectionTitle>
-				<ul className="flex flex-col gap-2">
-					{detail.works.map((w) => (
-						<WorkCard key={w.id} work={w} />
-					))}
-				</ul>
-			</section>
-
-			<section className="flex flex-col gap-1">
-				<SectionTitle>Missing data</SectionTitle>
-				{clash.missing_data.length === 0 ? (
-					<p className="text-xs text-zinc-400">None.</p>
-				) : (
-					<ul className="flex flex-wrap gap-1.5">
-						{clash.missing_data.map((m) => (
-							<li key={m}>
-								<Value text={m} />
-							</li>
-						))}
-					</ul>
-				)}
-			</section>
-
-			<Separator className="bg-zinc-800" />
 			<section className="flex flex-col gap-2">
 				<SectionTitle>Why this was flagged</SectionTitle>
 				<p className="text-sm text-zinc-200">{clash.explanation}</p>
-				<ul className="flex flex-col gap-1 text-xs">
-					{clash.evidence.map((e) => (
-						<li key={`${e.type}-${e.ref}`} className="text-zinc-400">
-							<span className="font-mono text-zinc-400">
-								{humanizeEnum(e.type)} · {e.ref}
-							</span>
-							<br />
-							{e.detail}
-						</li>
-					))}
-				</ul>
 				<p className="text-xs text-zinc-400">
 					2D baseline:{" "}
 					{clash.baseline_flagged
@@ -492,8 +471,66 @@ function PanelBody({ detail }: { detail: ClashDetail }) {
 				</p>
 			</section>
 
-			<Separator className="bg-zinc-800" />
 			<ReviewBlock key={clash.id} clash={clash} />
+
+			{/* Evidence and the records behind it: one click each. Missing data
+			    opens by itself when there is any, so it is never hidden. */}
+			<div
+				key={clash.id}
+				className="-mt-1 flex flex-col border-b border-zinc-800"
+			>
+				<Disclosure title="Evidence" hint={`${clash.evidence.length}`}>
+					<ul className="flex flex-col gap-2 text-xs">
+						{clash.evidence.map((e) => (
+							<li key={`${e.type}-${e.ref}`} className="text-zinc-400">
+								<span className="font-mono">
+									{humanizeEnum(e.type)} · {e.ref}
+								</span>
+								<br />
+								{e.detail}
+							</li>
+						))}
+					</ul>
+				</Disclosure>
+				<Disclosure title="Affected assets" hint={`${detail.assets.length}`}>
+					{detail.assets.length === 0 ? (
+						<p className="text-xs text-zinc-400">
+							None — this is a work-to-work finding.
+						</p>
+					) : (
+						<ul className="flex flex-col gap-2">
+							{detail.assets.map((a) => (
+								<AssetCard key={a.id} asset={a} />
+							))}
+						</ul>
+					)}
+				</Disclosure>
+				<Disclosure title="Proposed works" hint={`${detail.works.length}`}>
+					<ul className="flex flex-col gap-2">
+						{detail.works.map((w) => (
+							<WorkCard key={w.id} work={w} />
+						))}
+					</ul>
+				</Disclosure>
+				<Disclosure title="Severity factors">
+					<FactorList clash={clash} />
+				</Disclosure>
+				{clash.missing_data.length > 0 && (
+					<Disclosure
+						title="Missing data"
+						hint={`${clash.missing_data.length}`}
+						defaultOpen
+					>
+						<ul className="flex flex-wrap gap-1.5 text-xs">
+							{clash.missing_data.map((m) => (
+								<li key={m}>
+									<Value text={m} />
+								</li>
+							))}
+						</ul>
+					</Disclosure>
+				)}
+			</div>
 		</div>
 	);
 }

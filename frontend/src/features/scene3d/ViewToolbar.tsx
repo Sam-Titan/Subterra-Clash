@@ -1,4 +1,4 @@
-import { Footprints, Map as MapIcon } from "lucide-react";
+import { Footprints, Map as MapIcon, Scissors } from "lucide-react";
 import type { Street } from "@/api/types";
 import { Button } from "@/components/ui/button";
 import {
@@ -25,6 +25,8 @@ export function ViewToolbar({ streets }: { streets: readonly Street[] }) {
 	const xray = useAppStore((s) => s.xray);
 	const setXray = useAppStore((s) => s.setXray);
 	const cityOn = useAppStore((s) => s.layers.CITY);
+	const sectionEnabled = useAppStore((s) => s.sectionEnabled);
+	const setSectionEnabled = useAppStore((s) => s.setSectionEnabled);
 
 	const streetId = streetViewId ?? defaultStreetId(streets) ?? "";
 	const base =
@@ -89,6 +91,17 @@ export function ViewToolbar({ streets }: { streets: readonly Street[] }) {
 				}
 			>
 				X-ray
+			</Button>
+			<Button
+				variant="outline"
+				size="sm"
+				aria-pressed={sectionEnabled}
+				className={cn(base, sectionEnabled && active)}
+				onClick={() => setSectionEnabled(!sectionEnabled)}
+				title="Cut the ground along a plane and show the cross-section below"
+			>
+				<Scissors className="size-3.5" aria-hidden />
+				Section
 			</Button>
 		</div>
 	);

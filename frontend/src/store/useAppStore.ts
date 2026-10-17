@@ -127,7 +127,7 @@ export const useAppStore = create<AppState>()((set) => ({
 	setReviewerName: (name) => set({ reviewerName: name }),
 	sectionEnabled: false,
 	sectionTouched: false,
-	dockCollapsed: false,
+	dockCollapsed: true,
 	dockTab: "schedule",
 	section: null,
 	setSectionEnabled: (on) => set({ sectionEnabled: on, sectionTouched: true }),

@@ -104,7 +104,7 @@ export function ConflictList() {
 			</div>
 			{hidden > 0 && (
 				<p className="text-xs text-zinc-400">
-					{hidden} hidden by the certainty filter in the left rail.
+					{hidden} hidden by the certainty filter.
 				</p>
 			)}
 			{groups.isPending && (
@@ -133,7 +133,7 @@ export function ConflictList() {
 							{section.rank !== null && (
 								<span className="font-mono">#{section.rank}</span>
 							)}
-							{/* Titles carry the count and band now; let them wrap. */}
+							{/* The title carries the count and the highest band: let it wrap. */}
 							<span className="min-w-0 break-words">{section.title}</span>
 						</span>
 						{section.opportunity && (
@@ -193,20 +193,25 @@ export function ConflictList() {
 									<span className="font-mono text-xs tabular-nums text-zinc-400">
 										{compactClearance(clash)}
 									</span>
-									<span
-										className="flex items-center gap-1 text-xs text-zinc-400"
-										title={`Review: ${humanizeEnum(clash.review.status)}`}
-									>
+									{/* Open is the default: only a reviewed status is worth a word. */}
+									{clash.review.status === "OPEN" ? (
+										<span />
+									) : (
 										<span
-											aria-hidden
-											className="size-1.5 rounded-full"
-											style={{
-												backgroundColor:
-													REVIEW_STATUS_COLORS[clash.review.status],
-											}}
-										/>
-										{humanizeEnum(clash.review.status)}
-									</span>
+											className="flex items-center gap-1 text-xs text-zinc-400"
+											title={`Review: ${humanizeEnum(clash.review.status)}`}
+										>
+											<span
+												aria-hidden
+												className="size-1.5 rounded-full"
+												style={{
+													backgroundColor:
+														REVIEW_STATUS_COLORS[clash.review.status],
+												}}
+											/>
+											{humanizeEnum(clash.review.status)}
+										</span>
+									)}
 								</button>
 							</li>
 						))}
