@@ -52,7 +52,7 @@
 ---
 
 ## Blockers
-- **4C — workspace canvas looks blank after selecting a clash (headless Chromium + SwiftShader).** After `selectClash` the camera flies to the clash and the 3D view shows only the street labels piled in one spot; reproduced at 1366×768 on the 4A baseline and after 4B (not caused by the declutter). Not yet checked on a real GPU. Investigate `CameraRig` fly-to / section-plane clipping; add an e2e assertion that the canvas is not blank after selecting a clash.
+- None.
 
 (The two earlier 4B blockers, disclaimer below the fold and colour contrast, were cleared in 4B commit (a).)
 

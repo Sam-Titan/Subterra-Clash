@@ -27,6 +27,47 @@ async function canvasVariance(page: Page) {
 	}, png.toString("base64"));
 }
 
+/**
+ * Share of pixels in the middle of the 3D canvas that are not the single most
+ * common colour (background/fog), with every HTML overlay (street labels)
+ * hidden so only what WebGL drew counts. Measured: a drawn view is 0.5 to 0.7,
+ * the blank scene after the fly-to bug was 0.03 to 0.06.
+ */
+async function centreDrawnShare(page: Page) {
+	await page.addStyleTag({ content: "canvas ~ * { visibility: hidden }" });
+	const box = await page.locator("canvas").first().boundingBox();
+	if (!box) return 0;
+	const png = await page.screenshot({
+		clip: {
+			x: box.x + box.width * 0.3,
+			y: box.y + box.height * 0.3,
+			width: box.width * 0.4,
+			height: box.height * 0.3,
+		},
+	});
+	return page.evaluate(async (b64) => {
+		const img = new Image();
+		img.src = `data:image/png;base64,${b64}`;
+		await img.decode();
+		const c = document.createElement("canvas");
+		c.width = img.width;
+		c.height = img.height;
+		const ctx = c.getContext("2d");
+		if (!ctx) return 0;
+		ctx.drawImage(img, 0, 0);
+		const { data } = ctx.getImageData(0, 0, c.width, c.height);
+		const counts = new Map<number, number>();
+		for (let i = 0; i < data.length; i += 4) {
+			const k = (data[i] << 16) | (data[i + 1] << 8) | data[i + 2];
+			counts.set(k, (counts.get(k) ?? 0) + 1);
+		}
+		return 1 - Math.max(...counts.values()) / (data.length / 4);
+	}, png.toString("base64"));
+}
+
+/** Well above the blank scene (0.06), well below any drawn view (0.5+). */
+const DRAWN = 0.25;
+
 test("workspace loads the scene and the canvas is not blank", async ({
 	page,
 }) => {
@@ -75,3 +116,29 @@ test("selecting T1 from the conflict list shows -0.60 / 1.00 / Likely", async ({
 		panel.getByText("Likely", { exact: true }).first(),
 	).toBeVisible();
 });
+
+for (const id of ["CLH-0002", "CLH-0004"]) {
+	test(`selecting ${id} keeps the 3D scene drawn, section on and off`, async ({
+		page,
+	}) => {
+		await page.goto("/workspace");
+		await expect(page.locator("canvas")).toBeVisible({ timeout: 30_000 });
+		await page.waitForTimeout(2000);
+		await page.getByRole("button", { name: new RegExp(id) }).click();
+
+		// Selecting a clash flies the camera to it and switches the section on.
+		await expect(
+			page.getByRole("tab", { name: "Cross-section" }),
+		).toBeVisible();
+		await expect
+			.poll(() => centreDrawnShare(page), { timeout: 20_000 })
+			.toBeGreaterThan(DRAWN);
+
+		const section = page.getByRole("button", { name: "Section", exact: true });
+		await expect(section).toHaveAttribute("aria-pressed", "true");
+		await section.click();
+		await expect(section).toHaveAttribute("aria-pressed", "false");
+		await page.waitForTimeout(1500);
+		expect(await centreDrawnShare(page)).toBeGreaterThan(DRAWN);
+	});
+}

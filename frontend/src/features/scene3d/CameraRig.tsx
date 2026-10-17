@@ -58,6 +58,7 @@ export function CameraRig({
 		() => ({ active: false, target: new Vector3(), position: new Vector3() }),
 		[],
 	);
+	const viewDirection = useMemo(() => new Vector3(), []);
 	/** Id the camera last flew to; a refetch with the same id does nothing. */
 	const flownFor = useRef<string | null>(null);
 
@@ -125,7 +126,9 @@ export function CameraRig({
 		const { x, y, z } = clash.location;
 		anim.target.set(...toThree([x, y, z]));
 
-		const direction = anim.position
+		// Its own vector: sharing `anim.position` made the direction the target
+		// itself once the position was overwritten below.
+		const direction = viewDirection
 			.copy(camera.position)
 			.sub(controls.target)
 			.normalize();
@@ -139,8 +142,17 @@ export function CameraRig({
 			controls.maxDistance,
 		);
 		anim.position.copy(anim.target).addScaledVector(direction, distance);
+		if (!Number.isFinite(anim.position.lengthSq())) return; // never fly to NaN
 		anim.active = true;
-	}, [selectedClashId, clashes, controls, camera, anim, releaseView]);
+	}, [
+		selectedClashId,
+		clashes,
+		controls,
+		camera,
+		anim,
+		viewDirection,
+		releaseView,
+	]);
 
 	useFrame((_, delta) => {
 		if (!anim.active || !controls) return;
