@@ -23,6 +23,42 @@ function shortName(name: string): string {
 	return name.split(" — ")[0];
 }
 
+interface Box {
+	x0: number;
+	y0: number;
+	x1: number;
+	y1: number;
+}
+
+const overlaps = (a: Box, b: Box) =>
+	a.x0 < b.x1 && a.x1 > b.x0 && a.y0 < b.y1 && a.y1 > b.y0;
+
+/** Rough text width in SVG units (the map uses the default sans-serif). */
+const textWidth = (text: string, fontSize: number) =>
+	text.length * fontSize * 0.56;
+
+/** Point at fraction t (0 to 1) of a polyline's length. */
+function pointAt(line: Point2[], t: number): Point2 {
+	const lengths = line
+		.slice(1)
+		.map((p, i) => Math.hypot(p[0] - line[i][0], p[1] - line[i][1]));
+	let rest = t * lengths.reduce((a, b) => a + b, 0);
+	for (const [i, len] of lengths.entries()) {
+		if (rest <= len || i === lengths.length - 1) {
+			const k = len === 0 ? 0 : Math.min(rest / len, 1);
+			return [
+				line[i][0] + (line[i + 1][0] - line[i][0]) * k,
+				line[i][1] + (line[i + 1][1] - line[i][1]) * k,
+			];
+		}
+		rest -= len;
+	}
+	return line[0];
+}
+
+/** Street labels try spots along the street until one clears the other labels. */
+const LABEL_SPOTS = [0.5, 0.4, 0.6, 0.3, 0.7, 0.2, 0.8, 0.12, 0.88];
+
 const STATUS_TEXT: Record<PermitDraft["geocode"]["status"], string> = {
 	RESOLVED: "Resolved",
 	PARTIAL: "Partial",
@@ -58,9 +94,48 @@ export function PathPreview({
 	const base = useMemo(() => {
 		const s = scene.data;
 		if (!s) return null;
+		const { bounds } = s.area;
+		// Fixed labels first (worst case: the bold 11 px of a from/to reference),
+		// then each street name takes the first free spot along its street.
+		const taken: Box[] = [];
+		let maxRight = 0;
+		const fixed = [
+			...s.junctions.map((j) => ({ ...j, label: shortName(j.name) })),
+			...s.landmarks.map((l) => ({ ...l, label: l.name })),
+		];
+		for (const n of fixed) {
+			const [x, y] = planToSvg([n.x, n.y], bounds);
+			const right = x + 6 + textWidth(n.label, 11);
+			maxRight = Math.max(maxRight, right);
+			taken.push({ x0: x - 5, y0: y - 5, x1: right, y1: y + 14 });
+		}
+		const streets = s.streets.map((st) => {
+			const width = textWidth(st.name, 10);
+			const boxAt = (t: number) => {
+				const [x, y] = planToSvg(pointAt(st.centerline, t), bounds);
+				const ly = y - st.width_m / 2 - 3;
+				return {
+					x,
+					y: ly,
+					box: {
+						x0: x - width / 2,
+						y0: ly - 10,
+						x1: x + width / 2,
+						y1: ly + 2,
+					},
+				};
+			};
+			const spot =
+				LABEL_SPOTS.map(boxAt).find(
+					(c) => !taken.some((b) => overlaps(b, c.box)),
+				) ?? boxAt(0.5);
+			taken.push(spot.box);
+			return { ...st, d: svgPath(st.centerline, s), label: spot };
+		});
 		return {
-			streets: s.streets.map((st) => ({ ...st, d: svgPath(st.centerline, s) })),
+			streets,
 			works: s.works.map((w) => ({ id: w.id, d: svgPath(w.path, s) })),
+			maxRight,
 		};
 	}, [scene.data]);
 
@@ -177,7 +252,7 @@ export function PathPreview({
 		<section className="flex flex-col gap-2">
 			{header}
 			<svg
-				viewBox={`-10 -10 ${width + 20} ${height + 20}`}
+				viewBox={`-10 -10 ${Math.max(width + 20, base.maxRight + 14)} ${height + 20}`}
 				className={cn(cardClass, "w-full")}
 				style={{ backgroundColor: INTAKE_COLORS.previewGround }}
 				role="img"
@@ -218,28 +293,18 @@ export function PathPreview({
 						opacity={0.25}
 					/>
 				))}
-				{base.streets.map((st) => {
-					const mid = st.centerline[Math.floor((st.centerline.length - 1) / 2)];
-					const next =
-						st.centerline[Math.floor((st.centerline.length - 1) / 2) + 1] ??
-						mid;
-					const [x, y] = planToSvg(
-						[(mid[0] + next[0]) / 2, (mid[1] + next[1]) / 2],
-						bounds,
-					);
-					return (
-						<text
-							key={`${st.id}-l`}
-							x={x}
-							y={y - st.width_m / 2 - 3}
-							fontSize={10}
-							textAnchor="middle"
-							fill={INTAKE_COLORS.previewLabel}
-						>
-							{st.name}
-						</text>
-					);
-				})}
+				{base.streets.map((st) => (
+					<text
+						key={`${st.id}-l`}
+						x={st.label.x}
+						y={st.label.y}
+						fontSize={10}
+						textAnchor="middle"
+						fill={INTAKE_COLORS.previewLabel}
+					>
+						{st.name}
+					</text>
+				))}
 				{nodes.map((n) => {
 					const [x, y] = planToSvg([n.x, n.y], bounds);
 					const isRef = refs.has(n.id);

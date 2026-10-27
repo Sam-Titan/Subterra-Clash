@@ -1,4 +1,9 @@
-import { test as base, expect, type Page } from "@playwright/test";
+import {
+	test as base,
+	expect,
+	type Locator,
+	type Page,
+} from "@playwright/test";
 
 export const API = "http://localhost:8000";
 
@@ -47,4 +52,35 @@ export async function waitForPage(page: Page, path: string) {
 	}
 	// NumberTicker counts up over ~0.9 s; shooting earlier freezes it mid-count.
 	if (path === "/" || path === "/dashboard") await page.waitForTimeout(1500);
+}
+
+/**
+ * Pairs of <text> elements inside `svg` whose boxes overlap, as "a | b".
+ * `only` limits the first element of each pair to texts matching it.
+ */
+export async function overlappingTexts(
+	svg: Locator,
+	only?: string,
+): Promise<string[]> {
+	return svg.evaluate((el, match) => {
+		const texts = [...el.querySelectorAll("text")].map((t) => ({
+			s: (t.textContent ?? "").replace(/\s+/g, " ").trim(),
+			r: t.getBoundingClientRect(),
+		}));
+		const hit = (a: DOMRect, b: DOMRect) =>
+			a.left < b.right - 0.5 &&
+			a.right > b.left + 0.5 &&
+			a.top < b.bottom - 0.5 &&
+			a.bottom > b.top + 0.5;
+		const out: string[] = [];
+		for (const [i, a] of texts.entries()) {
+			if (a.r.width === 0 || (match && !a.s.includes(match))) continue;
+			for (const [j, b] of texts.entries()) {
+				if (i === j || b.r.width === 0) continue;
+				if (!match && j < i) continue;
+				if (hit(a.r, b.r)) out.push(`${a.s} | ${b.s}`);
+			}
+		}
+		return out;
+	}, only);
 }

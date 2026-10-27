@@ -283,7 +283,7 @@ export function QueueTable({
 							<Button
 								size="sm"
 								variant="ghost"
-								className="h-7 text-xs text-zinc-300 hover:bg-zinc-800 hover:text-zinc-100"
+								className="-my-1 h-7 text-xs text-zinc-300 hover:bg-zinc-800 hover:text-zinc-100"
 								disabled={escalated}
 								onClick={() => onEscalate(clash)}
 								aria-label={`Escalate ${clash.id}`}
@@ -390,7 +390,7 @@ export function QueueTable({
 									.getAllCells()
 									.filter((c) => !(grouped && c.column.id === "rank"))
 									.map((cell) => (
-										<TableCell key={cell.id} className="py-2 align-top">
+										<TableCell key={cell.id} className="py-2 align-middle">
 											<table.FlexRender cell={cell} />
 										</TableCell>
 									))}

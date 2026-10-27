@@ -23,6 +23,36 @@ for (const { name, path } of PAGES) {
 			expect(errors).toEqual([]);
 		});
 
+		if (path === "/queue" || path === "/dashboard") {
+			test("last content is fully visible above the pinned footer", async ({
+				page,
+			}) => {
+				await waitForPage(page, path);
+				await page.getByRole("main").evaluate((m) => {
+					m.scrollTop = m.scrollHeight;
+				});
+				// The page fades in with a small slide; measure once it has settled.
+				await expect
+					.poll(
+						() =>
+							page.evaluate(() => {
+								const main = document.querySelector("main");
+								const footer = document.querySelector("footer");
+								if (!main || !footer) return Number.NaN;
+								let bottom = 0;
+								for (const el of main.querySelectorAll("*")) {
+									const r = el.getBoundingClientRect();
+									if (r.width > 0 && r.height > 0)
+										bottom = Math.max(bottom, r.bottom);
+								}
+								return footer.getBoundingClientRect().top - bottom;
+							}),
+						{ message: "gap between last content and the footer (px)" },
+					)
+					.toBeGreaterThanOrEqual(-0.5);
+			});
+		}
+
 		test("no horizontal overflow", async ({ page }) => {
 			await waitForPage(page, path);
 			const overflow = await page.evaluate(

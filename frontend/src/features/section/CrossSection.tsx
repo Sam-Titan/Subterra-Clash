@@ -44,6 +44,8 @@ const ZOOM_MIN_WIDTH_SPAN_M = 4;
 const GAP_NOTE_THRESHOLD_M = 0.05;
 /** Never draw a pipe smaller than this on screen (px radius). */
 const MIN_CIRCLE_PX = 2;
+/** Gap between the dimension line and its label: past half an id label (~45 px). */
+const LABEL_GAP_PX = 34;
 
 type ZoomPref = "auto" | "street" | "clash";
 
@@ -714,7 +716,8 @@ function ClashOverlay({
 				(dimension.from[1] + dimension.to[1]) / 2,
 			]
 		: clashInCut(cut, clash);
-	const lx = view.x(anchor[0]) + 10;
+	// Clear of the id label drawn under the circle at the dimension line.
+	const lx = view.x(anchor[0]) + LABEL_GAP_PX;
 	const ly = view.y(anchor[1]);
 	const flip = lx > view.x(view.uMax) - 200;
 	const line1 = formatClearance(clash.measured_gap_m, required);
@@ -740,7 +743,9 @@ function ClashOverlay({
 					markerEnd="url(#section-arrow)"
 				/>
 			)}
-			<g transform={`translate(${flip ? view.x(anchor[0]) - 10 : lx}, ${ly})`}>
+			<g
+				transform={`translate(${flip ? view.x(anchor[0]) - LABEL_GAP_PX : lx}, ${ly})`}
+			>
 				<text
 					textAnchor={flip ? "end" : "start"}
 					fontSize={12}

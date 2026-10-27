@@ -1,4 +1,4 @@
-import { expect, test } from "./helpers";
+import { expect, overlappingTexts, test } from "./helpers";
 
 test("sample 2 -> Add to coordination plan -> toast and 3 new clashes", async ({
 	page,
@@ -22,4 +22,26 @@ test("sample 2 -> Add to coordination plan -> toast and 3 new clashes", async ({
 	await expect(
 		page.locator("aside").getByText("New", { exact: true }),
 	).toHaveCount(3);
+});
+
+test("the placed-path map has no overlapping or clipped labels", async ({
+	page,
+}) => {
+	test.slow();
+	await page.goto("/intake");
+	await page.getByRole("button", { name: /Jal Board water line/ }).click();
+	await expect(page.getByText("Extracting fields…")).toHaveCount(0, {
+		timeout: 30_000,
+	});
+	const map = page.getByRole("img", { name: /^Plan of/ });
+	await expect(map).toBeVisible();
+	expect(await overlappingTexts(map)).toEqual([]);
+
+	const clipped = await map.evaluate((svg) => {
+		const frame = svg.getBoundingClientRect();
+		return [...svg.querySelectorAll("text")]
+			.filter((t) => t.getBoundingClientRect().right > frame.right + 0.5)
+			.map((t) => t.textContent);
+	});
+	expect(clipped).toEqual([]);
 });

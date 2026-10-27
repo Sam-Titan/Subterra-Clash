@@ -1,3 +1,4 @@
+import type { Locator } from "@playwright/test";
 import { API, expect, test } from "./helpers";
 
 test("escalate with a note shows a toast", async ({ page }) => {
@@ -36,4 +37,27 @@ test("Export inspection report opens the report", async ({ page, context }) => {
 	const report = await popup;
 	await report.waitForLoadState();
 	await expect(report.locator("body")).toContainText("Review log");
+});
+
+test("every cell of a queue row is centred on the same line as its Escalate button", async ({
+	page,
+}) => {
+	await page.goto("/queue");
+	const row = page.getByRole("row").filter({ hasText: "CLH-0002" });
+	const centre = async (loc: Locator) => {
+		const b = await loc.boundingBox();
+		if (!b) throw new Error("cell content not found");
+		return b.y + b.height / 2;
+	};
+	const button = await centre(
+		row.getByRole("button", { name: "Escalate CLH-0002" }),
+	);
+	for (const cell of [
+		row.getByText("CLH-0002", { exact: true }),
+		row.getByText("Intersection"),
+		row.getByText("Likely"),
+		row.getByText("AST-0009"),
+	]) {
+		expect(Math.abs((await centre(cell)) - button)).toBeLessThanOrEqual(2);
+	}
 });

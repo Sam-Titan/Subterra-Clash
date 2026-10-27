@@ -471,12 +471,12 @@ function PanelBody({ detail }: { detail: ClashDetail }) {
 				</p>
 			</section>
 
-			<ReviewBlock key={clash.id} clash={clash} />
+			<ReviewBlock key={`review-${clash.id}`} clash={clash} />
 
 			{/* Evidence and the records behind it: one click each. Missing data
 			    opens by itself when there is any, so it is never hidden. */}
 			<div
-				key={clash.id}
+				key={`details-${clash.id}`}
 				className="-mt-1 flex flex-col border-b border-zinc-800"
 			>
 				<Disclosure title="Evidence" hint={`${clash.evidence.length}`}>

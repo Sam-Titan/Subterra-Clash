@@ -1,5 +1,5 @@
 import type { Page } from "@playwright/test";
-import { expect, test } from "./helpers";
+import { expect, overlappingTexts, test } from "./helpers";
 
 test.beforeEach(() => {
 	test.slow(); // SwiftShader renders the scene in software
@@ -140,5 +140,49 @@ for (const id of ["CLH-0002", "CLH-0004"]) {
 		await expect(section).toHaveAttribute("aria-pressed", "false");
 		await page.waitForTimeout(1500);
 		expect(await centreDrawnShare(page)).toBeGreaterThan(DRAWN);
+	});
+}
+
+// The same console filter as quality.spec.ts: the one accepted dev-only warning.
+const ALLOWED_CONSOLE = /synchronously unmount a root/;
+
+test("selecting a clash logs no console errors and shows the certainty legend once", async ({
+	page,
+}) => {
+	const errors: string[] = [];
+	page.on("console", (m) => {
+		if (m.type() === "error" && !ALLOWED_CONSOLE.test(m.text()))
+			errors.push(m.text());
+	});
+	page.on("pageerror", (e) => {
+		if (!ALLOWED_CONSOLE.test(e.message)) errors.push(e.message);
+	});
+	await page.goto("/workspace");
+	await expect(page.locator("canvas")).toBeVisible({ timeout: 30_000 });
+	const legend = page.getByRole("list", { name: "Certainty legend" });
+	await expect(legend).toHaveCount(1);
+
+	await page.getByRole("button", { name: /CLH-0002/ }).click();
+	await expect(
+		page.locator("aside").getByText("−0.60 m (overlap)"),
+	).toBeVisible();
+	await page.waitForTimeout(1500);
+
+	// List and panel are never on screen together, and the legend stays single.
+	await expect(legend).toHaveCount(1);
+	expect(errors).toEqual([]);
+});
+
+for (const id of ["CLH-0002", "CLH-0004"]) {
+	test(`${id}: the clearance label in the cross-section overlaps no other label`, async ({
+		page,
+	}) => {
+		await page.goto("/workspace");
+		await expect(page.locator("canvas")).toBeVisible({ timeout: 30_000 });
+		await page.getByRole("button", { name: new RegExp(id) }).click();
+		const label = page.locator("text").filter({ hasText: /m required/ });
+		await expect(label).toHaveCount(1);
+		const svg = page.locator("svg").filter({ has: label });
+		expect(await overlappingTexts(svg, "m required")).toEqual([]);
 	});
 }
