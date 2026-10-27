@@ -23,7 +23,7 @@ cd backend
 uv sync
 cp .env.example .env          # set LLM_MODE=cached to run fully offline
 uv run python -m app.data.generator
-uv run uvicorn app.main:app --reload --port 8000
+uv run uvicorn app.main:app --reload --port 8000 --no-proxy-headers
 ```
 
 **Frontend** (Node 24, pnpm via corepack)

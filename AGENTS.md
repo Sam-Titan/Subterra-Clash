@@ -47,7 +47,7 @@ Work happens in numbered sessions (e.g. `1B`, `2E`) listed in `docs/PHASES.md`. 
 Backend (run inside `backend/`):
 ```
 uv sync
-uv run uvicorn app.main:app --reload --port 8000
+uv run uvicorn app.main:app --reload --port 8000 --no-proxy-headers
 uv run ruff check --fix . && uv run ruff format .
 uv run pytest -q
 uv run python -m app.data.generator        # rebuild seed JSON

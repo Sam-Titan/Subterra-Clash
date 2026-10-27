@@ -10,6 +10,7 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from app.api import routes_clashes, routes_permits, routes_report, routes_scene, routes_summary
 from app.api.schemas import AppError
 from app.config import Settings, get_settings
+from app.middleware.client_ip import AccessLogMiddleware, debug_router
 from app.models.base import ApiModel
 
 VERSION = "0.1.0"
@@ -32,6 +33,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.add_middleware(AccessLogMiddleware, settings=settings)
+if settings.debug_headers:
+    app.include_router(debug_router(settings))
 app.include_router(routes_scene.router)
 app.include_router(routes_clashes.router)
 app.include_router(routes_permits.router)

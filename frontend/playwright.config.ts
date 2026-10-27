@@ -47,7 +47,7 @@ export default defineConfig({
 	],
 	webServer: [
 		{
-			command: "uv run uvicorn app.main:app --port 8000",
+			command: "uv run uvicorn app.main:app --port 8000 --no-proxy-headers",
 			cwd: "../backend",
 			url: "http://localhost:8000/api/health",
 			reuseExistingServer: true,

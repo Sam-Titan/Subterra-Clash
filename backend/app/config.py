@@ -2,6 +2,7 @@ from datetime import date
 from functools import lru_cache
 from typing import Literal
 
+from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -14,6 +15,10 @@ class Settings(BaseSettings):
     anthropic_api_key: str = ""
     demo_date: date = date(2026, 10, 28)
     frontend_origin: str = "http://localhost:5173"
+    trusted_proxy_hops: int = Field(default=0, ge=0)
+    trust_cf_headers: bool = False
+    log_client_ip: Literal["full", "masked", "off"] = "masked"
+    debug_headers: bool = False
 
 
 @lru_cache
